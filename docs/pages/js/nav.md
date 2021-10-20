@@ -10,7 +10,7 @@ sidebar: false
 
 ## Vue
 
-### 暂无
+- [Vuepress 博客搭建与 GitHub 静态页面部署](vuepress-blog.md)
 
 ## 功能
 
