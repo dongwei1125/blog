@@ -1,3 +1,5 @@
+# Vuepress 博客搭建与 GitHub 静态页面部署
+
 ![](/js/vuepress-blog/banner.jpg)
 
 ## 前言
@@ -334,3 +336,13 @@ git push -f git@github.com:username/uaername.github.io.git master
 &emsp;&emsp;最后收到如下信息即表示推送成功并部署在远端了，并且浏览器访问`https//username.github.io`将跳转到`Vuepress`创建的静态博客首页 。
 
 ![](/js/vuepress-blog/process.png)
+
+##  🎉 写在最后
+
+🍻伙伴们，如果你已经看到了这里，觉得这篇文章有帮助到你的话不妨点赞👍或 [Star](https://github.com/dongwei1125/blog) ✨支持一下哦！
+
+手动码字，如有错误，欢迎在评论区指正💬~
+
+你的支持就是我更新的最大动力💪~
+
+[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

@@ -1089,3 +1089,13 @@ location / {
 &emsp;&emsp;项目有云服务器是可以实现访问并预览的，但是小项目练手没有必要，`github`开放了静态网页预览功能，可以调整部分代码实现。`ajax`部分去掉，`api`内不引入`request`工具函数，直接引入`serve`下`db.js`，合并`router.js`和`api`下函数。
 
 &emsp;&emsp;;`vue.config.js`新增`publicPath`，由于静态网页预览`history`模式刷新报错`404`，`router` `model`删除`history`模式，使用默认`hash`模式，并提交在`noajax`分支。
+
+##  🎉 写在最后
+
+🍻伙伴们，如果你已经看到了这里，觉得这篇文章有帮助到你的话不妨点赞👍或 [Star](https://github.com/dongwei1125/blog) ✨支持一下哦！
+
+手动码字，如有错误，欢迎在评论区指正💬~
+
+你的支持就是我更新的最大动力💪~
+
+[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

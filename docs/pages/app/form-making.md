@@ -2289,3 +2289,13 @@ Vue.prototype.$store = store
 &emsp;&emsp;但是发布为 [vue](https://cn.vuejs.org/v2/guide/plugins.html) 插件，`store`放在`vue`的原型上不是那么理想，首先来看看组件`install`方法，第一个参数是`Vue`构造器，也就是执行`Vue.use()`时的`Vue`，倘若像上述给予`Vue`原型上添加`$store`，有一个很糟糕的情况，则是`$store`关键字被占用了，页面只有单独定义其他关键字，否则`$store`直接被覆盖掉。更糟糕的情况则是引用`vuex`状态管理的项目，由于`vuex`在`beforeCreate`首行注入`$store`，若同时集成表单工具，可能会导致工具崩溃，出现意料之外的`bug`。
 
 &emsp;&emsp;此次更新修复了栅格复制`key`值的`bug`，删除掉组件内部分未引用的变量。并且在工具内控制台输出了彩蛋（[试一试](https://dongwei1125.github.io/dw-form-making/)），不包括`npm`组件。
+
+##  🎉 写在最后
+
+🍻伙伴们，如果你已经看到了这里，觉得这篇文章有帮助到你的话不妨点赞👍或 [Star](https://github.com/dongwei1125/blog) ✨支持一下哦！
+
+手动码字，如有错误，欢迎在评论区指正💬~
+
+你的支持就是我更新的最大动力💪~
+
+[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

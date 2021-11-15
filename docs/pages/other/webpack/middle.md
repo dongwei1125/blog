@@ -1,6 +1,6 @@
-![](/other/webpack/banner.jpg)
+# 万字长文系统梳理 Webpack 基础（中）
 
-# 代码分片
+![](/other/webpack/banner.jpg)
 
 &emsp;&emsp;代码分片（`code splitting`）是`webpack`所特有的一项技术，可以将代码按照特定的形式进行拆分，不用一次全部加载而是按需加载，能有效降低首屏加载资源的大小。
 
@@ -2336,3 +2336,13 @@ export function bar() {
 [上一篇](upper.md)
 
 [下一篇](lower.md)
+
+##  🎉 写在最后
+
+🍻伙伴们，如果你已经看到了这里，觉得这篇文章有帮助到你的话不妨点赞👍或 [Star](https://github.com/dongwei1125/blog) ✨支持一下哦！
+
+手动码字，如有错误，欢迎在评论区指正💬~
+
+你的支持就是我更新的最大动力💪~
+
+[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

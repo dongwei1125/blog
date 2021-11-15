@@ -1,6 +1,6 @@
-![](/other/webpack/banner.jpg)
+# 万字长文系统梳理 Webpack 基础（上）
 
-# Webpack 简介
+![](/other/webpack/banner.jpg)
 
 ## 概述
 
@@ -1894,3 +1894,13 @@ document.write(`<div class='${style.title}'>hello wolrld</div>`)
 ![](/other/webpack/upper-css-module.png)
 
 [下一篇](middle.md)
+
+##  🎉 写在最后
+
+🍻伙伴们，如果你已经看到了这里，觉得这篇文章有帮助到你的话不妨点赞👍或 [Star](https://github.com/dongwei1125/blog) ✨支持一下哦！
+
+手动码字，如有错误，欢迎在评论区指正💬~
+
+你的支持就是我更新的最大动力💪~
+
+[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

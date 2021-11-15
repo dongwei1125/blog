@@ -252,3 +252,13 @@ btn.getAttribute("value")
 &emsp;&emsp;;`IE8`以下浏览器，可以看出在提交表单时，会将表单内所有按钮都提交上去，并且提交的值并不是按钮的`value`值，而是等价于按钮`innerText`的值。
 
 ![](/html/label/button/IE7-post.png)
+
+##  🎉 写在最后
+
+🍻伙伴们，如果你已经看到了这里，觉得这篇文章有帮助到你的话不妨点赞👍或 [Star](https://github.com/dongwei1125/blog) ✨支持一下哦！
+
+手动码字，如有错误，欢迎在评论区指正💬~
+
+你的支持就是我更新的最大动力💪~
+
+[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

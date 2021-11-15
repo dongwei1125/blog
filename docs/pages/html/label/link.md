@@ -38,7 +38,7 @@
 - `pingback`：提供处理当前文档的`pingback`服务器地址
 - `prefetch`：对资源进行预加载并缓存，通常`preload`用于加载当前页面的资源，而`prefetch`用于加载将来页面可能需要的资源
 - `preconnect`：预先连接到目标资源的地址
-- `prev`：记录文档的下一页
+- `prev`：记录文档的上一页
 - `search`：链接到文档的搜索工具
 - `stylesheet`：指定作为样式表的外部资源
 - `sidebar`：指定浏览器边栏中显示的文档
@@ -375,3 +375,13 @@ http://www.xxx.com/index.html?id=xxx
 ```javascript
 <link rel="up" href="">
 ```
+
+##  🎉 写在最后
+
+🍻伙伴们，如果你已经看到了这里，觉得这篇文章有帮助到你的话不妨点赞👍或 [Star](https://github.com/dongwei1125/blog) ✨支持一下哦！
+
+手动码字，如有错误，欢迎在评论区指正💬~
+
+你的支持就是我更新的最大动力💪~
+
+[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
