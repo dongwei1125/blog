@@ -7,6 +7,7 @@ module.exports = {
   themeConfig: {
     logo: '/logo.png',
     lastUpdated: '最后更新时间',
+    backToTop: true,
     sidebar: 'auto',
     nav: [
       {
@@ -42,5 +43,6 @@ module.exports = {
         ]
       }
     ]
-  }
+  },
+  plugins: ['@vuepress/back-to-top']
 }
