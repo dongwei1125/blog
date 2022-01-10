@@ -1,8 +1,15 @@
 # JavaScript
 
+## ECMAScript
+
+ - [JavaScript 浮点数陷阱](https://dongwei1125.github.io/pages/js/float.html)
+ - [JavaScript 浮点数取整](https://dongwei1125.github.io/pages/js/integer.html)
+ - [JavaScript 正则表达式](https://dongwei1125.github.io/pages/js/regexp.html)
+ - [你不知道的 JSON.stringify 特性](https://dongwei1125.github.io/pages/js/json.html)
+
 ## ES6
 
-### 暂无
+ - [ES6 不完全手册（上）](https://dongwei1125.github.io/pages/js/es6/upper.html)
 
 ## Vue
 
@@ -11,7 +18,7 @@
 
 ## 功能
 
- - [解析图片的瀑布流（含懒加载）原理，并搭配服务端交互数据](http://localhost:8080/pages/js/waterfall.html)
+ - [解析图片的瀑布流（含懒加载）原理，并搭配服务端交互数据](https://dongwei1125.github.io/pages/js/waterfall.html)
 
 # HTML
 

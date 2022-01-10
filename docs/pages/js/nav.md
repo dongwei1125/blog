@@ -4,9 +4,16 @@ sidebar: false
 
 # JavaScript
 
+## ECMAScript
+
+- [JavaScript 浮点数陷阱](float.md)
+- [JavaScript 浮点数取整](integer.md)
+- [JavaScript 正则表达式](regexp.md)
+- [你不知道的 JSON.stringify 特性](json.md)
+
 ## ES6
 
-### 暂无
+- [ES6 不完全手册（上）](es6/upper.md)
 
 ## Vue
 
