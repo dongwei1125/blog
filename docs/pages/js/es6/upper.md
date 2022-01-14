@@ -754,6 +754,26 @@ if (!Number.isInteger) {
 Number.isInteger(3.0000000000000002) // true
 ```
 
+## 函数
+
+### length
+
+&emsp;&emsp;[length](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/length) 为函数对象的属性值，用于指明函数的形参个数，返回`第一个具有默认值之前的参数个数`。
+
+&emsp;&emsp;`length`即预期传入的参数个数，若参数指定了默认值，预期传入的参数也就不包括此参数了，另外剩余参数也不会计入`length`中。
+
+```javascript
+(function (a, b, c) { }).length // 3
+(function (a, b = 2, c) { }).length // 1
+(function (a, b, ...rest) { }).length // 2
+```
+
+> 与之对应的，[arguments.length](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/arguments/length) 将返回实参个数
+
+### 作用域
+
+&emsp;&emsp;;[关于 ES6 参数默认值形成的第三作用域问题](../default-params.md)
+
 ##  🎉 写在最后
 
 🍻伙伴们，如果你已经看到了这里，觉得这篇文章有帮助到你的话不妨点赞👍或 [Star](https://github.com/dongwei1125/blog) ✨支持一下哦！

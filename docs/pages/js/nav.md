@@ -14,6 +14,7 @@ sidebar: false
 ## ES6
 
 - [ES6 不完全手册（上）](es6/upper.md)
+- [关于 ES6 参数默认值形成的第三作用域问题](default-params.md)
 
 ## Vue
 
