@@ -256,10 +256,9 @@ function f() { console.log('outer') }
 function f() { console.log('outer') }
 
 (function () {
-  var f
   console.log(f) // undefined
   if (true) {
-    function f() { console.log('inner') }
+    var f = function() { console.log('inner') }
     console.log(f) // function() { console.log('inner') }
   }
   f() // inner
@@ -269,8 +268,10 @@ function f() { console.log('outer') }
 &emsp;&emsp;因此对于`ES6`浏览器。
 
  - 允许在块级作用域声明变量
- - 类似`var`，将提升至函数或全局作用域的顶部
- - 并且也会再提升至当前所在块级作用域的顶部
+ - 类似`var`
+ - 提升至当前所在块级作用域的顶部
+
+> 严格模式下还有部分差异，详细可参考相关章节
 
 &emsp;&emsp;说了那么多，即由于环境差异较大，应当避免在块级作用域下声明函数，即使要使用，优先使用函数表达式，而不是声明语句。
 
@@ -773,6 +774,35 @@ Number.isInteger(3.0000000000000002) // true
 ### 作用域
 
 &emsp;&emsp;;[关于 ES6 参数默认值形成的第三作用域问题](../default-params.md)
+
+### 剩余参数
+
+&emsp;&emsp;;[剩余参数](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Rest_parameters) 用于获取函数的多余参数。
+
+```javascript
+function f(first, second, ...rest) {
+  console.log(rest) // [3, 4]
+}
+f(1, 2, 3, 4)
+```
+
+&emsp;&emsp;;`babel`转换为`es5`代码。
+
+```javascript
+"use strict"
+
+function f(first, second) {
+  for (var _len = arguments.length, rest = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+    rest[_key - 2] = arguments[_key]
+  }
+  console.log(rest)
+}
+f(1, 2, 3, 4)
+```
+
+### 严格模式
+
+&emsp;&emsp;;[JavaScript 严格模式差异性对比](../strict.md)
 
 ##  🎉 写在最后
 

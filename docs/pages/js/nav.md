@@ -10,6 +10,7 @@ sidebar: false
 - [JavaScript 浮点数取整](integer.md)
 - [JavaScript 正则表达式](regexp.md)
 - [你不知道的 JSON.stringify 特性](json.md)
+- [JavaScript 严格模式差异性对比](strict.md)
 
 ## ES6
 

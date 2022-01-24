@@ -6,6 +6,7 @@
  - [JavaScript 浮点数取整](https://dongwei1125.github.io/pages/js/integer.html)
  - [JavaScript 正则表达式](https://dongwei1125.github.io/pages/js/regexp.html)
  - [你不知道的 JSON.stringify 特性](https://dongwei1125.github.io/pages/js/json.html)
+ - [JavaScript 严格模式差异性对比](https://dongwei1125.github.io/pages/js/strict.html)
 
 ## ES6
 
