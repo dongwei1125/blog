@@ -205,16 +205,16 @@ for (let i = 0; i < 5; i++) {
 &emsp;&emsp;;`babel`转换`let`即是利用的闭包。
 
 ```javascript
-"use strict";
+"use strict"
 
 var _loop = function _loop(i) {
   setTimeout(function () {
-    console.log(i);
-  });
-};
+    console.log(i)
+  })
+}
 
 for (var i = 0; i < 5; i++) {
-  _loop(i);
+  _loop(i)
 }
 ```
 
@@ -803,6 +803,50 @@ f(1, 2, 3, 4)
 ### 严格模式
 
 &emsp;&emsp;;[JavaScript 严格模式差异性对比](../strict.md)
+
+### Function.name
+
+&emsp;&emsp;;[Function.name](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/name) 返回函数名称，非标准属性，在`ES6`被纳入标准，以下仅为`ES6`的结果。
+
+&emsp;&emsp;;`function`声明的函数。
+
+```javascript
+function foo() { }
+foo.name // foo
+
+(function () { }).name // ""
+```
+
+&emsp;&emsp;变量声明的方式。
+
+```javascript
+var f = function () { }
+f.name // f
+```
+
+&emsp;&emsp;;`function`与变量声明两种方式时，返回函数原名称。
+
+```javascript
+var fn = function func() { }
+fn.name // func
+```
+
+&emsp;&emsp;;`bound`前缀。
+
+```javascript
+var fn = function func() { }
+fn.bind().name // bound func
+```
+
+&emsp;&emsp;;`anonymous`匿名函数。
+
+```javascript
+var t = new Function('x', 'y', 'return x + y')
+t.name // anonymous
+t.bind().name // bound anonymous
+```
+
+> 注意`IE`浏览器不支持`Function.name`属性
 
 ##  🎉 写在最后
 

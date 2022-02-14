@@ -383,7 +383,7 @@ Number.MAX_VALUE + 1 === Number.MAX_VALUE // true
 
 ![](/js/float/infinity-fn.png)
 
-&emsp;&emsp;;`64`位浮点数中，<code>E~max~</code>为`1023`，`p`为`53`。
+&emsp;&emsp;;`64`位浮点数中，<code>E<sub>max</sub></code>为`1023`，`p`为`53`。
 
 ```javascript
   2 ^ 1023 * (2 - 2 ^ (1 - 53) / 2)

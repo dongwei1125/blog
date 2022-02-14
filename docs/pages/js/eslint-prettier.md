@@ -997,6 +997,24 @@ npx eslint src/main.js --fix
 git commit -m 'xxx' --no-verify
 ```
 
+### lint-staged 在 pre-commit 阶段报错
+
+&emsp;&emsp;在`node`版本较低的情况下，且安装了`lint-staged`的`v12`版本（目前`v12.3.4`）。
+
+&emsp;&emsp;;`node`版本为`v12.14.1`时，提交时抛出以下错误。
+
+![](/js/eslint-prettier/fs.png)
+
+&emsp;&emsp;;`node`版本为`v14.10.1`时，提交时抛出以下错误。
+
+![](/js/eslint-prettier/esm.png)
+
+&emsp;&emsp;;[官方](https://github.com/okonet/lint-staged#migration)明确了所支持的`node`版本。
+
+![](/js/eslint-prettier/v12.png)
+
+&emsp;&emsp;两种解决方式，方式一可升级`node`版本，方式二则可安装`lint-staged`的`v11.2.6`及以下版本，推荐方式二。
+
 ### 如何配置 vue 代码片段？
 
 &emsp;&emsp;;`vetur`提供了代码片段用来提高开发效率。
