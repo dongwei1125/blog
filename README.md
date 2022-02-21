@@ -12,6 +12,7 @@
 
  - [ES6 不完全手册（上）](https://dongwei1125.github.io/pages/js/es6/upper.html)
  - [关于 ES6 参数默认值形成的第三作用域问题](https://dongwei1125.github.io/pages/js/default-params.html)
+ - [JavaScript 箭头函数](https://dongwei1125.github.io/pages/js/arrow.html)
 
 ## Vue
 
