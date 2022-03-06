@@ -4,7 +4,7 @@
 
 ## 前言
 
-&emsp;&emsp;;`JSON.stringify`可配合`JSON.parse`来进行对象深拷贝，也可以用于字符串转换为对象，但是会有很多问题。此处简单记录下，方便以后查阅。
+&emsp;&emsp;;`JSON.stringify`可配合`JSON.parse`来进行对象深拷贝，也可以用于字符串转换为对象，但是会有很多问题。
 
 ## 语法特性
 
@@ -332,4 +332,4 @@ JSON.parse(stringify, reviver) // {id: 1, map: Map(2)}
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

@@ -2,6 +2,8 @@
 
 ![](/js/waterfall/banner.gif)
 
+## 前言
+
 &emsp;&emsp;瀑布流是一种很常见的网页图片交互方式，效果可以参考 [花瓣网](https://huaban.com/)。
 
 ## 准备工作
@@ -19,33 +21,33 @@
 
 ```javascript
 // app.js
-const express = require("express")
-const fs = require("fs")
+const express = require('express')
+const fs = require('fs')
 const app = new express()
 const port = 3000
 
-app.get("/", (req, res) => {
-  fs.readFile("./index.html", "UTF-8", (err, data) => {
-    if (err) return "404 not found"
+app.get('/', (req, res) => {
+  fs.readFile('./index.html', 'UTF-8', (err, data) => {
+    if (err) return '404 not found'
 
     res.send(data)
   })
 })
 
-app.get("/imgs", (req, res) => {
+app.get('/imgs', (req, res) => {
   const { pageSize, pageNo } = req.query
   const lists = []
   const total = 300
 
   for (var i = 0; i < pageSize; i++) {
-    lists.push("http://127.0.0.1/images/img.png")
+    lists.push('http://127.0.0.1/images/img.png')
   }
 
   res.send({
     pageNo,
     pageSize,
     total,
-    lists: pageNo * pageSize > total ? [] : lists
+    lists: pageNo * pageSize > total ? [] : lists,
   })
 })
 
@@ -58,10 +60,10 @@ app.listen(port, () => {
 
 ```javascript
 <head>
-    <meta charset="UTF-8">
-    <title>waterfall</title>
-    <script src="promise-polyfill.js"></script>
-    <script src="axios.js"></script>
+  <meta charset="UTF-8">
+  <title>waterfall</title>
+  <script src="promise-polyfill.js"></script>
+  <script src="axios.js"></script>
 </head>
 ```
 
@@ -69,32 +71,32 @@ app.listen(port, () => {
 
 ```javascript
 <style>
-    body {
-        margin: 0;
-        min-width: 600px;
-    }
+  body {
+    margin: 0;
+    min-width: 600px;
+  }
 
-    #waterfall {
-        margin: 16px auto;
-        position: relative;
-    }
+  #waterfall {
+    margin: 16px auto;
+    position: relative;
+  }
 
-    .item {
-        width: 230px;
-        border-radius: 10px;
-        position: absolute;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    }
+  .item {
+    width: 230px;
+    border-radius: 10px;
+    position: absolute;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
 
-    #msg {
-        font-size: 18px;
-        font-weight: bold;
-        text-align: center;
-        margin: 0;
-        height: 80px;
-        line-height: 80px;
-        color: #3d3d3d;
-    }
+  #msg {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0;
+    height: 80px;
+    line-height: 80px;
+    color: #3d3d3d;
+  }
 </style>
 
 <div id="waterfall"></div>
@@ -121,7 +123,7 @@ function getRandomInt(min, max) {
 
 ```javascript
 function getRandomHeight() {
-  return getRandomInt(200, 500) + "px"
+  return getRandomInt(200, 500) + 'px'
 }
 ```
 
@@ -131,7 +133,7 @@ function getRandomHeight() {
 
 ```javascript
 function getRandomColor() {
-  return "rgba(" + getRandomInt(0, 255) + ", " + getRandomInt(0, 255) + ", " + getRandomInt(0, 255) + ", " + getRandomInt(1, 10) / 10 + ")"
+  return 'rgba(' + getRandomInt(0, 255) + ', ' + getRandomInt(0, 255) + ', ' + getRandomInt(0, 255) + ', ' + getRandomInt(1, 10) / 10 + ')'
 }
 ```
 
@@ -141,13 +143,13 @@ function getRandomColor() {
 
 ```javascript
 function createItem(src) {
-  var div = document.createElement("div")
+  var div = document.createElement('div')
 
   // var img = document.createElement('img')
   // img.src = src
   // div.appendChild(img)
 
-  div.className = "item"
+  div.className = 'item'
   div.style.background = getRandomColor()
   div.style.height = getRandomHeight()
 
@@ -161,11 +163,11 @@ function createItem(src) {
 
 ```javascript
 function request(params) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     axios({
-      url: "http://127.0.0.1:3000/imgs",
-      params: params
-    }).then(function(res) {
+      url: 'http://127.0.0.1:3000/imgs',
+      params: params,
+    }).then(function (res) {
       resolve(res.data)
     })
   })
@@ -181,7 +183,7 @@ function debounce(fn, delay) {
   delay = delay || 100
   var timer = null
 
-  return function() {
+  return function () {
     var args = Array.prototype.slice.apply(arguments)
 
     if (timer) {
@@ -189,7 +191,7 @@ function debounce(fn, delay) {
       timer = null
     }
 
-    timer = setTimeout(function() {
+    timer = setTimeout(function () {
       fn.apply(this, args)
     }, delay)
   }
@@ -233,11 +235,11 @@ function getMinIndex(array) {
 
 ```javascript
 function setWaterFallRect() {
-  var wf = document.querySelector("#waterfall")
+  var wf = document.querySelector('#waterfall')
   var max = Math.max.apply(null, heights)
 
-  wf.style.height = max + "px"
-  wf.style.width = width * cols + (cols - 1) * gap + "px"
+  wf.style.height = max + 'px'
+  wf.style.width = width * cols + (cols - 1) * gap + 'px'
 }
 ```
 
@@ -250,7 +252,7 @@ function setWaterFallRect() {
 ```javascript
 function waterfall() {
   cols = getCols()
-  var items = document.querySelectorAll("#waterfall .item")
+  var items = document.querySelectorAll('#waterfall .item')
 
   for (var i = loaded; i < items.length; i++) {
     var item = items[i]
@@ -258,14 +260,14 @@ function waterfall() {
 
     if (i < cols) {
       item.style.top = 0
-      item.style.left = i * (width + gap) + "px"
+      item.style.left = i * (width + gap) + 'px'
       heights.push(height)
     } else {
       var minIndex = getMinIndex(heights)
       var top = heights[minIndex] + gap
 
-      item.style.top = top + "px"
-      item.style.left = minIndex * (width + gap) + "px"
+      item.style.top = top + 'px'
+      item.style.left = minIndex * (width + gap) + 'px'
       heights[minIndex] = top + height
     }
 
@@ -291,7 +293,7 @@ function init() {
   if (isReq) return
   isReq = true
 
-  request(params).then(function(res) {
+  request(params).then(function (res) {
     var lists = res.lists
     var frag = document.createDocumentFragment()
 
@@ -303,7 +305,7 @@ function init() {
       frag.appendChild(createItem(lists[i]))
     }
 
-    document.querySelector("#waterfall").appendChild(frag)
+    document.querySelector('#waterfall').appendChild(frag)
 
     waterfall()
   })
@@ -321,7 +323,7 @@ function init() {
 &emsp;&emsp;为什么此处不用做滚动条防抖呢？原因在于`init`函数做了节流处理，即便是`init`频繁触发，获取图片的请求也最多只会有一个。
 
 ```javascript
-window.addEventListener("scroll", lazyLoad)
+window.addEventListener('scroll', lazyLoad)
 
 function lazyLoad() {
   var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
@@ -331,8 +333,8 @@ function lazyLoad() {
   // documentHeight - scrollTop - clientHeight < 0.5 * clientHeight
   if (documentHeight - scrollTop < 1.5 * clientHeight) {
     if (loaded >= total) {
-      document.querySelector("#msg").innerText = "没有更多了"
-      window.removeEventListener("scroll", lazyLoad)
+      document.querySelector('#msg').innerText = '没有更多了'
+      window.removeEventListener('scroll', lazyLoad)
       return
     }
 
@@ -350,7 +352,7 @@ function lazyLoad() {
 &emsp;&emsp;窗口宽度低于`body`的最小宽度无需重新布局，即无论窗口如何改变，至少显示两列。
 
 ```javascript
-window.addEventListener("resize", debounce(resize, 50))
+window.addEventListener('resize', debounce(resize, 50))
 
 function resize() {
   if (document.body.offsetWidth < 600) return
@@ -371,220 +373,220 @@ function resize() {
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>waterfall</title>
-    <script src="promise-polyfill.js"></script>
-    <script src="axios.js"></script>
-    <style>
-        body {
-            margin: 0;
-            min-width: 600px;
-        }
+  <meta charset="UTF-8">
+  <title>waterfall</title>
+  <script src="promise-polyfill.js"></script>
+  <script src="axios.js"></script>
+  <style>
+    body {
+      margin: 0;
+      min-width: 600px;
+    }
 
-        #waterfall {
-            margin: 16px auto;
-            position: relative;
-        }
+    #waterfall {
+      margin: 16px auto;
+      position: relative;
+    }
 
-        .item {
-            width: 230px;
-            border-radius: 10px;
-            position: absolute;
-            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        }
+    .item {
+      width: 230px;
+      border-radius: 10px;
+      position: absolute;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
 
-        #msg {
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-            margin: 0;
-            height: 80px;
-            line-height: 80px;
-            color: #3d3d3d;
-        }
-    </style>
+    #msg {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      margin: 0;
+      height: 80px;
+      line-height: 80px;
+      color: #3d3d3d;
+    }
+  </style>
 </head>
 
 <body>
-    <div id="waterfall"></div>
-    <p id="msg">正在加载中...</p>
+  <div id="waterfall"></div>
+  <p id="msg">正在加载中...</p>
 
-    <script>
-        (function () {
-            function getRandomInt(min, max) {
-                return Math.floor(Math.random() * (max - min + 1)) + min
-            }
+  <script>
+    (function () {
+      function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min
+      }
 
-            function getRandomHeight() {
-                return getRandomInt(200, 500) + "px"
-            }
+      function getRandomHeight() {
+        return getRandomInt(200, 500) + 'px'
+      }
 
-            function getRandomColor() {
-                return "rgba(" + getRandomInt(0, 255) + ", " + getRandomInt(0, 255) + ", " + getRandomInt(0, 255) + ", " + getRandomInt(1, 10) / 10 + ")"
-            }
+      function getRandomColor() {
+        return "rgba(" + getRandomInt(0, 255) + ", " + getRandomInt(0, 255) + ", " + getRandomInt(0, 255) + ", " + getRandomInt(1, 10) / 10 + ")"
+      }
 
-            function createItem(src) {
-                var div = document.createElement('div')
+      function createItem(src) {
+        var div = document.createElement('div')
 
-                // var img = document.createElement('img')
-                // img.src = src
-                // div.appendChild(img)
+        // var img = document.createElement('img')
+        // img.src = src
+        // div.appendChild(img)
 
-                div.className = 'item'
-                div.style.background = getRandomColor()
-                div.style.height = getRandomHeight()
+        div.className = 'item'
+        div.style.background = getRandomColor()
+        div.style.height = getRandomHeight()
 
-                return div
-            }
+        return div
+      }
 
-            function request(params) {
-                return new Promise(function (resolve, reject) {
-                    axios({
-                        url: 'http://127.0.0.1:3000/imgs',
-                        params: params
-                    }).then(function (res) {
-                        resolve(res.data)
-                    })
-                })
-            }
+      function request(params) {
+        return new Promise(function (resolve, reject) {
+          axios({
+            url: 'http://127.0.0.1:3000/imgs',
+            params: params,
+          }).then(function (res) {
+            resolve(res.data)
+          })
+        })
+      }
 
-            function debounce(fn, delay) {
-                delay = delay || 100
-                var timer = null
+      function debounce(fn, delay) {
+        delay = delay || 100
+        var timer = null
 
-                return function () {
-                    var args = Array.prototype.slice.apply(arguments)
+        return function () {
+          var args = Array.prototype.slice.apply(arguments)
 
-                    if (timer) {
-                        clearTimeout(timer)
-                        timer = null
-                    }
+          if (timer) {
+            clearTimeout(timer)
+            timer = null
+          }
 
-                    timer = setTimeout(function () {
-                        fn.apply(this, args)
-                    }, delay)
-                }
-            }
+          timer = setTimeout(function () {
+            fn.apply(this, args)
+          }, delay)
+        }
+      }
 
-            function getCols() {
-                // n * width + (n - 1) * gap <= bodyWidth - margin * 2
-                return ~~((document.body.offsetWidth - 32 + gap) / (width + gap))
-            }
+      function getCols() {
+        // n * width + (n - 1) * gap <= bodyWidth - margin * 2
+        return ~~((document.body.offsetWidth - 32 + gap) / (width + gap))
+      }
 
-            function getMinIndex(array) {
-                var min = Math.min.apply(null, array)
+      function getMinIndex(array) {
+        var min = Math.min.apply(null, array)
 
-                return array.indexOf(min)
-            }
+        return array.indexOf(min)
+      }
 
-            function setWaterFallRect() {
-                var wf = document.querySelector("#waterfall")
-                var max = Math.max.apply(null, heights)
+      function setWaterFallRect() {
+        var wf = document.querySelector('#waterfall')
+        var max = Math.max.apply(null, heights)
 
-                wf.style.height = max + 'px'
-                wf.style.width = width * cols + (cols - 1) * gap + 'px'
-            }
+        wf.style.height = max + 'px'
+        wf.style.width = width * cols + (cols - 1) * gap + 'px'
+      }
 
-            function waterfall() {
-                cols = getCols()
-                var items = document.querySelector("#waterfall .item")
+      function waterfall() {
+        cols = getCols()
+        var items = document.querySelector('#waterfall .item')
 
-                for (var i = loaded; i < items.length; i++) {
-                    var item = items[i]
-                    var height = item.offsetHeight
+        for (var i = loaded; i < items.length; i++) {
+          var item = items[i]
+          var height = item.offsetHeight
 
-                    if (i < cols) {
-                        item.style.top = 0
-                        item.style.left = i * (width + gap) + 'px'
-                        heights.push(height)
-                    } else {
-                        var minIndex = getMinIndex(heights)
-                        var top = heights[minIndex] + gap
+          if (i < cols) {
+            item.style.top = 0
+            item.style.left = i * (width + gap) + 'px'
+            heights.push(height)
+          } else {
+            var minIndex = getMinIndex(heights)
+            var top = heights[minIndex] + gap
 
-                        item.style.top = top + 'px'
-                        item.style.left = minIndex * (width + gap) + 'px'
-                        heights[minIndex] = top + height
-                    }
+            item.style.top = top + 'px'
+            item.style.left = minIndex * (width + gap) + 'px'
+            heights[minIndex] = top + height
+          }
 
-                    loaded++
-                }
+          loaded++
+        }
 
-                setWaterFallRect()
-            }
+        setWaterFallRect()
+      }
 
-            function init() {
-                if (isReq) return
-                isReq = true
+      function init() {
+        if (isReq) return
+        isReq = true
 
-                request(params).then(function (res) {
-                    var lists = res.lists
-                    var frag = document.createDocumentFragment()
+        request(params).then(function (res) {
+          var lists = res.lists
+          var frag = document.createDocumentFragment()
 
-                    total = res.total
-                    isReq = false
-                    params.pageNo++
+          total = res.total
+          isReq = false
+          params.pageNo++
 
-                    for (var i = 0; i < lists.length; i++) {
-                        frag.appendChild(createItem(lists[i]))
-                    }
+          for (var i = 0; i < lists.length; i++) {
+            frag.appendChild(createItem(lists[i]))
+          }
 
-                    document.querySelector("#waterfall").appendChild(frag)
+          document.querySelector('#waterfall').appendChild(frag)
 
-                    waterfall()
-                })
-            }
+          waterfall()
+        })
+      }
 
-            function lazyLoad() {
-                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-                var documentHeight = document.documentElement.scrollHeight
-                var clientHeight = window.innerHeight
+      function lazyLoad() {
+        var scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        var documentHeight = document.documentElement.scrollHeight
+        var clientHeight = window.innerHeight
 
-                // documentHeight - scrollTop - clientHeight < 0.5 * clientHeight
-                if (documentHeight - scrollTop < 1.5 * clientHeight) {
-                    if (loaded >= total) {
-                        document.querySelector('#msg').innerText = "没有更多了"
-                        window.removeEventListener("scroll", lazyLoad)
-                        return
-                    }
+        // documentHeight - scrollTop - clientHeight < 0.5 * clientHeight
+        if (documentHeight - scrollTop < 1.5 * clientHeight) {
+          if (loaded >= total) {
+            document.querySelector('#msg').innerText = '没有更多了'
+            window.removeEventListener('scroll', lazyLoad)
+            return
+          }
 
-                    init()
-                }
-            }
+          init()
+        }
+      }
 
-            function resize() {
-                if (document.body.offsetWidth < 600) return
+      function resize() {
+        if (document.body.offsetWidth < 600) return
 
-                loaded = 0
-                heights = []
-                waterfall()
-            }
+        loaded = 0
+        heights = []
+        waterfall()
+      }
 
-            var width = 230
+      var width = 230
 
-            var gap = 16
+      var gap = 16
 
-            var loaded = 0
+      var loaded = 0
 
-            var cols = 0
+      var cols = 0
 
-            var params = {
-                pageNo: 1,
-                pageSize: 20
-            }
+      var params = {
+        pageNo: 1,
+        pageSize: 20,
+      }
 
-            var total = 0
+      var total = 0
 
-            var heights = []
+      var heights = []
 
-            var isReq = false
+      var isReq = false
 
-            init()
+      init()
 
-            window.addEventListener("scroll", lazyLoad)
+      window.addEventListener('scroll', lazyLoad)
 
-            window.addEventListener('resize', debounce(resize, 50))
-        })()
-    </script>
+      window.addEventListener('resize', debounce(resize, 50))
+    })()
+  </script>
 </body>
 
 </html>
@@ -608,4 +610,4 @@ function resize() {
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

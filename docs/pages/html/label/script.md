@@ -32,10 +32,7 @@
 &emsp;&emsp;;`integrity`一般是是对 [CDN](https://developer.mozilla.org/zh-CN/docs/Glossary/CDN) 上的静态文件使用。`CDN`虽然好用但是 `CDN`有可能被劫持，导致下载的文件是被篡改过的，有了`integrity`就可以检查文件是否是原版。而本地文件用的域名跟网页是同一个域名，不存在劫持的问题，所以本地静态文件没有必要用此属性。
 
 ```javascript
-<script
-  integrity="sha256-PJJrxrJLzT6CCz1jDfQXTRWOO9zmemDQbmLtSlFQluc="
-  src="https://xxx.xxx.js"
-></script>
+<script integrity="sha256-PJJrxrJLzT6CCz1jDfQXTRWOO9zmemDQbmLtSlFQluc=" src="https://xxx.xxx.js"></script>
 ```
 
 ## crossorigin
@@ -52,4 +49,4 @@
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

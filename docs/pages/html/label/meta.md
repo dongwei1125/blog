@@ -2,6 +2,8 @@
 
 ![](/html/label/meta/banner.jpg)
 
+## 概述
+
 &emsp;&emsp;;[meta](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/meta) 元素用于指定页面的信息和部分行为。通常用于指定网页的描述，关键字等元数据。
 
 &emsp;&emsp;可以被使用浏览器、搜索引擎或其他 Web 服务调用。
@@ -47,7 +49,7 @@
 &emsp;&emsp;标注页面作者。
 
 ```javascript
-<meta name="author" content="DonGW">
+<meta name="author" content="xx">
 ```
 
 ### copyright
@@ -132,7 +134,7 @@
 <html lang="zh-CN">
 
 <body>
-    <a href="http://www.baidu.com">百度</a>
+  <a href="http://www.baidu.com">百度</a>
 </body>
 
 </html>
@@ -320,7 +322,7 @@
 &emsp;&emsp; 绝大多数网站均使用如下方式，即`IE`浏览器安装了`GCF`插件，则使用`GCF`浏览器内核渲染页面，若未安装`GCF`插件，则使用最高版本的`IE`内核渲染页面。
 
 ```javascript
-<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
 ```
 
 ### cache-control
@@ -646,7 +648,7 @@
 &emsp;&emsp;将某个网页同引用程序一般固定在`Win7`任务栏，在点击后显示一个相关站点的列表，详细参考 [msapplication-task](https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/samples/gg491732%28v=vs.85%29?redirectedfrom=MSDN#msapplication-task)。
 
 ```javascript
-<meta name="msapplication-task" content="name=xxx; action-uri=http://www.xxx.com; icon-uri=/imgs/logo.ico">
+<meta name="msapplication-task" content="name=xx; action-uri=http://www.xxx.com; icon-uri=/imgs/logo.ico">
 ```
 
 #### msapplication-task-separator
@@ -798,4 +800,4 @@
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

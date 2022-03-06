@@ -108,8 +108,8 @@ str.match(reg) // ["baz", index: 10, input: "foo, bar, baz", groups: undefined]
 
 ```javascript
 'say hello world'.split(/[er]/) // ["say h", "llo wo", "ld"]
-'say hello world'.split(" ") // ["say", "hello", "world"]
-'say hello world'.split(" ", 1) // ["say"]
+'say hello world'.split(' ') // ["say", "hello", "world"]
+'say hello world'.split(' ', 1) // ["say"]
 ```
 
 ### replace
@@ -283,4 +283,4 @@ reg.sticky // true
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

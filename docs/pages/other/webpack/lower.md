@@ -2,7 +2,9 @@
 
 ![](/other/webpack/banner.jpg)
 
-## 构建流程
+## webpack 插件
+
+### 构建流程
 
 &emsp;&emsp;;`webpack` `loader`是负责不同类型文件的转译，将其转换为`webpack`能够接收的模块。而`webpack`插件则与`loader`有很大的区别，`webpack`插件是贯穿整个构建流程的，构建流程中的各个阶段会触发不同的钩子函数，在不同的钩子函数中做一些处理就是`webpack`插件要做的事情。
 
@@ -18,7 +20,7 @@
 
 ![](/other/webpack/lower-process.png)
 
-## 自定义插件
+### 自定义插件
 
 &emsp;&emsp;;`webpack`插件特点如下。
 
@@ -30,11 +32,9 @@
 ```javascript
 class CustomDlugins {
   constructor() {}
+  
   apply(compiler) {
-    compiler.hooks.emit.tapAsync(
-      "CustomDlugins",
-      (compilation, callback) => {}
-    )
+    compiler.hooks.emit.tapAsync('CustomDlugins', (compilation, callback) => {})
   }
 }
 
@@ -73,15 +73,15 @@ module.exports = CustomDlugins
 
 // webpack.config.js
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js"
+    filename: './[name].js',
   },
-  plugins: []
+  plugins: [],
 }
 
 // src/main.js
-console.log("hello world")
+console.log('hello world')
 ```
 
 &emsp;&emsp;然后继续在根目录下创建`plugins`文件夹，其中新建`FileListPlugin.js`文件，`webpack.config.js`中引入插件。
@@ -96,20 +96,17 @@ console.log("hello world")
 // plugins/FileListPlugin.js
 class FileListPlugin {
   constructor(options) {
-    this.filename =
-      options && options.filename ? options.filename : "FILELIST.md"
+    this.filename = options && options.filename ? options.filename : 'FILELIST.md'
   }
 
   apply(compiler) {
-    compiler.hooks.emit.tapAsync("FileListPlugin", (compilation, callback) => {
+    compiler.hooks.emit.tapAsync('FileListPlugin', (compilation, callback) => {
       const keys = Object.keys(compilation.assets)
       const length = keys.length
 
-      var content = `# ${length} file${
-        length > 1 ? "s" : ""
-      } emitted by webpack\n\n`
+      var content = `# ${length} file${length > 1 ? 's' : ''} emitted by webpack\n\n`
 
-      keys.forEach((key) => {
+      keys.forEach(key => {
         content += `- ${key}\n`
       })
 
@@ -119,7 +116,7 @@ class FileListPlugin {
         },
         size: function () {
           return content.length
-        }
+        },
       }
 
       callback()
@@ -130,23 +127,23 @@ class FileListPlugin {
 module.exports = FileListPlugin
 
 // webpack.config.js
-const FileListPlugin = require("./plugins/FileListPlugin")
+const FileListPlugin = require('./plugins/FileListPlugin')
 
 module.exports = {
   ...
   plugins: [
     new FileListPlugin({
-      filename: "filelist.md"
-    })
-  ]
+      filename: 'filelist.md',
+    }),
+  ],
 }
 ```
 
-# 开发优化
+## 开发优化
 
-## webpack 插件
+### webpack 插件
 
-### webpack-dashboard
+#### webpack-dashboard
 
 &emsp;&emsp;;`webpack-dashboard`是用来优化`webpack`日志的工具。
 
@@ -168,21 +165,19 @@ module.exports = {
 }
 
 // webpack.config.js
-const DashboardPlugin = require("webpack-dashboard/plugin")
+const DashboardPlugin = require('webpack-dashboard/plugin')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
-  plugins: [
-      new DashboardPlugin()
-  ],
-  mode: "development"
+  plugins: [new DashboardPlugin()],
+  mode: 'development',
 }
 
 // src/main.js
-import vue from "vue"
+import vue from 'vue'
 
 console.log(vue)
 ```
@@ -192,10 +187,10 @@ console.log(vue)
 ```javascript
 // package.json
 {
-    ...
-    "scripts": {
-        "build": "webpack-dashboard -- webpack"
-    }
+  ...
+  "scripts": {
+    "build": "webpack-dashboard -- webpack"
+  }
 }
 ```
 
@@ -203,7 +198,7 @@ console.log(vue)
 
 ![](/other/webpack/lower-webpack-dashboard.png)
 
-### speed-measure-webpack-plugin
+#### speed-measure-webpack-plugin
 
 &emsp;&emsp;;`speed-measure-webpack-plugin`（`SMP`）可以分析出`webpack`整个打包过程中在各个`loader`和`plugin`上耗费的时间，根据分析结果可以找出哪些构建步骤耗时较长，以便于优化和反复测试。
 
@@ -211,32 +206,32 @@ console.log(vue)
 
 ```javascript
 // webpack.config.js
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin")
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin')
 const smp = new SpeedMeasurePlugin()
 
 module.exports = smp.wrap({
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js"
+    filename: './[name].js',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         exclude: /node_modules/,
         options: {
           cacheDirectory: true,
-          presets: [["@babel/preset-env", { modules: false }]]
-        }
-      }
-    ]
-  }
+          presets: [['@babel/preset-env', { modules: false }]],
+        },
+      },
+    ],
+  },
 })
 
 // src/main.js
 const fn = () => {
-  console.log("hello world")
+  console.log('hello world')
 }
 
 fn()
@@ -291,13 +286,15 @@ fn()
 }
 
 // src/main.js
-console.log("hello world")
+console.log('hello world')
 
 // src/index.html
 <html lang="zh-CN">
-  <body>
-    <p>hello world</p>
-  </body>
+
+<body>
+  <p>hello world</p>
+</body>
+
 </html>
 ```
 
@@ -305,25 +302,25 @@ console.log("hello world")
 
 ```javascript
 // build/webpack.base.conf.js
-const HtmlWebpackPlugin = require("html-webpack-plugin")
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   module: {
     rules: [
       {
         test: /\.(png|jpg|gif)$/,
-        use: "file-loader",
+        use: 'file-loader',
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html",
+      template: './src/index.html',
     }),
   ],
 }
@@ -335,21 +332,21 @@ module.exports = {
 
 ```javascript
 // build/webpack.dev.conf.js
-const baseConfig = require("./webpack.base.conf.js")
-const merge = require("webpack-merge")
+const baseConfig = require('./webpack.base.conf.js')
+const merge = require('webpack-merge')
 
 module.exports = merge.smart(baseConfig, {
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
   module: {
     rules: [
       {
         test: /\.css$/,
         use: [
-          "style-loader",
+          'style-loader',
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               sourceMap: true,
             },
@@ -361,7 +358,7 @@ module.exports = merge.smart(baseConfig, {
   devServer: {
     port: 3000,
   },
-  mode: "development",
+  mode: 'development',
 })
 ```
 
@@ -369,37 +366,35 @@ module.exports = merge.smart(baseConfig, {
 
 ```javascript
 // build/webpack.prod.conf.js
-const baseConfig = require("./webpack.base.conf.js")
-const merge = require("webpack-merge")
+const baseConfig = require('./webpack.base.conf.js')
+const merge = require('webpack-merge')
 
 module.exports = merge.smart(baseConfig, {
   output: {
-    filename: "./[name].[chunkhash:8].js",
+    filename: './[name].[chunkhash:8].js',
   },
-  mode: "production",
+  mode: 'production',
 })
 ```
 
-## 模块热替换
+### 模块热替换
 
 &emsp;&emsp;自动刷新（`live reload`）即只要代码改动就会重新构建，再触发网页刷新。而`webpack`在此基础上又进了一步，可以在不刷新网页的前提下得到最新的代码改动，即模块热替换（`Hot Module Replacement，HMR`）。
 
-### 配置
+#### 配置
 
 &emsp;&emsp;;`HMR`需手动配置开启，如下配置会为每个模块绑定上`module.hot`对象，其中包含了`HMR`的`API`（例如可以对特定模块开启或关闭`HMR`等）。
 
 ```javascript
 // webpack.config.js
-const webpack = require("webpack")
+const webpack = require('webpack')
 
 module.exports = {
   ...
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
+  plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
-    hot: true
-  }
+    hot: true,
+  },
 }
 ```
 
@@ -409,35 +404,35 @@ module.exports = {
 // main.js
 ...
 
-if (module.hot){
-    module.hot.accept()
+if (module.hot) {
+  module.hot.accept()
 }
 ```
 
 &emsp;&emsp;若应用的逻辑比较复杂，则不推荐使用`webpack`的`HMR`，因为`HMR`触发过程中可能会有预想不到的问题，建议开发者使用第三方提供的`HMR`解决方案，例如`vue-loader`、`react-hot-loader`。
 
-### 开启 HMR
+#### 开启 HMR
 
 &emsp;&emsp;根目录下为`webpack.config.js`、`package.json`和`src`，`src`下包括`main.js`、`index.html`和`utils.js`。
 
 ```javascript
 // webpack.config.js
-const webpack = require("webpack")
+const webpack = require('webpack')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
-      template: "./src/index.html"
-    })
+      template: './src/index.html',
+    }),
   ],
   devServer: {
-    hot: true
-  }
+    hot: true,
+  },
 }
 
 // package.json
@@ -455,7 +450,7 @@ module.exports = {
 }
 
 // src/main.js
-import { logToHtml } from "./utils.js"
+import { logToHtml } from './utils.js'
 
 var count = 0
 
@@ -471,7 +466,9 @@ export function logToHtml(count) {
 
 // src/index.html
 <html lang="zh-CN">
-  <body></body>
+
+<body></body>
+
 </html>
 ```
 
@@ -511,11 +508,11 @@ if (module.hot) {
 
 if (module.hot) {
   module.hot.decline()
-  module.hot.accept(["./utils.js"])
+  module.hot.accept(['./utils.js'])
 }
 ```
 
-### HMR 流程
+#### HMR 流程
 
 &emsp;&emsp;项目初次运行`dev`脚本，首先会进行构建打包，同时将如何更新模块和接收后是否更新模块的代码注入到`bundle`中。
 
@@ -553,9 +550,9 @@ if (module.hot) {
 
 &emsp;&emsp;页面接收到请求数据后，将会对新旧模块进行对比，决定是否更新模块。注意如果在热更新过程中出现错误，热更新将回退到`live reload`，即进行浏览器刷新来获取最新的打包代码。
 
-# 打包工具
+## 打包工具
 
-## RollUp
+### RollUp
 
 &emsp;&emsp;;[RollUp](https://www.rollupjs.com/) 也是`JavaScript`模块打包器，其更专注于`JavaScript`的打包，在通用性上不及`webpack`。但是相较于其他打包工具，`RollUp`总能打包出更小更快的包。`RollUp`对于代码的`tree shaking`和`es6`模块有算法优势的支持。所以一般开发应用用`webpack`，开发库的时候用`RollUp`。
 
@@ -578,29 +575,29 @@ npm i rollup -g
 
 // rollup.config.js
 module.exports = {
-    input: "src/main.js",
-    output: {
-        file: "dist/bundle.js",
-        format: "cjs"
-    }
+  input: 'src/main.js',
+  output: {
+    file: 'dist/bundle.js',
+    format: 'cjs',
+  },
 }
 
 // src/main.js
-console.log("hello world")
+console.log('hello world')
 ```
 
 &emsp;&emsp;运行`build`脚本，根目录`dist`下输出`bundle.js`。可以明显看到打包出来的`bundle`非常干净，`RollUp`并未添加额外的代码，而同样的源代码，`webpack`打包会额外添加很多代码。
 
 ```javascript
 // dist/bundle.js
-"use strict"
+'use strict'
 
-console.log("hello world")
+console.log('hello world')
 ```
 
 &emsp;&emsp;此外`tree shaking`特性最开始是由`RollUp`实现的，基于对`ES6 Module`的静态分析，找出没有被引用的模块，最后将其从生成的`bundle`中排除。
 
-## Parcel
+### Parcel
 
 &emsp;&emsp;;[Parcel](https://zh.parceljs.org/) 在`JavaScript`打包工具中属于相对后来者，在其官网的测试中，其构建速度相较于`webpack`快了好几倍，并且是零配置开箱即用的。
 
@@ -662,14 +659,16 @@ npm i -g parcel-bundler
 
 // src/index.html
 <html lang="zh-CN">
-  <body>
-    <p>hello world</p>
-    <script src="./index.js"></script>
-  </body>
+
+<body>
+  <p>hello world</p>
+  <script src="./index.js"></script>
+</body>
+
 </html>
 
 // src/index.js
-console.log("hello world")
+console.log('hello world')
 ```
 
 [上一篇](middle.md)
@@ -682,4 +681,4 @@ console.log("hello world")
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

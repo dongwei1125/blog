@@ -583,7 +583,7 @@ function fn() { console.log('outer') }
 
 &emsp;&emsp;目前绝大多数浏览器都是`ES6`了，`IE10`支持`ES5`。
 
-&emsp;&emsp;先来说说`ES5`的情况，`ES5`中明确了`if`块中的函数声明是非法的。为了兼容以前的旧代码，浏览器未完全遵循规范，可以运行不会报错。但是新代码想支持此方式，以此来规范代码呢？于是就可以部分开启严格模式。
+&emsp;&emsp;先来说说`ES5`的情况，`ES5`中明确了`if`块中的函数声明是不正确的（浏览器不会报错）。为了兼容以前的旧代码，浏览器未完全遵循规范，可以运行不会报错。但是新代码想支持此方式，以此来规范代码呢？于是就可以部分开启严格模式。
 
 &emsp;&emsp;再来说说`ES6`的情况，`ES6`引入了块级作用域，允许块级作用域下声明函数。同理为了兼容性，浏览器未严格遵循`ES6`规范，但是注意与`ES5`会有所差异。而`ES6`中的严格模式，明确遵循规范。
 
@@ -603,4 +603,4 @@ function fn() { console.log('outer') }
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

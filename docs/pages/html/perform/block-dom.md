@@ -2,6 +2,8 @@
 
 ![](/html/perform/block-dom/banner.jpg)
 
+## 前言
+
 &emsp;&emsp;最近系统梳理`HTML5`所有涉及到的标签时，梳理至`<link>`和`<script>`标签时，碰巧想到一个困扰很久的问题，即一般把`<script>`放在`<body>`尾部，`<link>`标签放在`<head>`内部，而页面通过`CDN`引入第三方框架或库时，基本都是将其`<script>`标签放在`<link>`标签前面。
 
 &emsp;&emsp;可能此方式已经成为了约定俗成，但是究竟其好处在哪里，或者说其它的方式为什么不可取，想必你也和我有同样的疑问，那就接着来往下看吧。
@@ -32,21 +34,21 @@ const app = new express()
 const port = 3000
 
 const sleepFun = time => {
-    return new Promise(res => {
-        setTimeout(() => {
-            res()
-        }, time)
-    })
+  return new Promise(res => {
+    setTimeout(() => {
+      res()
+    }, time)
+  })
 }
 
 const filter = (req, res, next) => {
-    const { sleep } = req.query || 0
+  const { sleep } = req.query || 0
 
-    if (sleep) {
-        sleepFun(sleep).then(() => next())
-    } else {
-        next()
-    }
+  if (sleep) {
+    sleepFun(sleep).then(() => next())
+  } else {
+    next()
+  }
 }
 
 app.use(filter)
@@ -54,15 +56,15 @@ app.use(filter)
 app.use('/static/', express.static('./static/'))
 
 app.get('/', function (req, res, next) {
-    fs.readFile('./index.html', 'UTF-8', (err, data) => {
-        if (err) return
+  fs.readFile('./index.html', 'UTF-8', (err, data) => {
+    if (err) return
 
-        res.send(data)
-    })
+    res.send(data)
+  })
 })
 
 app.listen(port, () => {
-    console.log(`app is running at http://127.0.0.1:${port}/`)
+  console.log(`app is running at http://127.0.0.1:${port}/`)
 })
 
 // static/index.js
@@ -72,7 +74,7 @@ console.log(p)
 
 // static/style.css
 p {
-    color: lightblue;
+  color: lightblue;
 }
 ```
 
@@ -83,17 +85,17 @@ p {
 <html lang="zh-CN">
 
 <head>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            var p = document.querySelector('p')
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      var p = document.querySelector('p')
 
-            console.log(p)
-        })
-    </script>
+      console.log(p)
+    })
+  </script>
 </head>
 
 <body>
-    <p>hello world</p>
+  <p>hello world</p>
 </body>
 
 </html>
@@ -105,18 +107,18 @@ p {
 
 ```javascript
 <head>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            var p = document.querySelector('p')
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      var p = document.querySelector('p')
 
-            console.log(p)
-        })
-    </script>
-    <link rel="stylesheet" href="./static/style.css?sleep=3000">
+      console.log(p)
+    })
+  </script>
+  <link rel="stylesheet" href="./static/style.css?sleep=3000">
 </head>
 
 <body>
-    <p>hello world</p>
+  <p>hello world</p>
 </body>
 ```
 
@@ -138,26 +140,26 @@ p {
 
 ```javascript
 <head>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            var p = document.querySelector('p')
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      var p = document.querySelector('p')
 
-            console.log(p)
-        })
-    </script>
+      console.log(p)
+    })
+  </script>
 </head>
 
 <body>
-    <script>
-        const p = document.querySelector('p')
+  <script>
+    const p = document.querySelector('p')
 
-        console.log(p)
+    console.log(p)
 
-        for (var i = 0, arr = []; i < 100000000; i++) {
-            arr.push(i)
-        }
-    </script>
-    <p>hello world</p>
+    for (var i = 0, arr = []; i < 100000000; i++) {
+      arr.push(i)
+    }
+  </script>
+  <p>hello world</p>
 </body>
 ```
 
@@ -175,19 +177,19 @@ p {
 
 ```javascript
 <head>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            var p = document.querySelector('p')
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      var p = document.querySelector('p')
 
-            console.log(p)
-        })
-    </script>
-    <link rel="stylesheet" href="./static/style.css?sleep=3000">
-    <script src="./static/index.js"></script>
+      console.log(p)
+    })
+  </script>
+  <link rel="stylesheet" href="./static/style.css?sleep=3000">
+  <script src="./static/index.js"></script>
 </head>
 
 <body>
-    <p>hello world</p>
+  <p>hello world</p>
 </body>
 ```
 
@@ -214,29 +216,29 @@ p {
 ```javascript
 // index.html
 <head>
-    <style>
-        p {
-            color: lightgreen;
-        }
-    </style>
+  <style>
+    p {
+      color: lightgreen;
+    }
+  </style>
 </head>
 
 <body>
-    <p>hello</p>
-    <script src="./static/index.js?sleep=2000"></script>
-    <p>beautiful</p>
-    <style>
-        p {
-            color: pink;
-        }
-    </style>
-    <script src="./static/index.js?sleep=4000"></script>
-    <p>world</p>
-    <style>
-        p {
-            color: lightblue;
-        }
-    </style>
+  <p>hello</p>
+  <script src="./static/index.js?sleep=2000"></script>
+  <p>beautiful</p>
+  <style>
+    p {
+      color: pink;
+    }
+  </style>
+  <script src="./static/index.js?sleep=4000"></script>
+  <p>world</p>
+  <style>
+    p {
+      color: lightblue;
+    }
+  </style>
 </body>
 
 // static/index.js
@@ -266,19 +268,19 @@ console.log(style.color)
 
 ```javascript
 <head>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            var p = document.querySelector('p')
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      var p = document.querySelector('p')
 
-            console.log(p)
-        })
-    </script>
+      console.log(p)
+    })
+  </script>
 </head>
 
 <body>
-    <p>hello</p>
-    <link rel="stylesheet" href="./static/style.css?sleep=3000">
-    <p>world</p>
+  <p>hello</p>
+  <link rel="stylesheet" href="./static/style.css?sleep=3000">
+  <p>world</p>
 </body>
 ```
 
@@ -336,4 +338,4 @@ console.log(style.color)
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

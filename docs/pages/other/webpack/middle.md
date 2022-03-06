@@ -2,9 +2,11 @@
 
 ![](/other/webpack/banner.jpg)
 
+## 代码分片
+
 &emsp;&emsp;代码分片（`code splitting`）是`webpack`所特有的一项技术，可以将代码按照特定的形式进行拆分，不用一次全部加载而是按需加载，能有效降低首屏加载资源的大小。
 
-## CommonsChunkPlugin
+### CommonsChunkPlugin
 
 &emsp;&emsp;;`CommonsChunkPlugin`是`webpack4-`内部自带的插件，可以将多个`chunk`中的公共部分提取出来。从而减少开发过程中模块的重复打包，提升开发速度。资源整体体积也减小了，并且可以有效的利用客户端缓存。
 
@@ -15,7 +17,7 @@
 - `filename`：提取后的资源文件名，支持模板语言的形式动态生成
 - `minChunks`：可以为数字、函数或者`Infinity`
 
-### 非插件打包
+#### 非插件打包
 
 &emsp;&emsp;根目录下包括`package.json`、`webpack.config.js`和`src`等，`src`目录下包括`foo.js`、`bar.js`和`utils.js`。
 
@@ -36,13 +38,13 @@
 
 // webpack.config.js
 module.exports = {
-    entry: {
-        foo: './src/foo.js',
-        bar: './src/bar.js'
-    },
-    output: {
-        filename: './dist/[name].js'
-    }
+  entry: {
+    foo: './src/foo.js',
+    bar: './src/bar.js',
+  },
+  output: {
+    filename: './dist/[name].js',
+  },
 }
 
 // src/bar.js
@@ -58,8 +60,8 @@ import { log } from './utils.js'
 console.log(jquery, log, 'foo')
 
 // src/utils.js
-export function log(){
-    console.log('log')
+export function log() {
+  console.log('log')
 }
 ```
 
@@ -73,33 +75,34 @@ export function log(){
 // src/index.html
 <html lang="zh-CN">
   ...
-  <body>
-    <script src="./bar.js"></script>
-    <script src="./foo.js"></script>
-  </body>
+<body>
+  <script src="./bar.js"></script>
+  <script src="./foo.js"></script>
+</body>
+
 </html>
 ```
 
-### 提取公共代码
+#### 提取公共代码
 
 &emsp;&emsp;修改`webpack.config.js`，新增`CommonsChunkPlugin`插件提取公共模块。
 
 ```javascript
 // webpack.config.js
-const webpack = require("webpack")
+const webpack = require('webpack')
 
 module.exports = {
   entry: {
-    foo: "./src/foo.js",
-    bar: "./src/bar.js",
+    foo: './src/foo.js',
+    bar: './src/bar.js',
   },
   output: {
-    filename: "./dist/[name].js",
+    filename: './dist/[name].js',
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      filename: "./dist/[name].js",
+      name: 'vendor',
+      filename: './dist/[name].js',
     }),
   ],
 }
@@ -112,18 +115,19 @@ module.exports = {
 &emsp;&emsp;页面中`vendor.js`要在其他`js`之前引入。
 
 ```javascript
-// dist/index.js
+// src/index.html
 <html lang="zh-CN">
   ...
-  <body>
-    <script src="./vendor.js"></script>
-    <script src="./bar.js"></script>
-    <script src="./foo.js"></script>
-  </body>
+<body>
+  <script src="./vendor.js"></script>
+  <script src="./bar.js"></script>
+  <script src="./foo.js"></script>
+</body>
+
 </html>
 ```
 
-### 提取运行时
+#### 提取运行时
 
 &emsp;&emsp;当使用插件提取公共模块时，提取后的资源内部不仅仅包括模块代码，还包含`webpack`运行时。`webpack`运行时指的是初始化环境的代码，如创建模块缓存对象、声明模块加载函数等。
 
@@ -135,25 +139,25 @@ module.exports = {
 
 ```javascript
 // webpack.config.js
-const webpack = require("webpack")
+const webpack = require('webpack')
 
 module.exports = {
   entry: {
-    foo: "./src/foo.js",
-    bar: "./src/bar.js",
+    foo: './src/foo.js',
+    bar: './src/bar.js',
   },
   output: {
-    filename: "./dist/[name].js",
+    filename: './dist/[name].js',
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      filename: "./dist/[name].js",
+      name: 'vendor',
+      filename: './dist/[name].js',
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: "runtime",
-      filename: "./dist/[name].js",
-      chunks: ["vendor"],
+      name: 'runtime',
+      filename: './dist/[name].js',
+      chunks: ['vendor'],
     }),
   ],
 }
@@ -168,10 +172,10 @@ module.exports = {
 ```javascript
 plugins: [
   new webpack.optimize.CommonsChunkPlugin({
-    name: ["vendor", "runtime"],
-    filename: "./dist/[name].js",
+    name: ['vendor', 'runtime'],
+    filename: './dist/[name].js',
   }),
-]
+],
 ```
 
 &emsp;&emsp;也可以通过`minChunks`来达到提取出运行时文件的目的，其中当设置`minChunks`为`n`时，表示某个模块只有被`n`个`chunks`同时引用才会进行提取，`CommonsChunkPlugin`默认是只要一个模块被两个入口`chunk`引用就会被提取出来，即`minChunk`默认值为`2`。
@@ -185,19 +189,19 @@ plugins: [
 ```javascript
 plugins: [
   new webpack.optimize.CommonsChunkPlugin({
-    name: "runtime",
-    filename: "./dist/[name].js",
+    name: 'runtime',
+    filename: './dist/[name].js',
     minChunks: Infinity,
   }),
   new webpack.optimize.CommonsChunkPlugin({
-    name: "vendor",
-    filename: "./dist/[name].js",
-    chunks: ["foo", "bar"],
+    name: 'vendor',
+    filename: './dist/[name].js',
+    chunks: ['foo', 'bar'],
   }),
-]
+],
 ```
 
-### 提取第三方模块和本地模块
+#### 提取第三方模块和本地模块
 
 &emsp;&emsp;首个`CommonsChunkPlugin`实例的`minChunks`设置为`Infinity`，即表示所有模块都不会被提取，此时`name`设置为`runtime`是可以提取出`webpack`运行时文件的。但是由于`name`指定为`vendor`，且`vendor`在入口`entry`中声明了，即表示只提取出`vendor`数组对应的模块（`jquery`）和`webpack`运行时文件。
 
@@ -207,32 +211,32 @@ plugins: [
 
 ```javascript
 // webpack.config.js
-const webpack = require("webpack")
+const webpack = require('webpack')
 
 module.exports = {
   entry: {
-    foo: "./src/foo.js",
-    bar: "./src/bar.js",
-    vendor: ["jquery"],
+    foo: './src/foo.js',
+    bar: './src/bar.js',
+    vendor: ['jquery'],
   },
   output: {
-    filename: "./dist/[name].js",
+    filename: './dist/[name].js',
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      filename: "./dist/[name].js",
+      name: 'vendor',
+      filename: './dist/[name].js',
       minChunks: Infinity,
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: "runtime",
-      filename: "./dist/[name].js",
-      chunks: ["vendor"],
+      name: 'runtime',
+      filename: './dist/[name].js',
+      chunks: ['vendor'],
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: "utils",
-      filename: "./dist/[name].js",
-      chunks: ["foo", "bar"],
+      name: 'utils',
+      filename: './dist/[name].js',
+      chunks: ['foo', 'bar'],
     }),
   ],
 }
@@ -247,49 +251,49 @@ module.exports = {
 ```javascript
 plugins: [
   new webpack.optimize.CommonsChunkPlugin({
-    name: ["vendor", "runtime"],
-    filename: "./dist/[name].js",
+    name: ['vendor', 'runtime'],
+    filename: './dist/[name].js',
     minChunks: Infinity,
   }),
   new webpack.optimize.CommonsChunkPlugin({
-    name: "utils",
-    filename: "./dist/[name].js",
-    chunks: ["foo", "bar"],
+    name: 'utils',
+    filename: './dist/[name].js',
+    chunks: ['foo', 'bar'],
   }),
-]
+],
 ```
 
 &emsp;&emsp;另一种方式是使用`minChunks`的函数方式，其中首个`CommonsChunkPlugin`实例的`minChunks`函数中，`module.resource`为包含模块名的完整路径，`count`为模块被引用的次数，通过对入口文件及其依赖的模块进行遍历，如果模块在`node_modules`中，就会被提取到`vendor`中，实质此方式可以让`vendor`只保留第三方模块。
 
 ```javascript
 // webpack.config.js
-const webpack = require("webpack")
+const webpack = require('webpack')
 
 module.exports = {
   entry: {
-    foo: "./src/foo.js",
-    bar: "./src/bar.js",
+    foo: './src/foo.js',
+    bar: './src/bar.js',
   },
   output: {
-    filename: "./dist/[name].js",
+    filename: './dist/[name].js',
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      filename: "./dist/[name].js",
-      minChunks: function(module, count) {
-        return module.resource && module.resource.includes("node_modules")
+      name: 'vendor',
+      filename: './dist/[name].js',
+      minChunks: function (module, count) {
+        return module.resource && module.resource.includes('node_modules')
       },
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: "runtime",
-      filename: "./dist/[name].js",
-      chunks: ["vendor"],
+      name: 'runtime',
+      filename: './dist/[name].js',
+      chunks: ['vendor'],
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: "utils",
-      filename: "./dist/[name].js",
-      chunks: ["foo", "bar"],
+      name: 'utils',
+      filename: './dist/[name].js',
+      chunks: ['foo', 'bar'],
     }),
   ],
 }
@@ -300,36 +304,37 @@ module.exports = {
 ```javascript
 <html lang="zh-CN">
   ...
-  <body>
-    <script src="./runtime.js"></script>
-    <script src="./utils.js"></script>
-    <script src="./vendor.js"></script>
-    <script src="./foo.js"></script>
-    <script src="./bar.js"></script>
-  </body>
+<body>
+  <script src="./runtime.js"></script>
+  <script src="./utils.js"></script>
+  <script src="./vendor.js"></script>
+  <script src="./foo.js"></script>
+  <script src="./bar.js"></script>
+</body>
+
 </html>
 ```
 
-### 单页应用提取第三方模块
+#### 单页应用提取第三方模块
 
 &emsp;&emsp;单页应用单独创建一个入口即可，如下`vendor`中包含第三方模块`vue`和`webpack`运行时文件。
 
 ```javascript
 // webpack.config.js
-const webpack = require("webpack")
+const webpack = require('webpack')
 
 module.exports = {
   entry: {
-    main: "./src/main.js",
-    vendor: ["vue"],
+    main: './src/main.js',
+    vendor: ['vue'],
   },
   output: {
-    filename: "./dist/[name].js",
+    filename: './dist/[name].js',
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      filename: "./dist/[name].js",
+      name: 'vendor',
+      filename: './dist/[name].js',
     }),
   ],
 }
@@ -344,14 +349,15 @@ module.exports = {
 ```javascript
 <html lang="zh-CN">
   ...
-  <body>
-    <script src="./vendor.js"></script>
-    <script src="./main.js"></script>
-  </body>
+<body>
+  <script src="./vendor.js"></script>
+  <script src="./main.js"></script>
+</body>
+
 </html>
 ```
 
-### 资源异步加载
+#### 资源异步加载
 
 &emsp;&emsp;当模块数量过多、资源体积过大时，一部分暂时不用的模块延迟加载。使页面初次渲染的时候下载的资源尽可能小，后续模块等到恰当的时机再去触发加载，此方式即按需加载。
 
@@ -362,22 +368,22 @@ module.exports = {
 ```javascript
 // src/main.js
 setTimeout(() => {
-  import(/* webpackChunkName: "utils-chunk" */ "./utils.js")
+  import(/* webpackChunkName: "utils-chunk" */ './utils.js')
 }, 2000)
-console.log("main")
+console.log('main')
 
 // src/utils.js
-import jquery from "jquery"
+import jquery from 'jquery'
 
-console.log(jquery, "utils")
+console.log(jquery, 'utils')
 
 // webpack.config.js
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./dist/[name].js",
-    chunkFilename: "./dist/[name].js",
-    publicPath: "../",
+    filename: './dist/[name].js',
+    chunkFilename: './dist/[name].js',
+    publicPath: '../',
   },
 }
 ```
@@ -395,9 +401,10 @@ module.exports = {
 ```javascript
 <html lang="zh-CN">
   ...
-  <body>
-    <script src="./main.js"></script>
-  </body>
+<body>
+  <script src="./main.js"></script>
+</body>
+
 </html>
 ```
 
@@ -405,7 +412,7 @@ module.exports = {
 
 ![](/other/webpack/middle-async-page.png)
 
-## optimization.splitChunks
+### optimization.splitChunks
 
 &emsp;&emsp;;`CommonsChunkPlugin`可以在很多场景下提取公共模块，但是其缺陷也非常明显。
 
@@ -414,19 +421,19 @@ module.exports = {
 
 &emsp;&emsp;;`webpack4`删除了`CommonsChunkPlugin`，改进了`CommonsChunkPlugin`并重新设计和实现了代码分片特性，准备通过`optimization.splitChunks`属性来简化代码分割的配置。
 
-### 提取公共代码
+#### 提取公共代码
 
 &emsp;&emsp;将`webpack`版本升级，对`CommonsChunkPlugin`打包异步资源的场景换成`splitChunks`，调整`webpack.config.js`。
 
 ```javascript
 // webpack.config.js
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "[name].js",
+    filename: '[name].js',
   },
-  optimization: { splitChunks: { chunks: "all" } },
-  mode: "none",
+  optimization: { splitChunks: { chunks: 'all' } },
+  mode: 'none',
 }
 
 // package.json
@@ -449,7 +456,7 @@ module.exports = {
 
 ![](/other/webpack/middle-common-chunks-page.png)
 
-### 提取条件
+#### 提取条件
 
 &emsp;&emsp;;`CommonsChunkPlugin`通过配置项将特定模块提取出来，其方式更贴近于命令式。而`splitChunks`的不同之处在于仅仅只设置部分提取条件，如模块体积、模块位置等，当某些模块达到这些条件就会被自动提取出来，其方式更贴近于声明式。`splitChunks`默认提取条件如下。
 
@@ -458,28 +465,28 @@ module.exports = {
 - 按需加载过程中，并行请求的资源最大值小于等于`5`
 - 首次加载时，并行请求的资源数最大值小于等于`3`
 
-### 提取多异步资源
+#### 提取多异步资源
 
 &emsp;&emsp;根目录下包括`webpack.config.js`和`src`文件夹，`src`下包括`main.js`和`foo.js`、`bar.js`。
 
 ```javascript
 // src/main.js
 setTimeout(() => {
-  import(/* webpackChunkName: "bar-chunk" */ "./bar.js")
-  import(/* webpackChunkName: "foo-chunk" */ "./foo.js")
+  import(/* webpackChunkName: "bar-chunk" */ './bar.js')
+  import(/* webpackChunkName: "foo-chunk" */ './foo.js')
 }, 2000)
-console.log("main")
+console.log('main')
 
 // src/bar.js
-import react from "react"
+import react from 'react'
 
-console.log(react, "bar")
+console.log(react, 'bar')
 
 // src/foo.js
-import vue from "vue"
-import react from "react"
+import vue from 'vue'
+import react from 'react'
 
-console.log(vue, react, "foo")
+console.log(vue, react, 'foo')
 ```
 
 &emsp;&emsp;运行打包后，`webpack`会创建包含`vue`的代码块（`vendor~foo-chunk`），`foo-chunk`依赖此代码块，同时也会创建包含`react`的代码块（`vendors~bar-chunk~foo-chunk`），`foo-chunk`和`bar-chunk`依赖此代码块。
@@ -490,37 +497,37 @@ console.log(vue, react, "foo")
 
 ![](/other/webpack/middle-async-chunks-multiple-req.png)
 
-## splitChunks 配置参数
+### splitChunks 配置参数
 
 &emsp;&emsp;;`webpack`官方给出的`splitChunks`默认值如下。
 
 ```javascript
 optimization: {
-    splitChunks: {
-      chunks: 'async',
-      minSize: 30000,
-      maxSize: 0,
-      minChunks: 1,
-      maxAsyncRequests: 5,
-      maxInitialRequests: 3,
-      automaticNameDelimiter: '~',
-      name: true,
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10
-        },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true
-        }
-      }
-    }
-}
+  splitChunks: {
+    chunks: 'async',
+    minSize: 30000,
+    maxSize: 0,
+    minChunks: 1,
+    maxAsyncRequests: 5,
+    maxInitialRequests: 3,
+    automaticNameDelimiter: '~',
+    name: true,
+    cacheGroups: {
+      vendors: {
+        test: /[\\/]node_modules[\\/]/,
+        priority: -10,
+      },
+      default: {
+        minChunks: 2,
+        priority: -20,
+        reuseExistingChunk: true,
+      },
+    },
+  },
+},
 ```
 
-### chunks
+#### chunks
 
 &emsp;&emsp;;`chunks`可配置`splitChunks`工作模式，包括三个可选值`async`（默认）、`initial`、`all`，其中`async`即只提取异步`chunk`，`initial`只提取入口同步`chunk`，`all`则是两种模式同时开启。
 
@@ -528,33 +535,33 @@ optimization: {
 
 ```javascript
 // src/main.js
-import jquery from "jquery"
+import jquery from 'jquery'
 
 setTimeout(() => {
-  import(/* webpackChunkName: "bar-chunk" */ "./bar.js")
-  import(/* webpackChunkName: "foo-chunk" */ "./foo.js")
+  import(/* webpackChunkName: "bar-chunk" */ './bar.js')
+  import(/* webpackChunkName: "foo-chunk" */ './foo.js')
 }, 2000)
-console.log(jquery, "main")
+console.log(jquery, 'main')
 
 // src/bar.js
-import react from "react"
+import react from 'react'
 
-console.log(react, "bar")
+console.log(react, 'bar')
 
 // src/foo.js
-import vue from "vue"
-import react from "react"
+import vue from 'vue'
+import react from 'react'
 
-console.log(vue, react, "foo")
+console.log(vue, react, 'foo')
 
 // webpack.config.js
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "[name].js",
+    filename: '[name].js',
   },
-  optimization: { splitChunks: { chunks: "all" } },
-  mode: "none",
+  optimization: { splitChunks: { chunks: 'all' } },
+  mode: 'none',
 }
 ```
 
@@ -570,7 +577,7 @@ module.exports = {
 
 ![](/other/webpack/middle-chunks-list-thrid.png)
 
-### 匹配条件
+#### 匹配条件
 
 - `minSize`：提取出来的代码块在压缩前的最小大小，默认为`30000`（`30KB`）
 - `maxSize`：提取出来的代码块在压缩前的最大大小，默认为`0`，即不限制大小
@@ -580,7 +587,7 @@ module.exports = {
 - `automaticNameDelimiter`：提取出来的代码块自动生成名字的分隔符，默认为 ~
 - `name`：提取出的代码块文件的名字，默认为`true`，即自动生成文件名
 
-### 缓存组
+#### 缓存组
 
 &emsp;&emsp;缓存组`cacheGroups`默认包括`vendors`和`default`两种规则，`vendors`用于提取`node_modules`中符合条件的模块，`default`则作用于被多次引用的模块，若要禁用某种规则，可直接将其置为`false`。
 
@@ -596,30 +603,30 @@ module.exports = {
 
 ```javascript
 // src/main.js
-import Vue from "vue"
-import Vuex from "vuex"
-import VueRouter from "vue-router"
-import { log } from "./utils.js"
+import Vue from 'vue'
+import Vuex from 'vuex'
+import VueRouter from 'vue-router'
+import { log } from './utils.js'
 
-console.log(Vue, Vuex, VueRouter, log, "main")
+console.log(Vue, Vuex, VueRouter, log, 'main')
 
 // src/utils.js
 export function log() {
-  console.log("log")
+  console.log('log')
 }
 
 // webpack.config.js
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "[name].js",
+    filename: '[name].js',
   },
   optimization: {
     splitChunks: {
-      chunks: "all",
+      chunks: 'all',
     },
   },
-  mode: "none",
+  mode: 'none',
 }
 ```
 
@@ -632,38 +639,38 @@ module.exports = {
 ```javascript
 // webpack.config.js
 splitChunks: {
-      chunks: "all",
-      cacheGroups: {
-        utils: {
-          test: (module) => {
-            return /src\\utils/.test(module.resource)
-          },
-          priority: -20,
-          minSize: 0,
-        },
-        default: false,
-      }
-}
+  chunks: 'all',
+  cacheGroups: {
+    utils: {
+      test: module => {
+        return /src\\utils/.test(module.resource)
+      },
+      priority: -20,
+      minSize: 0,
+    },
+    default: false,
+  },
+},
 ```
 
 &emsp;&emsp;运行打包后第三方模块`vue`、`vuex`、`vue-router`被提取至`vendors~main.js`中，`utils.js`中代码被提取至`utils~main.js`中，`main.js`中剩余代码保留。
 
 ![](/other/webpack/middle-chunks-cache-utils.png)
 
-# 生产环境
+## 生产环境
 
 &emsp;&emsp;生产环境不同于开发环境，生产环境关注的是用户体验，如何让用户更快地加载资源，包括如何资源压缩、添加环境变量优化打包、如何最大限度利用浏览器缓存等。
 
-## 环境配置
+### 环境配置
 
-### 单一配置
+#### 单一配置
 
 &emsp;&emsp;单一配置即不管在什么环境均使用`webpack.config.js`，仅仅是在构建初传递环境变量参数，然后在`webpack.config.js`中通过条件来决定使用哪个配置。
 
 &emsp;&emsp;注意`windows`不支持使用`ENV=development`的方式，命令会被阻塞导致报错，第三方插件`cross-env`可解决此问题。
 
 ```javascript
-cnpm i cross-env --save-dev
+npm i cross-env --save-dev
 ```
 
 &emsp;&emsp;根目录下包括`webpack.config.js`和`src`文件夹等，其中`src`下包括`index.html`和`main.js`。
@@ -693,29 +700,30 @@ const isProd = ENV === 'production'
 module.exports = {
   entry: './src/main.js',
   output: {
-    filename: isProd ? "./[name].[chunkhash:8].js" : "./[name].js",
+    filename: isProd ? './[name].[chunkhash:8].js' : './[name].js',
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
-    })
-  ]
+    }),
+  ],
 }
 
 // src/index.html
 <html lang="zh-CN">
 
-    <head>
-        <title>hello world</title>
-    </head>
+<head>
+  <title>hello world</title>
+</head>
 
-    <body>
-        <p>hello world</p>
-    </body>
+<body>
+  <p>hello world</p>
+</body>
+
 </html>
 
 // src/main.js
-console.log("hello world")
+console.log('hello world')
 ```
 
 &emsp;&emsp;运行`dev`脚本命令，控制台可查看开发环境打包后的输出文件。
@@ -726,7 +734,7 @@ console.log("hello world")
 
 ![](/other/webpack/middle-single-config-output.png)
 
-### 多环境配置
+#### 多环境配置
 
 &emsp;&emsp;可以为每个环境单独创建一个配置文件，例如开发环境为`webpack.dev.config.js`，生产环境为`webpack.prod.config.js`，但是两个配置文件一般会有重复的部分，一改都要改，不利于维护。
 
@@ -749,41 +757,41 @@ console.log("hello world")
 
 ```javascript
 // build/webpack.config.js
-const HtmlWebpackPlugin = require("html-webpack-plugin")
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html",
+      template: './src/index.html',
     }),
   ],
 }
 
 // build/webpack.dev.config.js
-const webpackConfig = require("./webpack.config.js")
+const webpackConfig = require('./webpack.config.js')
 
 module.exports = {
   ...webpackConfig,
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
 }
 
 // build/webpack.prod.config.js
-const webpackConfig = require("./webpack.config.js")
+const webpackConfig = require('./webpack.config.js')
 
 module.exports = {
   ...webpackConfig,
   output: {
-    filename: "./[name].[chunkhash:8].js",
+    filename: './[name].[chunkhash:8].js',
   },
 }
 ```
 
 &emsp;&emsp;分别运行`dev`和`build`脚本命令，输出结果与单一配置一致。
 
-## production 模式
+### production 模式
 
 &emsp;&emsp;早期的`webpack`版本中，不同的环境使用的配置项太多，无法做到开箱即用。`webpack4`中新增了`mode`配置项，可以通过它来切换打包模式。
 
@@ -793,11 +801,11 @@ module.exports = {
 // webpack.config.js
 module.exports = {
   ...
-  mode: "production"
+  mode: 'production',
 }
 ```
 
-## 环境变量
+### 环境变量
 
 &emsp;&emsp;在`webpack`中可以使用`DefinePlugin`为生产环境和开发环境添加不同的环境变量，即`webpack.DefinePlugin`是用来设置浏览器环境下的全局变量（不会被挂载到`window`上）。
 
@@ -824,12 +832,12 @@ const webpack = require('webpack')
 module.exports = {
   entry: './src/main.js',
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
   plugins: [
     new webpack.DefinePlugin({
       ENV: JSON.stringify('production'),
-    })
+    }),
   ],
   mode: 'development',
   devtool: 'none',
@@ -843,9 +851,9 @@ console.log(ENV)
 
 ```javascript
 // dist/main.js
- "./src/main.js":(function(module, exports) {
-    console.log("production")
-})
+'./src/main.js': function (module, exports) {
+  console.log('production')
+},
 ```
 
 &emsp;&emsp;注意对于字符串或者包含字符串的对象都要加上`JSON.stringify`，若不添加`JSON.stringify`，在替换之后就会成为变量名，而非字符串值，即上述`ENV`会被替换为`production`（无字符串引号）。
@@ -854,12 +862,12 @@ console.log(ENV)
 
 ```javascript
 new webpack.DefinePlugin({
-  ENV: JSON.stringify("production"),
+  ENV: JSON.stringify('production'),
   ENVIR: '"development"',
   IS_PRODUCTION: true,
   ENV_ID: 1038,
   CONSTANTS: JSON.stringify({
-    TYPES: ["foo", "bar"],
+    TYPES: ['foo', 'bar'],
   }),
 })
 ```
@@ -870,13 +878,13 @@ new webpack.DefinePlugin({
 
 ```javascript
 new webpack.DefinePlugin({
-  "process.env.NODE_ENV": JSON.stringify("development"),
+  'process.env.NODE_ENV': JSON.stringify('development'),
 })
 ```
 
-## 区分环境方式
+### 区分环境方式
 
-### scripts
+#### scripts
 
 &emsp;&emsp;;`webpack4`版本引入`mode`属性，包括`development`、`production`、`none`三种模式。
 
@@ -887,8 +895,8 @@ new webpack.DefinePlugin({
 ```javascript
 // package.json
 "scripts": {
-    "build-dev": "webpack --mode=development",
-    "build-prod": "webpack --mode=production"
+  "build-dev": "webpack --mode=development",
+  "build-prod": "webpack --mode=production"
 }
 ```
 
@@ -897,8 +905,8 @@ new webpack.DefinePlugin({
 ```javascript
 // package.json
 "scripts": {
-    "dev": "webpack-dev-server",
-    "build": "webpack"
+  "dev": "webpack-dev-server",
+  "build": "webpack"
 }
 ```
 
@@ -907,7 +915,7 @@ new webpack.DefinePlugin({
 ```javascript
 // package.json
 "scripts": {
-    "build": "webpack"
+  "build": "webpack"
 }
 
 // src/mian.js
@@ -917,7 +925,7 @@ console.log(process.env.NODE_ENV) // production
 console.log(process.env.NODE_ENV) // undefined
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   ...
 }
 ```
@@ -927,8 +935,8 @@ module.exports = {
 ```javascript
 // package.json
 "scripts": {
-    "build-dev": "webpack --env=development",
-    "build-prod": "webpack --env=production"
+  "build-dev": "webpack --env=development",
+  "build-prod": "webpack --env=production"
 }
 
 // webpack.config.js
@@ -938,7 +946,7 @@ module.exports = (env) => {
   console.log(env) // development | production
 
   return {
-    entry: "./src/main.js",
+    entry: './src/main.js',
     ...
   }
 }
@@ -947,7 +955,7 @@ module.exports = (env) => {
 console.log(process.env.NODE_ENV) // production
 ```
 
-### webpack.DefinePlugin
+#### webpack.DefinePlugin
 
 &emsp;&emsp;;`scripts`的方式模块内的`process.env.NODE_ENV`只能为固定的几个值。
 
@@ -960,27 +968,27 @@ console.log(process.env.NODE_ENV) // production
 }
 
 // webpack.config.js
-const webpack = require("webpack")
+const webpack = require('webpack')
 
 console.log(process.env.NODE_ENV) // undefined
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
   plugins: [
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('dev'),
-    })
-  ]
+    }),
+  ],
 }
 
 // src/main.js
 console.log(process.env.NODE_ENV) // dev
 ```
 
-### cross-env
+#### cross-env
 
 &emsp;&emsp;上述两种方式均无法在`node`环境（`webpak`配置文件）中获取环境变量，`scripts`方式也只能通过函数的方式在函数内部获取，无法在`webpack.config.js`中获取到当前的环境变量。
 
@@ -989,18 +997,18 @@ console.log(process.env.NODE_ENV) // dev
 ```javascript
 // package.json
 "scripts": {
-    "build": "cross-env ENVIR=prod webpack"
+  "build": "cross-env ENVIR=prod webpack"
 },
 "devDependencies": {
-    "cross-env": "^7.0.3",
-    ...
+  "cross-env": "^7.0.3",
+  ...
 }
 
 // webpack.config.js
 console.log(process.env.ENVIR) // prod
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   ...
 }
 
@@ -1008,11 +1016,11 @@ module.exports = {
 console.log(process.env.ENVIR) // undefined
 ```
 
-## source map
+### source map
 
 &emsp;&emsp;;`source map`指的是将编译、压缩、打包后的代码映射回源代码的过程，`webpack`打包压缩后的代码基本不具备可读性，此时代码抛出错误，想要回溯其调用栈非常困难。
 
-### 未启用配置
+#### 未启用配置
 
 &emsp;&emsp;根目录下包括`package.json`、`webpack.config.js`和`src`文件夹，`src`下包括`index.html`、`main.js`和`style.scss`，其中`MiniCssExtractPlugin`插件主要作用是提取出`css`样式文件。
 
@@ -1036,18 +1044,18 @@ console.log(process.env.ENVIR) // undefined
 }
 
 // webpack.config.js
-const HtmlWebpackPlugin = require("html-webpack-plugin")
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html",
+      template: './src/index.html',
     }),
     new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css",
+      filename: '[name].css',
+      chunkFilename: '[id].css',
     }),
   ],
   module: {
@@ -1059,18 +1067,20 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader,
           },
           'css-loader',
-          'sass-loader'
+          'sass-loader',
         ],
-      }
-    ]
-  }
+      },
+    ],
+  },
 }
 
 // src/index.html
 <html lang="zh-CN">
-  <body>
-    <p>hello world</p>
-  </body>
+
+<body>
+  <p>hello world</p>
+</body>
+
 </html>
 
 // src/main.js
@@ -1104,7 +1114,7 @@ p {
 
 ![](/other/webpack/middle-close-style.png)
 
-### 启用配置
+#### 启用配置
 
 &emsp;&emsp;在`webpack.config.js`中添加`devtool`开启`js`文件的`source map`，而对于`scss`、`css`则需要添加额外的`source map`配置项。
 
@@ -1123,20 +1133,20 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: true
-            }
-          }
-        ]
-      }
-    ]
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+    ],
   },
-  devtool: 'source-map'
+  devtool: 'source-map',
 }
 ```
 
@@ -1164,7 +1174,7 @@ module.exports = {
 
 ![](/other/webpack/middle-open-style.png)
 
-### 安全性能
+#### 安全性能
 
 &emsp;&emsp;开启`source map`之后，开发者工具中的`webpack://`目录中可以找到解析后的工程源码。
 
@@ -1180,7 +1190,7 @@ module.exports = {
 
 ![](/other/webpack/middle-safe.png)
 
-## devtool 配置项
+### devtool 配置项
 
 &emsp;&emsp;;`devtool`用作调试，包括如下十几种等配置。
 
@@ -1205,7 +1215,7 @@ module.exports = {
 - `module`：包括`loader`的`sourcemap`
 - `source-map`：生成`.map`文件
 
-### none
+#### none
 
 &emsp;&emsp;根目录下包括`package.json`、`webpack.config.js`和`src`文件夹，`src`下包括`index.html`和`main.js`。
 
@@ -1227,42 +1237,44 @@ module.exports = {
 }
 
 // webpack.config.js
-const HtmlWebpackPlugin = require("html-webpack-plugin")
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html",
+      template: './src/index.html',
     }),
   ],
   module: {
     rules: [
       {
         test: /\.js$/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         exclude: /node_modules/,
         options: {
           cacheDirectory: true,
-          presets: [["@babel/preset-env", { modules: false }]],
+          presets: [['@babel/preset-env', { modules: false }]],
         },
       },
     ],
   },
-  devtool: "none",
-  mode: "development"
+  devtool: 'none',
+  mode: 'development',
 }
 
 // src/index.html
 <html lang="zh-CN">
-  <body>
-    <p>hello world</p>
-  </body>
+
+<body>
+  <p>hello world</p>
+</body>
+
 </html>
 
 // src/main.js
-const fn = ()=>{
-    console.log('source map')
+const fn = () => {
+  console.log('source map')
 }
 
 fn()
@@ -1278,7 +1290,7 @@ fn()
 
 &emsp;&emsp;;`none`配置项即无法回溯到源代码，仅仅是根据配置的`loader`转译了模块的代码。
 
-### eval
+#### eval
 
 &emsp;&emsp;修改`webpack.config.js`中的`devtool`属性为`eval`，再运行`build`脚本命令，查看打包输出的代码。
 
@@ -1290,7 +1302,7 @@ fn()
 
 &emsp;&emsp;;`eval`配置项中，打包后模块代码被`eval`包裹，同时包括`sourceURL`，回溯的源代码被`loader`转换过（箭头函数转换为普通函数），并带有光标列信息。
 
-### source-map
+#### source-map
 
 &emsp;&emsp;修改`webpack.config.js`中的`devtool`属性为`source-map`，再次运行`build`脚本命令，`dist`目录下多生成了`.map`文件。
 
@@ -1306,7 +1318,7 @@ fn()
 
 &emsp;&emsp;;`source-map`配置项中，生成了`.map`文件，打包输出的代码尾部追加了`sourceMappingURL`，回溯的源代码为原始代码，并带有光标列信息。
 
-### cheap-source-map
+#### cheap-source-map
 
 &emsp;&emsp;修改`webpack.config.js`中的`devtool`属性为`cheap-source-map`，运行`build`脚本命令，也会在`dist`目录下生成`.map`文件，打包输出的代码和`source-map`一致。
 
@@ -1316,7 +1328,7 @@ fn()
 
 &emsp;&emsp;;`cheap-source-map`配置项中，也会生成`.map`文件，打包输出的代码尾部也会追加`sourceMappingURL`，回溯的源代码被`loader`转换过（箭头函数转换为普通函数），不带有光标列信息（光标位于行首）。
 
-### eval-source-map
+#### eval-source-map
 
 &emsp;&emsp;修改`webpack.config.js`中的`devtool`属性为`eval-source-map`，运行`build`脚本命令，查看打包输出的代码。
 
@@ -1328,7 +1340,7 @@ fn()
 
 &emsp;&emsp;;`eval-source-map`配置项中，打包后模块代码被`eval`包裹，同时包括`sourceURL`和`sourceMappingURL`，不会生成`.map`文件，而是将`map`文件内容转换为`base64`编码插入到`sourceMappingURL`后面，回溯的源代码为原始代码，并带有光标列信息。
 
-### cheap-eval-source-map
+#### cheap-eval-source-map
 
 &emsp;&emsp;修改`webpack.config.js`中的`devtool`属性为`cheap-eval-source-map`，运行`build`脚本命令，查看打包输出的代码。
 
@@ -1340,7 +1352,7 @@ fn()
 
 &emsp;&emsp;;`cheap-eval-source-map`配置项中，打包后模块代码被`eval`包裹，同时包括`sourceURL`和`sourceMappingURL`，不会生成`.map`文件，而是将`map`文件内容转换为`base64`编码插入到`sourceMappingURL`后面，回溯的源代码被`loader`转换过（箭头函数转换为普通函数），不带有光标列信息（光标位于行首）。
 
-### cheap-module-eval-source-map
+#### cheap-module-eval-source-map
 
 &emsp;&emsp;修改`webpack.config.js`中的`devtool`属性为`cheap-module-eval-source-map`，运行`build`脚本命令，查看打包输出的代码。
 
@@ -1352,7 +1364,7 @@ fn()
 
 &emsp;&emsp;;`cheap-module-eval-source-map`配置项中，打包后模块代码被`eval`包裹，同时包括`sourceURL`和`sourceMappingURL`，不会生成`.map`文件，而是将`map`文件内容转换为`base64`编码插入到`sourceMappingURL`后面，回溯的源代码为原始代码，不带有光标列信息（光标位于行首）。
 
-### cheap-module-source-map
+#### cheap-module-source-map
 
 &emsp;&emsp;修改`webpack.config.js`中的`devtool`属性为`cheap-module-source-map`，运行`build`脚本命令，查看打包输出的代码。
 
@@ -1364,7 +1376,7 @@ fn()
 
 &emsp;&emsp;;`cheap-module-source-map`配置项中，也会生成`.map`文件，打包输出的代码尾部也会追加`sourceMappingURL`，回溯的源代码为原始代码，不带有光标列信息（光标位于行首）。
 
-### inline-source-map
+#### inline-source-map
 
 &emsp;&emsp;修改`webpack.config.js`中的`devtool`属性为`inline-source-map`，运行`build`脚本命令，查看打包输出的代码。
 
@@ -1376,7 +1388,7 @@ fn()
 
 &emsp;&emsp;;`inline-source-map`配置项中，不会生成`.map`文件，而是将`map`文件内容转换为`base64`编码插入到`sourceMappingURL`后面，回溯的源代码为原始代码，并带有光标列信息。
 
-### hidden-source-map
+#### hidden-source-map
 
 &emsp;&emsp;修改`webpack.config.js`中的`devtool`属性为`hidden-source-map`，运行`build`脚本命令，也会在`dist`目录下生成`.map`文件，查看打包输出的代码。
 
@@ -1388,7 +1400,7 @@ fn()
 
 &emsp;&emsp;;`inline-source-map`配置项中，会生成`.map`文件，但是不会保留对`map`文件的引用（无`sourceMappingURL`），无法回溯到源代码。
 
-### nosources-source-map
+#### nosources-source-map
 
 &emsp;&emsp;修改`webpack.config.js`中的`devtool`属性为`nosources-source-map`，运行`build`脚本命令后，控制台查看输出结果。
 
@@ -1404,7 +1416,7 @@ fn()
 
 &emsp;&emsp;;`nosources-source-map`配置项中，生成了`.map`文件，打包输出的代码尾部追加了`sourceMappingURL`，无法回溯到源代码（源代码的目录结构可查看，具体内容被隐藏），但是可以在控制台查看`console`日志的准确行数。
 
-### 差异对比
+#### 差异对比
 
 &emsp;&emsp;如下为各个配置项的差异，其中构建速度`fastest > fast > ok > slow > slowest`。
 
@@ -1422,13 +1434,13 @@ fn()
 |      `hidden-source-map`       | `slowest` |                                    -                                    |    否     |           -           |        -         |     -      |         -          |
 |     `nosources-source-map`     | `slowest` |                 模块尾部追加`sourceMappingURL`引用`map`                 |    否     |    链接`map`文件名    |        -         |     -      |         -          |
 
-## 资源压缩
+### 资源压缩
 
 &emsp;&emsp;一般发布到线上环境的资源，都会进行代码压缩（丑化），即移出多余的空格、换行和执行不到的代码、缩短变量名、移出注释等，在保证执行结果不变的前提下将代码替换为更短的形式。
 
 &emsp;&emsp;代码在压缩后整体体积都会显著减小，同时将基本不可读，一定程度上提升了代码的安全性。
 
-### 压缩 JavaScript
+#### 压缩 JavaScript
 
 &emsp;&emsp;;`webpack3`及以下可通过`webpack.optimize.UglifyJsPlugin`实现代码压缩。
 
@@ -1445,19 +1457,19 @@ fn()
 }
 
 // webpack.config.js
-const webpack = require("webpack")
+const webpack = require('webpack')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./dist/[name].js"
+    filename: './dist/[name].js',
   },
-  plugins: [new webpack.optimize.UglifyJsPlugin()]
+  plugins: [new webpack.optimize.UglifyJsPlugin()],
 }
 
 // src/main.js
 const fn = function () {
-  console.log("hello world")
+  console.log('hello world')
 }
 
 fn()
@@ -1468,10 +1480,10 @@ fn()
 ```javascript
 // webpack.config.js
 module.exports = {
-    ...
-    optimization: {
-        minimize: true
-    }
+  ...
+  optimization: {
+    minimize: true,
+  },
 }
 ```
 
@@ -1479,12 +1491,12 @@ module.exports = {
 
 ```javascript
 // webpack.config.js
-const TerserPlugin = require("terser-webpack-plugin")
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
   optimization: {
     minimize: true,
@@ -1492,7 +1504,7 @@ module.exports = {
       new TerserPlugin({
         terserOptions: {
           compress: {
-            pure_funcs: ["console.log"],
+            pure_funcs: ['console.log'],
           },
         },
       }),
@@ -1501,7 +1513,7 @@ module.exports = {
 }
 ```
 
-### 压缩 CSS
+#### 压缩 CSS
 
 &emsp;&emsp;压缩`css`首先是使用`extract-text-webpack-plugin`或者`mini-css-extract-plugin`将样式提取出来，然后使用`optimize-css-assets-webpack-plugin`来进行压缩。
 
@@ -1524,13 +1536,13 @@ module.exports = {
 }
 
 // webpack.config.js
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
   module: {
     rules: [
@@ -1538,29 +1550,29 @@ module.exports = {
         test: /\.css$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader
+            loader: MiniCssExtractPlugin.loader,
           },
-          "css-loader"
-        ]
-      }
-    ]
+          'css-loader',
+        ],
+      },
+    ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css"
+      filename: '[name].css',
+      chunkFilename: '[id].css',
     }),
   ],
   optimization: {
     minimize: true,
-    minimizer: [new OptimizeCSSAssetsPlugin()]
+    minimizer: [new OptimizeCSSAssetsPlugin()],
   },
 }
 
 // src/main.js
-import "./index.css"
+import './index.css'
 
-console.log("hello world")
+console.log('hello world')
 
 // src/index.css
 p {
@@ -1577,7 +1589,7 @@ p {
 }
 ```
 
-## 缓存
+### 缓存
 
 &emsp;&emsp;缓存是指重复利用浏览器已经获取过的资源，详细的缓存策略（如缓存时间）由服务器来决定，浏览器则会在资源过期前一直使用本地缓存进行响应。
 
@@ -1585,7 +1597,7 @@ p {
 
 &emsp;&emsp;常用方法是每次打包对资源内容计算一次`hash`，并作为版本号存放在文件名中。
 
-### 版本号
+#### 版本号
 
 &emsp;&emsp;如下通常使用`chunkhash`来作为文件版本号，会单独为每一个`chunk`计算一个`hash`值。
 
@@ -1604,14 +1616,14 @@ p {
 
 // webpack.config.js
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name]@[chunkhash:8].js"
-  }
+    filename: './[name]@[chunkhash:8].js',
+  },
 }
 
 // src/main.js
-console.log("hello world")
+console.log('hello world')
 ```
 
 &emsp;&emsp;运行`build`脚本打包后如下。
@@ -1623,28 +1635,29 @@ console.log("hello world")
 ```javascript
 // package.json
 "devDependencies": {
-    ...
-    "html-webpack-plugin": "3.2.0"
+  ...
+  "html-webpack-plugin": "3.2.0"
 }
 
 // webpack.config.js
-const HtmlWebpackPlugin = require("html-webpack-plugin")
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   ...
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html"
-    })
-  ]
+      template: './src/index.html',
+    }),
+  ],
 }
-
 
 // src/html
 <html lang="zh-CN">
-  <body>
-    <p>hello world</p>
-  </body>
+
+<body>
+  <p>hello world</p>
+</body>
+
 </html>
 ```
 
@@ -1652,7 +1665,7 @@ module.exports = {
 
 ![](/other/webpack/middle-version-page.png)
 
-### CommonsChunkPlugin
+#### CommonsChunkPlugin
 
 &emsp;&emsp;通过`CommonsChunkPlugin`可以将一些不常变动的代码单独提取出来，与经常迭代的业务代码区别开来，这部分资源可以在客户端一直缓存。
 
@@ -1676,28 +1689,28 @@ module.exports = {
 }
 
 // webpack.config.js
-const webpack = require("webpack")
+const webpack = require('webpack')
 
 module.exports = {
   entry: {
-    main: "./src/main.js",
-    vendor: ["jquery"]
+    main: './src/main.js',
+    vendor: ['jquery'],
   },
   output: {
-    filename: "./dist/[name]@[chunkhash:8].js"
+    filename: './dist/[name]@[chunkhash:8].js',
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      filename: "./dist/[name]@[chunkhash:8].js"
-    })
-  ]
+      name: 'vendor',
+      filename: './dist/[name]@[chunkhash:8].js',
+    }),
+  ],
 }
 
 // src/main.js
-import "jquery"
+import 'jquery'
 
-console.log("main.js")
+console.log('main.js')
 ```
 
 &emsp;&emsp;运行`build`脚本打包，查看输出的资源，其中`vendor`中仅包含第三方模块`jquery`和`webpack`运行时文件。
@@ -1708,13 +1721,13 @@ console.log("main.js")
 
 ```javascript
 // src/main.js
-import "jquery"
-import "./utils"
+import 'jquery'
+import './utils'
 
-console.log("main.js")
+console.log('main.js')
 
 // src/utils.js
-console.log("utils.js")
+console.log('utils.js')
 ```
 
 &emsp;&emsp;再次执行`build`脚本打包，查看输出的资源。
@@ -1729,32 +1742,32 @@ console.log("utils.js")
 
 ![](/other/webpack/middle-common-chunk-plugin-cur.png)
 
-### HashedModuleIdsPlugin
+#### HashedModuleIdsPlugin
 
 &emsp;&emsp;解决的方法在于更改模块`id`的生成方式，`webpack3`内部自带了`HashedModuleIdsPlugin`插件，它可以为每个模块按照其所在路径生成一个字符串类型的`hash id`。
 
 ```javascript
 // src/main.js
-import "jquery"
+import 'jquery'
 
-console.log("main.js")
+console.log('main.js')
 
 // webpack.config.js
-const webpack = require("webpack")
+const webpack = require('webpack')
 
 module.exports = {
   entry: {
-    main: "./src/main.js",
-    vendor: ["jquery"],
+    main: './src/main.js',
+    vendor: ['jquery'],
   },
   output: {
-    filename: "./dist/[name]@[chunkhash:8].js",
+    filename: './dist/[name]@[chunkhash:8].js',
   },
   plugins: [
     new webpack.HashedModuleIdsPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      filename: "./dist/[name]@[chunkhash:8].js",
+      name: 'vendor',
+      filename: './dist/[name]@[chunkhash:8].js',
     }),
   ],
 }
@@ -1767,10 +1780,10 @@ module.exports = {
 &emsp;&emsp;;`main.js`引入`utils.js`。
 
 ```javascript
-import "jquery"
-import "./utils"
+import 'jquery'
+import './utils'
 
-console.log("main.js")
+console.log('main.js')
 ```
 
 &emsp;&emsp;再次运行`build`打包。
@@ -1781,17 +1794,17 @@ console.log("main.js")
 
 &emsp;&emsp;;`webpack3`以下的版本，由于其不支持字符串类型的`id`，可以使用`webpack-hashed-module-id-plugin`插件。而`webpack4+`修改了模块`id`的生成方式，也就不再有此问题。
 
-## 监控分析
+### 监控分析
 
 &emsp;&emsp;可以使用第三方插件对打包输出的`bundle`体积进行监控和分析，以防止不必要的冗余模块被添加进来。
 
-### Import Cost
+#### Import Cost
 
 &emsp;&emsp;;`Vs Code`中的`Import Cost`可以对引入模块的大小进行实时检测，当代码中引用一个新的模块（主要是`node_modules`中的模块），就会计算此模块压缩后以及`gzip`后所占的体积。
 
 ![](/other/webpack/middle-import-cost.png)
 
-### webpack-bundle-analyzer
+#### webpack-bundle-analyzer
 
 &emsp;&emsp;另外一个可视化分析工具为`webpack-bundle-analyzer`，可以分析一个`bundle`的构成。
 
@@ -1812,37 +1825,37 @@ console.log("main.js")
 }
 
 // webpack.config.js
-const webpack = require("webpack")
-const Analyzer = require("webpack-bundle-analyzer").BundleAnalyzerPlugin
+const webpack = require('webpack')
+const Analyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = {
   entry: {
-    main: "./src/main.js",
-    vendor: ["vue", "vuex", "vue-router"]
+    main: './src/main.js',
+    vendor: ['vue', 'vuex', 'vue-router'],
   },
   output: {
-    filename: "./dist/[name].js"
+    filename: './dist/[name].js',
   },
   plugins: [
     new Analyzer(),
     new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      filename: "./dist/[name].js"
-    })
-  ]
+      name: 'vendor',
+      filename: './dist/[name].js',
+    }),
+  ],
 }
 
 // src/main.js
-import Vue from "vue"
-import Vuex from "vuex"
-import VueRouter from "vue-router"
-import { log } from "./utils.js"
+import Vue from 'vue'
+import Vuex from 'vuex'
+import VueRouter from 'vue-router'
+import { log } from './utils.js'
 
-console.log(Vue, Vuex, VueRouter, log, "main.js")
+console.log(Vue, Vuex, VueRouter, log, 'main.js')
 
 // src/utils.js
 export function log() {
-  console.log("utils.js")
+  console.log('utils.js')
 }
 ```
 
@@ -1850,11 +1863,11 @@ export function log() {
 
 ![](/other/webpack/middle-webpack-bundle-analyzer.png)
 
-# 打包优化
+## 打包优化
 
 &emsp;&emsp;项目初期不要看到任何优化点就拿到项目中，会增加复杂度优化效果也不理想。一般是项目发展到一定规模，出现性能问题再去具体优化。
 
-## HappyPack
+### HappyPack
 
 &emsp;&emsp;;`HappyPack`是一个通过多线程来提升`webpack`打包速度的插件。
 
@@ -1867,7 +1880,7 @@ export function log() {
 
 &emsp;&emsp;步骤`2`到步骤`4`是一个递归的过程，`webpack`需要一步步地获取更深层级的资源，然后逐个进行转译。根本问题在于`webpack`是单线程的，若一个模块依赖于其他几个模块，`webpack`必须对这些模块逐个进行转译。虽然这些转译任务彼此之间没有任务依赖关系，却必须串行地执行。而`HappyPack`的核心特性是可以开启多个线程，并行地对不同模块进行转译，充分利用本地资源来提升打包速度。
 
-### 单个 loader
+#### 单个 loader
 
 &emsp;&emsp;使用时要用`HappyPack`提供的`loader`替换原有的`loader`，并将原有的`loader`传给`HappyPack`插件。
 
@@ -1893,20 +1906,20 @@ export function log() {
 }
 
 // src/main.js
-import "./foo.js"
-import "./bar.js"
+import './foo.js'
+import './bar.js'
 
-console.log("main.js")
+console.log('main.js')
 
 // src/foo.js
-import vue from "vue"
+import vue from 'vue'
 
-console.log(vue, "foo.js")
+console.log(vue, 'foo.js')
 
 // src/bar.js
-import Vuex from "vuex"
+import Vuex from 'vuex'
 
-console.log(Vuex, "bar.js")
+console.log(Vuex, 'bar.js')
 ```
 
 &emsp;&emsp;初始`webpack`配置如下。
@@ -1914,19 +1927,19 @@ console.log(Vuex, "bar.js")
 ```javascript
 // webpack.config.js
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         exclude: /node_modules/,
         options: {
           cacheDirectory: true,
-          presets: [["@babel/preset-env", { modules: false }]],
+          presets: [['@babel/preset-env', { modules: false }]],
         },
       },
     ],
@@ -1938,19 +1951,19 @@ module.exports = {
 
 ```javascript
 // webpack.config.js
-const HappyPack = require("happypack")
+const HappyPack = require('happypack')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: "happypack/loader",
+        loader: 'happypack/loader',
       },
     ],
   },
@@ -1958,10 +1971,10 @@ module.exports = {
     new HappyPack({
       loaders: [
         {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             cacheDirectory: true,
-            presets: [["@babel/preset-env", { modules: false }]],
+            presets: [['@babel/preset-env', { modules: false }]],
           },
         },
       ],
@@ -1970,7 +1983,7 @@ module.exports = {
 }
 ```
 
-### 多个 loader
+#### 多个 loader
 
 &emsp;&emsp;;`HappyPack`优化多个`loader`时，需要为每一个`loader`配置一个`id`，否则`HappyPack`无法知晓`rules`与`plugins`如何一一对应。
 
@@ -1996,9 +2009,9 @@ module.exports = {
 }
 
 // src/main.js
-import "./index.css"
+import './index.css'
 
-console.log("main.js")
+console.log('main.js')
 
 // src/index.css
 p {
@@ -2011,24 +2024,24 @@ p {
 ```javascript
 // webpack.config.js
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         exclude: /node_modules/,
         options: {
           cacheDirectory: true,
-          presets: [["@babel/preset-env", { modules: false }]],
+          presets: [['@babel/preset-env', { modules: false }]],
         },
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
@@ -2039,56 +2052,56 @@ module.exports = {
 
 ```javascript
 // webpack.config.js
-const HappyPack = require("happypack")
+const HappyPack = require('happypack')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        loader: "happypack/loader?id=js",
+        loader: 'happypack/loader?id=js',
         exclude: /node_modules/,
       },
       {
         test: /\.css$/,
-        loader: "happypack/loader?id=css",
+        loader: 'happypack/loader?id=css',
       },
     ],
   },
   plugins: [
     new HappyPack({
-      id: "js",
+      id: 'js',
       loaders: [
         {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             cacheDirectory: true,
-            presets: [["@babel/preset-env", { modules: false }]],
+            presets: [['@babel/preset-env', { modules: false }]],
           },
         },
       ],
     }),
     new HappyPack({
-      id: "css",
-      loaders: ["style-loader", "css-loader"],
+      id: 'css',
+      loaders: ['style-loader', 'css-loader'],
     }),
   ],
 }
 ```
 
-## 缩小打包范围
+### 缩小打包范围
 
 &emsp;&emsp;提升性能一般都是两种方式，增加资源或者缩小范围。增加资源即使用更多的`CPU`和内存，用更多的计算能力来缩短执行任务的时间。缩小范围则是针对任务本身，例如去掉冗余流程，或者不做重复性的工作等。
 
-### exclude/include
+#### exclude/include
 
 &emsp;&emsp;对于`js`模块，一般要把`node_modules`目录排除掉。
 
-### noParse
+#### noParse
 
 &emsp;&emsp;部分第三方库是完全不希望`webpack`去进行解析的，即不希望应用任何`loader`规则，库的内部也不会有对其他模块的依赖，此时就可以使用`noParse`对其进行忽略。
 
@@ -2099,11 +2112,12 @@ module.exports = {
 module.exports = {
   ...
   module: {
-    noParse: /lodash/
+    noParse: /lodash/,
+  },
 }
 ```
 
-### IgnorePlugin
+#### IgnorePlugin
 
 &emsp;&emsp;;`IgnorePlugin`插件则是可以完全排除一些模块，被排除的模块即便被引用了也不会被打包进资源文件中。
 
@@ -2127,16 +2141,16 @@ module.exports = {
 
 // webpack.config.js
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js",
-  }
+    filename: './[name].js',
+  },
 }
 
 // src/main.js
-import "moment"
+import 'moment'
 
-console.log("main.js")
+console.log('main.js')
 ```
 
 &emsp;&emsp;运行`build`脚本打包，查看输出的资源。
@@ -2147,12 +2161,12 @@ console.log("main.js")
 
 ```javascript
 // webpack.config.js
-const webpack = require("webpack")
+const webpack = require('webpack')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
   plugins: [
     new webpack.IgnorePlugin({
@@ -2167,7 +2181,7 @@ module.exports = {
 
 ![](/other/webpack/middle-ignore-plugin-chunks.png)
 
-## DllPlugin
+### DllPlugin
 
 &emsp;&emsp;早期`windows`系统由于受限于计算机内存空间较小的问题而出现的一种内存优化方法叫动态链接库，当一段相同的子程序被多个程序调用时，为了减少内存消耗，可以将这段子程序存储为一个可执行文件，当被多个程序调用时只在内存中生成和使用同一个实例。
 
@@ -2175,7 +2189,7 @@ module.exports = {
 
 &emsp;&emsp;;`DllPlugin`和`Code Splitting`类似，都可以用来提取公共模块，但是也有本质区别。`Code Splitting`是设置一些特定的规则并在打包过程中根据规则提取模块。`DllPlugin`则是将`vendor`完全拆分出来，有自己的一整套`webpack`配置并独立打包，在实际工程构建时就不再对它进行任何处理，直接取用即可。理论上`DllPlugin`会比`Code Splitting`在打包速度上更快，但是也相应的增加了配置以及资源管理的复杂度。可以理解为`DllPlugin`通过两次打包来取代一次打包，理论上速度更快，第一次打包是针对不常变化的模块，第二次打包则是针对业务模块。
 
-### dll 打包
+#### dll 打包
 
 &emsp;&emsp;根目录下包括`webpack.config.js`、`package.json`和`src`，`src`下包括`main.js`、`index.html`。
 
@@ -2194,32 +2208,32 @@ module.exports = {
 }
 
 // src/main.js
-import "vue"
+import 'vue'
 
-console.log("main.js")
+console.log('main.js')
 ```
 
 &emsp;&emsp;首先为动态链接库单独创建一个`webpack`配置文件，将其命名为`webpack.dll.config.js`。其中`output.filename`为动态链接库的名称，`output.path`为动态链接库的输出路径，`output.library`必须和`DllPlugin`中的`name`一致。`DllPlugin`中的`path`为动态链接库的模块清单的输出路径，`path`为`manifest.json`文件中`name`字段的值。
 
 ```javascript
 // webpack.dll.config.js
-const path = require("path")
-const webpack = require("webpack")
+const path = require('path')
+const webpack = require('webpack')
 
-const dllAssetPath = path.join(__dirname, "dist", "dll")
-const dllLibraryName = "dll"
+const dllAssetPath = path.join(__dirname, 'dist', 'dll')
+const dllLibraryName = 'dll'
 
 module.exports = {
-  entry: ["vue"],
+  entry: ['vue'],
   output: {
     path: dllAssetPath,
-    filename: "dll.js",
+    filename: 'dll.js',
     library: dllLibraryName,
   },
   plugins: [
     new webpack.DllPlugin({
       name: dllLibraryName,
-      path: path.join(dllAssetPath, "manifest.json"),
+      path: path.join(dllAssetPath, 'manifest.json'),
     }),
   ],
 }
@@ -2230,10 +2244,10 @@ module.exports = {
 ```javascript
 // package.json
 {
-    ...
-    "scripts": {
-        "dll": "webpack --config webpack.dll.config.js"
-    }
+  ...
+  "scripts": {
+    "dll": "webpack --config webpack.dll.config.js"
+  }
 }
 ```
 
@@ -2241,15 +2255,15 @@ module.exports = {
 
 ```javascript
 // dist/dll/dll.js
-var dll = (function (params) {
-    ...
-})(...)
+var dll = (function (params) { 
+  ...
+})( ... )
 
 // dist/dll/manifest.json
 {
   "name": "dll",
   "content": {
-      ...
+    ...
   }
 }
 ```
@@ -2258,17 +2272,17 @@ var dll = (function (params) {
 
 ```javascript
 // webpack.config.js
-const path = require("path")
-const webpack = require("webpack")
+const path = require('path')
+const webpack = require('webpack')
 
 module.exports = {
-  entry: "./src/main.js",
+  entry: './src/main.js',
   output: {
-    filename: "./[name].js",
+    filename: './[name].js',
   },
   plugins: [
     new webpack.DllReferencePlugin({
-      manifest: require(path.join(__dirname, "dist/dll/manifest.json")),
+      manifest: require(path.join(__dirname, 'dist/dll/manifest.json')),
     }),
   ],
 }
@@ -2279,15 +2293,17 @@ module.exports = {
 ```javascript
 // src/index.html
 <html lang="zh-CN">
-  <body>
-    <p>hello world</p>
-    <script src="./dll/dll.js"></script>
-    <script src="./main.js"></script>
-  </body>
+
+<body>
+  <p>hello world</p>
+  <script src="./dll/dll.js"></script>
+  <script src="./main.js"></script>
+</body>
+
 </html>
 ```
 
-### id 问题
+#### id 问题
 
 &emsp;&emsp;查看`manifest.json`，其中每个模块都有一个`id`，其值是按照数字顺序递增的，`main.js`代码在引用`dll.js`中的模块的时候也是引用数字`id`。
 
@@ -2309,7 +2325,7 @@ module.exports = {
 }
 ```
 
-## tree shaking
+### tree shaking
 
 &emsp;&emsp;;`ES6 Module`的依赖关系的构建是在代码编译时而非运行时，基于此特性，`webpack`提供了`tree shaking`功能，它可以在打包过程中检测工程中没有被引用的模块，此部分代码将永远无法被执行到，因此也被称为“死代码”。
 
@@ -2319,17 +2335,17 @@ module.exports = {
 
 ```javascript
 // src/main.js
-import { foo } from "./utils.js"
+import { foo } from './utils.js'
 
 foo()
 
 // src/utils.js
 export function foo() {
-  console.log("foo")
+  console.log('foo')
 }
 
 export function bar() {
-  console.log("bar")
+  console.log('bar')
 }
 ```
 
@@ -2345,4 +2361,4 @@ export function bar() {
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

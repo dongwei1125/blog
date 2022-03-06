@@ -2,6 +2,8 @@
 
 ![](/html/label/audio/banner.jpg)
 
+## 概述
+
 &emsp;&emsp;;[audio](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/audio) 用于在文档中嵌入音频元素。
 
 &emsp;&emsp;;`audio`元素是`HTML5`新增的行内标签，`IE8`及以下浏览器不支持`audio`标签。
@@ -27,10 +29,10 @@
 
 ```javascript
 <audio controls>
-    <source src="music.ogg" type="audio/ogg">
-    <source src="music.mp3" type="audio/mpeg">
-    <source src="music.wav" type="audio/Wav">
-    当前浏览器不支持audio标签
+  <source src="music.ogg" type="audio/ogg" />
+  <source src="music.mp3" type="audio/mpeg" />
+  <source src="music.wav" type="audio/Wav" />
+  当前浏览器不支持audio标签
 </audio>
 ```
 
@@ -48,11 +50,11 @@
 ```javascript
 <audio preload="auto" src="music.mp3" onseeking="fn()" controls />
 <script>
-    var audio = document.querySelector('audio')
+  var audio = document.querySelector('audio')
 
-    function fn() {
-        console.log(audio.seeking)
-    }
+  function fn() {
+    console.log(audio.seeking)
+  }
 </script>
 ```
 
@@ -89,20 +91,20 @@
 <button id="btn">console.log</button>
 
 <script>
-    var btn = document.querySelector('#btn')
-    var audio = document.querySelector('audio')
+  var btn = document.querySelector('#btn')
+  var audio = document.querySelector('audio')
 
-    btn.addEventListener('click', () => {
-        const length = audio.played.length
-        console.log(`length: ${length}`)
+  btn.addEventListener('click', () => {
+    const length = audio.played.length
+    console.log(`length: ${length}`)
 
-        for (var i = 0; i < length; i++) {
-            var start = audio.played.start(i)
-            var end = audio.played.end(i)
+    for (var i = 0; i < length; i++) {
+      var start = audio.played.start(i)
+      var end = audio.played.end(i)
 
-            console.log(`index: ${i}, start: ${start}, end: ${end}, durations: ${end - start}s`)
-        }
-    })
+      console.log(`index: ${i}, start: ${start}, end: ${end}, durations: ${end - start}s`)
+    }
+  })
 </script>
 ```
 
@@ -139,7 +141,7 @@
 &emsp;&emsp;播放音频，返回`Promise`，播放成功时为`resolved`，因为任何原因播放失败为`rejected`，[详细参考](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/play)。
 
 ```javascript
-var audio = document.querySelector("audio")
+var audio = document.querySelector('audio')
 
 audio
   .play()
@@ -152,7 +154,7 @@ audio
 &emsp;&emsp;暂停音频，无返回值，[详细参考](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/pause)。
 
 ```javascript
-var audio = document.querySelector("audio")
+var audio = document.querySelector('audio')
 
 audio.pause()
 ```
@@ -162,9 +164,9 @@ audio.pause()
 &emsp;&emsp;重新加载`src`指定的资源，[详细参考](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLMediaElement/load)。
 
 ```javascript
-var audio = document.querySelector("audio")
+var audio = document.querySelector('audio')
 
-audio.src = "music.mp3"
+audio.src = 'music.mp3'
 audio.load()
 ```
 
@@ -206,4 +208,4 @@ audio.load()
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

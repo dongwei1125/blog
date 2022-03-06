@@ -2,6 +2,8 @@
 
 ![](/html/label/link/banner.jpg)
 
+## 概述
+
 &emsp;&emsp;;[link](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/link) 元素用于链接外部`css`样式表等其他相关外部资源。
 
 ## link
@@ -45,7 +47,7 @@
 - `tag`：指定当前文档使用的标签、关键词
 - `up`：指向一个文档，此文档提供此网页的上下文关系
 
-## rel 应用
+## 应用
 
 ### alternate
 
@@ -67,37 +69,37 @@
 <html>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="foo.css" title="foo">
-    <link rel="alternate stylesheet" type="text/css" href="bar.css" title="bar">
+  <link rel="stylesheet" type="text/css" href="foo.css" title="foo">
+  <link rel="alternate stylesheet" type="text/css" href="bar.css" title="bar">
 </head>
 
 <body>
-    <p>hello world</p>
-    <button class="foo">foo</button>
-    <button class="bar">bar</button>
+  <p>hello world</p>
+  <button class="foo">foo</button>
+  <button class="bar">bar</button>
 
-    <script>
-        var foo = document.querySelector('.foo')
-        var bar = document.querySelector('.bar')
+  <script>
+    var foo = document.querySelector('.foo')
+    var bar = document.querySelector('.bar')
 
-        foo.addEventListener("click", toggleTheme)
-        bar.addEventListener("click", toggleTheme)
+    foo.addEventListener('click', toggleTheme)
+    bar.addEventListener('click', toggleTheme)
 
-        function toggleTheme() {
-            var btnClass = this.getAttribute('class')
-            var links = document.querySelectorAll('link')
+    function toggleTheme() {
+      var btnClass = this.getAttribute('class')
+      var links = document.querySelectorAll('link')
 
-            links.forEach(link => {
-                var linkTitle = link.getAttribute('title')
+      links.forEach(link => {
+        var linkTitle = link.getAttribute('title')
 
-                link.disabled = true
+        link.disabled = true
 
-                if (linkTitle === btnClass) {
-                    link.disabled = false
-                }
-            })
+        if (linkTitle === btnClass) {
+          link.disabled = false
         }
-    </script>
+      })
+    }
+  </script>
 </body>
 
 </html>
@@ -285,16 +287,16 @@ http://www.xxx.com/index.html?id=xxx
 <html lang="zh-CN">
 
 <head>
-    <link rel="preload" href="style.css" as="style">
-    <link rel="preload" href="main.js" as="script">
+  <link rel="preload" href="style.css" as="style">
+  <link rel="preload" href="main.js" as="script">
 
-    <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <p>hello world</p>
+  <p>hello world</p>
 
-    <script src="main.js"></script>
+  <script src="main.js"></script>
 </body>
 
 </html>
@@ -384,4 +386,4 @@ http://www.xxx.com/index.html?id=xxx
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

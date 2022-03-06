@@ -1,0 +1,52 @@
+name: Deploy pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy-github:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.14.0'
+          cache: 'npm'
+
+      - name: Depend install and build
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy GitHub pages
+        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          repository-name: dongwei1125/dongwei1125.github.io
+          branch: master
+          folder: docs/.vuepress/dist
+          single-commit: true
+          commit-message: 'feat: deploy pages'
+
+  deploy-gitee:
+    needs: deploy-github
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror to Gitee Repo
+        uses: wearerequired/git-mirror-action@v1.2.0
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
+        with:
+          source-repo: "git@github.com:dongwei1125/dongwei1125.github.io.git"
+          destination-repo: "git@gitee.com:dongwei1125/dongwei1125.git"
+
+      - name: Deploy Gitee pages
+        uses: yanglbme/gitee-pages-action@v1.4.0
+        with:
+          gitee-username: dongwei1125
+          gitee-password: ${{ secrets.GITEE_PASSWORD }}
+          gitee-repo: dongwei1125
+          branch: master

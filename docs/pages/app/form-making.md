@@ -22,7 +22,7 @@
 
 ### 项目预览
 
-&emsp;&emsp;;[dw-form-making](http://dongwei1125.github.io/dw-form-making/)
+&emsp;&emsp;;[GitHub](http://dongwei1125.github.io/dw-form-making/) / [Gitee](http://dongwei1125.gitee.io/dw-form-making/)
 
 ### 示意图
 
@@ -112,9 +112,10 @@ npm i -S vuedraggable
 import draggable from 'vuedraggable'
 ...
 export default {
-    components: {
-       draggable
-    }
+  components: {
+    draggable,
+  },
+}
 ...
 ```
 
@@ -131,16 +132,16 @@ export default {
 ```javascript
 // App.vue
 <div id="app">
-    <Layout />
+  <Layout />
 </div>
 
-import Layout from "./layout/index"
+import Layout from './layout/index'
 ...
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    Layout
-  }
+    Layout,
+  },
 }
 ...
 
@@ -148,8 +149,8 @@ export default {
 import MakingForm from './layout/index'
 ...
 export {
-    ...
-    MakingForm
+  ...
+  MakingForm
 }
 ```
 
@@ -182,7 +183,7 @@ export {
 &emsp;&emsp;;`ElementCate`部分首先考虑各个元素数据和图标，暂不考虑元素的其他情况（配置信息等），[iconfont](https://www.iconfont.cn/) 创建个人项目，选择合适的图标，下载本地压缩包解压导入，注意`iconfont.css`导入路径前加上`~`符号，从`vue.config.js`中`alias`查询相关路径加载模块，不添加`~`默认为当前目录下路径。
 
 ```javascript
-@import "~assets/fonts/iconfont.css"
+@import '~assets/fonts/iconfont.css';
 ```
 
 &emsp;&emsp;;`ElementCate.vue`中引入三个不同类别的表单组件，假设某个`js`文件（`elements`文件夹内`index.js`）对外导出三个数组，分别为`basic`、`advance`、`layout`，且每个数组对象暂时包含`name`标签、`icon`图标。
@@ -190,12 +191,12 @@ export {
 ```javascript
 // element -> index.js
 const basic = [
-    ...
-    {
-        name: "单行文本",
-        icon: "icon-input"
-    }
-    ...
+  ...
+  {
+    name: '单行文本',
+    icon: 'icon-input'
+  }
+  ...
 ]
 
 const advance = []
@@ -203,9 +204,9 @@ const advance = []
 const layout = []
 
 export {
-   basic,
-   advance,
-   layout
+  basic,
+  advance,
+  layout,
 }
 ```
 
@@ -234,34 +235,34 @@ export {
 ```javascript
 // ElementCate.vue
 <draggable
-   tag="ul"
-   v-model="list"
-   v-bind="{
-      group: {
-          name: 'view',
-          pull: 'clone',
-          put: false
-     },
-     sort: false
-   }"
-   :clone="handleClone"
+  v-model="list"
+  tag="ul"
+  v-bind="{
+    group: {
+      name: 'view',
+      pull: 'clone',
+      put: false,
+    },
+    sort: false,
+  }"
+  :clone="handleClone"
 >
-    <li>...</li>
-    ...
+  <li>...</li>
+  ...
 </draggable>
 
 // ViewForm.vue
 <draggable
-    v-model="list"
-    v-bind="{
-       group: 'view',
-       animation: 200,
-       ghostClass: 'move',
-       handle: '.drag-icon',
-    }"
-    @add="handleAdd"
+  v-model="list"
+  v-bind="{
+    group: 'view',
+    animation: 200,
+    ghostClass: 'move',
+    handle: '.drag-icon',
+  }"
+  @add="handleAdd"
 >
-   <transition-group>...</transition-group>
+  <transition-group>...</transition-group>
 </draggable>
 ```
 
@@ -271,42 +272,34 @@ export {
 
 ```javascript
 @mixin form-item-move {
-    outline-width: 0;
-    height: 3px;
-    overflow: hidden;
-    border: 2px solid #409eff;
-    ...
+  outline-width: 0;
+  height: 3px;
+  overflow: hidden;
+  border: 2px solid #409eff;
+  ...
 }
 
 .element-cate-item {
-    &.move{
-        @include form-item-move;
-    }
-    ...
+  &.move {
+    @include form-item-move;
+  }
+  ...
 }
 ```
 
 &emsp;&emsp;;`FormProperty`可配置按钮视图中对齐方式、宽度、组件尺寸等，故将按钮视图中`draggable`放入`el-form`组件内，每一个列表元素渲染为`el-form-item`，`el-form`配置固定，`el-form-item`暂时渲染`label`和输入框。注意`transition-group`内部元素必须设置`key`值，否则元素无法渲染并且控制台会打印警告。
 
 ```javascript
-<el-form
-  size='small'
-  label-width='100px'
-  label-position='right'
->
-    <draggable ... @add='handleAdd'>
-        <transition-group>
-            <div
-               class='view-form-item'
-              v-for='(element, index) in data'
-              :key='index'
-            >
-                <el-form-item :label='element.name'>
-                    <el-input />
-                </el-form-item>
-            </div>
-        </transition-group>
-    </draggable>
+<el-form size="small" label-width="100px" label-position="right">
+  <draggable ... @add="handleAdd">
+    <transition-group>
+      <div v-for="(element, index) in data" :key="index" class="view-form-item">
+        <el-form-item :label="element.name">
+          <el-input />
+        </el-form-item>
+      </div>
+    </transition-group>
+  </draggable>
 </el-form>
 
 handleAdd({ newIndex }) {
@@ -317,20 +310,13 @@ handleAdd({ newIndex }) {
 &emsp;&emsp;;`ElementCate`元素拖入`ViewForm`可以看见蓝色长条，鼠标松开渲染为输入框和标签，设置`view-form-item`样式和`hover`样式，边框色同`ElementCate`元素一致。当点击`view-form-item`时，`data`中变量`select`保存点击的`view-form-item`，判断显示出蓝色边框和拖动图标。
 
 ```javascript
-<div
-    :class="[
-      'view-form-item',
-      { active: select.key === element.key },
-    ]"
-    @click="handleSelect(element)"
-    ...
->
-    <el-form-item ...>...</el-form-item>
-    ...
-    <div class='item-drag' v-if="select.key === element.key">
-      <i class="iconfont icon-drag drag-icon"></i>
-    </div>
-   ...
+<div :class="['view-form-item', { active: select.key === element.key }]" @click="handleSelect(element)">
+  <el-form-item ...>...</el-form-item>
+  ...
+  <div v-if="select.key === element.key" class="item-drag">
+    <i class="iconfont icon-drag drag-icon"></i>
+  </div>
+  ...
 </div>
 
 handleSelect(element) {
@@ -345,28 +331,28 @@ handleSelect(element) {
 ```javascript
 // ElementCate.vue
 handleClone(element) {
-    return Object.assign(deepClone(element), { key: uuid() })
+  return Object.assign(deepClone(element), { key: uuid() })
 }
 
 // utils -> index.js
 import lodash from 'lodash'
 
 function deepClone(object) {
-    return lodash.cloneDeep(object)
+  return lodash.cloneDeep(object)
 }
 
 function S4() {
-    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+  return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
 }
 
 function uuid() {
-    return Date.now() + '_' + S4()
+  return Date.now() + '_' + S4()
 }
 
 export {
-    uuid,
-    deepClone
-    ...
+  uuid,
+  deepClone
+  ...
 }
 ```
 
@@ -377,24 +363,25 @@ export {
 ```javascript
 // elements -> index.js
 const basic = [
-    {
-        name: '单行文本',
-        icon: 'icon-input',
-        type: 'input'
-    },
-    {
-        name: '多行文本',
-        icon: 'icon-textarea',
-        type: 'textarea'
-    }
-    ...
+  {
+    name: '单行文本',
+    icon: 'icon-input',
+    type: 'input'
+  },
+  {
+    name: '多行文本',
+    icon: 'icon-textarea',
+    type: 'textarea'
+  }
+  ...
 ]
 
 // ViewForm.vue
 <el-form-item :label='element.name'>
-   <el-input v-if='element.type === "input"' />
-   <el-input type='textarea' v-if='element.type === "textarea"' />
-   ...
+  <el-input v-if='element.type === "input"' />
+
+  <el-input type='textarea' v-if='element.type === "textarea"' />
+  ...
 </el-form-item>
 ```
 
@@ -404,15 +391,16 @@ const basic = [
 
 ```javascript
 // store -> index.js
- export default new Vuex.Store({
-    state: {
-        select: {}
-    },
-    mutations: {
-        SET_SELECT(state, select) {
-            if (state.select === select) return
-            state.select = select
-   }
+export default new Vuex.Store({
+  state: {
+    select: {}
+  },
+  mutations: {
+    SET_SELECT(state, select) {
+      if (state.select === select) return
+      state.select = select
+    }
+  }
 }
 
 // ViewForm.vue
@@ -423,23 +411,24 @@ export default {
   computed: {
     select() {
       return store.state.select
-    }
+    },
   },
   methods: {
-      handleSelect(element) {
-          store.commit("SET_SELECT", element)
-      },
-      handleAdd({ newIndex }) {
-          store.commit("SET_SELECT", this.data.list[newIndex])
-      },
-  }
+    handleSelect(element) {
+      store.commit('SET_SELECT', element)
+    },
+
+    handleAdd({ newIndex }) {
+      store.commit('SET_SELECT', this.data.list[newIndex])
+    },
+  },
 }
 
 // FieldProperty.vue
 <el-form size="small" label-position="top">
-   <el-form-item label="标签">
-       <el-input v-model="data.name"></el-input>
-   </el-form-item>
+  <el-form-item label="标签">
+    <el-input v-model="data.name"></el-input>
+  </el-form-item>
 </el-form>
 
 export default {
@@ -457,40 +446,39 @@ export default {
 ```javascript
 // elements -> index.js
 const basic = [
-    {
-        name: '单行文本',
-        icon: 'icon-input',
-        type: 'input',
-        options:{
-            placeholder:''
-        }
-    },
-    {
-        name: '多行文本',
-        icon: 'icon-textarea',
-        type: 'textarea'
+  {
+    name: '单行文本',
+    icon: 'icon-input',
+    type: 'input',
+    options:{
+      placeholder:''
     }
-    ...
+  },
+  {
+    name: '多行文本',
+    icon: 'icon-textarea',
+    type: 'textarea'
+  }
+  ...
 ]
 
 // ViewForm.vue
-<el-form-item :label='element.name'>
-   <el-input
-       :placeholder='element.options.placeholder'
-       v-if='element.type === "input"'
-   />
-   <el-input type='textarea' v-if='element.type === "textarea"' />
-   ...
+<el-form-item :label="element.name">
+  <el-input v-if="element.type === 'input'" :placeholder="element.options.placeholder" />
+
+  <el-input v-if="element.type === 'textarea'" type="textarea" />
+  ...
 </el-form-item>
 
 // FieldProperty.vue
 <el-form size="small" label-position="top">
-   <el-form-item label="标签">
-       <el-input v-model="data.name"></el-input>
-   </el-form-item>
-   <el-form-item v-if='data.type === "input"' label="占位内容">
-       <el-input v-model="data.options.placeholder"></el-input>
-   </el-form-item>
+  <el-form-item label="标签">
+    <el-input v-model="data.name"></el-input>
+  </el-form-item>
+
+  <el-form-item v-if="data.type === 'input'" label="占位内容">
+    <el-input v-model="data.options.placeholder"></el-input>
+  </el-form-item>
 </el-form>
 ```
 
@@ -503,44 +491,42 @@ const basic = [
 ```javascript
 // store -> index.js
 export default new Vuex.Store({
-    state:{
-        select: {},
-        data:{
-            list: [],
-            config: {
-                labelWidth: 100,
-                labelPosition: "right",
-                size: "small",
-               customClass: '',
-           }
-        }
-    }
+  state: {
+    select: {},
+    data: {
+      list: [],
+      config: {
+        labelWidth: 100,
+        labelPosition: 'right',
+        size: 'small',
+        customClass: '',
+      },
+    },
+  },
 })
 
 // ViewForm.vue
 <el-form
-      :size="data.config.size"
-      :label-width="data.config.labelWidth + 'px'"
-      :label-position="data.config.labelPosition"
-    >
-    ...
+  :size="data.config.size"
+  :label-width="data.config.labelWidth + 'px'"
+  :label-position="data.config.labelPosition"
+>
+  ...
 </el-form>
 
 export default {
   computed: {
     data() {
       return store.state.data
-    }
-  }
+    },
+  },
 }
 
 // FormProperty.vue
 <el-form label-position="top" size="small">
-      <el-form-item label="标签对齐方式">
-        <el-radio-group v-model="data.labelPosition">
-          ...
-        </el-radio-group>
-      </el-form-item>
+  <el-form-item label="标签对齐方式">
+    <el-radio-group v-model="data.labelPosition"> ... </el-radio-group>
+  </el-form-item>
 </el-form>
 
 export default {
@@ -548,8 +534,8 @@ export default {
   computed: {
     data() {
       return store.state.data.config
-    }
-  }
+    },
+  },
 }
 ```
 
@@ -576,44 +562,41 @@ export default {
 
 // index.js
 const basic = [
-    {
-        name:'单行文本',
-        icon: 'icon-input',
-        type: 'input',
-        component: 'DwInput',
-        options:{
-            placeholder:''
-        }
-    }
+  {
+    name: '单行文本',
+    icon: 'icon-input',
+    type: 'input',
+    component: 'DwInput',
+    options: {
+      placeholder: '',
+    },
+  },
 ]
 
 // view.vue
 <el-form-item ...>
-    <el-input
-       :placeholder="element.options.placeholder"
-       ...
-    ></el-input>
+  <el-input :placeholder="element.options.placeholder" ...></el-input>
 </el-form-item>
 
 export default {
-  name: "DwInput"
-  props:{
-      element: {
-          type: Object,
-      }
-  }
+  name: 'DwInput',
+  props: {
+    element: {
+      type: Object,
+    },
+  },
   ...
 }
 
 // config.vue
 <el-form size="small" label-position="top">
-    <el-form-item label="标签">
-       <el-input v-model="data.name"></el-input>
-    </el-form-item>
+  <el-form-item label="标签">
+    <el-input v-model="data.name"></el-input>
+  </el-form-item>
 </el-form>
 
 export default {
-  name: "DwInputConfig"
+  name: 'DwInputConfig',
   ...
 }
 ```
@@ -623,54 +606,49 @@ export default {
 ```javascript
 // view.js
 const components = {}
-
-const requireComponent = require.context("elements/", true, /(view.vue)$/)
+const requireComponent = require.context('elements/', true, /(view.vue)$/)
 
 requireComponent.keys().forEach(fileName => {
-    const componentOptions = requireComponent(fileName)
+  const componentOptions = requireComponent(fileName)
+  const component = componentOptions.default || componentOptions
 
-    const component = componentOptions.default || componentOptions
-
-   components[component.name] = component
+  components[component.name] = component
 })
 
 export default components
 
 // ViewForm.vue
-<div class='view-form-item' v-for='element in data.list' ...>
-    <component :is='item.component' :element='element'>
+<div v-for="element in data.list" class="view-form-item">
+  <component :is='item.component' :element='element'>
 
-    <div class='item-drag' v-if="select.key === element.key">
-         <i class="iconfont icon-drag drag-icon"></i>
-    </div>
+  <div v-if="select.key === element.key" class="item-drag">
+    <i class="iconfont icon-drag drag-icon"></i>
+  </div>
 </div>
 
-import Draggable from "vuedraggable"
-import components from "elements/view"
+import Draggable from 'vuedraggable'
+import components from 'elements/view'
 
 export default {
   ...
   components: {
-      Draggable,
-      ...components
-  }
+    Draggable,
+    ...components,
+  },
 }
 
 // FormProperty.vue
-<component
-    :is="component.component && `${component.component}Config`"
-    :data="component"
-/>
+<component :is="component.component && `${component.component}Config`" :data="component" />
 
-import components from "elements/config"
+import components from 'elements/config'
 
 export default {
   components,
   computed: {
     component() {
       return store.state.select
-    }
-  }
+    },
+  },
 }
 ```
 
@@ -681,30 +659,28 @@ export default {
 ```javascript
 // ElementCate
 handleClone(element) {
-      const key = uuid()
-      
-      return Object.assign(deepClone(element), {
-        key,
-        model: element.type + "_" + key
-      })
-}
+  const key = uuid()
+
+  return Object.assign(deepClone(element), {
+    key,
+    model: element.type + '_' + key,
+  })
+},
 ```
 
 &emsp;&emsp;五个属性封装为公共组件`CommonField.vue`，放置插槽，组件`config.vue`引用，组件独有配置插入插槽即可。要注意的是，组件传值是单向的，但是`CommonField.vue`内部却能修改传入的值，原因是组件传引用类型的值实际传递的是引用地址，所以组件内部修改外部依然同步。组件传值不仅可以使用`sync`实现双向传值，也可传递引用类型实现组件双向传值。
 
 ```javascript
 <common-field :data="data">
-    <template slot="custom">
-    ...
-    </template>
+  <template slot="custom"> ... </template>
 </common-field>
 
-import CommonField from "../CommonField"
+import CommonField from '../CommonField'
 
 export default {
   components: {
-    CommonField
-  }
+    CommonField,
+  },
 }
 ```
 
@@ -712,17 +688,15 @@ export default {
 
 ```javascript
 <el-form-item
-    :label-width="
-      element.options.hideLabel
-        ? '0px'
-        : (element.options.isLabelWidth
-            ? element.options.labelWidth
-            : config.labelWidth) + 'px'
-    "
-    :class="element.options.customClass"
+  :label-width="
+    element.options.hideLabel
+      ? '0px'
+      : (element.options.isLabelWidth ? element.options.labelWidth : config.labelWidth) + 'px'
+  "
+  :class="element.options.customClass"
 >
-  <template slot="label" v-if="!element.options.hideLabel">
-      {{ element.name }}
+  <template v-if="!element.options.hideLabel" slot="label">
+    {{ element.name }}
   </template>
 
   <slot></slot>
@@ -737,37 +711,32 @@ export default {
 
 ```javascript
 // ViewForm.vue
-<div
-    class='view-form-item'
-    v-for='element in data.list'
-    :data-model='element.model'
->
-...
-</div>
+<div v-for="element in data.list" class="view-form-item" :data-model="element.model">...</div>
 
 // layout.scss
-.view-form-item{
-    position: relative;
-    ...
-    &::before {
-      content: attr(data-model);
-      position: absolute;
-      top: 3px;
-      right: 3px;
-      font-size: 12px;
-      color: rgb(2, 171, 181);
-      z-index: 5;
-      font-weight: 500;
-    }
-    &::after {
-      position: absolute;
-      content: "";
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      z-index: 5;
-    }
+.view-form-item {
+  position: relative;
+  ...
+  &::before {
+    content: attr(data-model);
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    font-size: 12px;
+    color: rgb(2, 171, 181);
+    z-index: 5;
+    font-weight: 500;
+  }
+
+  &::after {
+    position: absolute;
+    content: '';
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 5;
+  }
 }
 ```
 
@@ -775,57 +744,56 @@ export default {
 
 ```javascript
 // ViewForm.vue
-<div class='view-form-item'
-    v-for='(element, index) in data.list'
->
-    ...
-    <i class="iconfont icon-clone"
-       @click="handleClone(element, index, data.list)"
-    />
+<div v-for="(element, index) in data.list" class="view-form-item">
+  ...
+  <i class="iconfont icon-clone" @click="handleClone(element, index, data.list)" />
 </div>
 
 handleClone(element, index, list) {
-      store.commit("CLONE_ELEMENT", { index, element, list })
-}
+  store.commit('CLONE_ELEMENT', { index, element, list })
+},
 
 // store -> index.js
 CLONE_ELEMENT(state, { index, element, list }) {
-    const key = uuid()
-    const el = deepClone(element)
+  const key = uuid()
+  const el = deepClone(element)
 
-    list.splice(index + 1, 0, Object.assign(el, {
-       key,
-       model: element.type + "_" + key,
-    }))
+  list.splice(
+    index + 1,
+    0,
+    Object.assign(el, {
+      key,
+      model: element.type + '_' + key,
+    })
+  )
 
-    state.select = list[index + 1]
-}
+  state.select = list[index + 1]
+},
 ```
 
 &emsp;&emsp;删除按钮为避免重复点击，只在第一次点击时触发，元素删除动画触发过程中不可再点击。元素删除前更新活动元素`select`，被删除元素处在列表末尾且长度大于`1`，活动元素为上一个元素。若处在列表末尾且长度等于`1`，即列表只有一个元素，活动元素为空。不满足上述则元素处在中部，删除后活动元素为下一个元素。
 
 ```javascript
 // ViewForm.vue
-<div class='view-form-item'>
-    ...
-    <i class="iconfont icon-trash"
-       @click.once="handleDelete(data.list, index)"
-    />
+<div class="view-form-item">
+  ...
+  <i class="iconfont icon-trash" @click.once="handleDelete(data.list, index)" />
 </div>
 
 handleDelete(list, index) {
-      store.commit("DELETE_ELEMENT", { list, index })
+  store.commit('DELETE_ELEMENT', { list, index })
 },
 
 // store -> index.js
 DELETE_ELEMENT(state, { list, index }) {
-    if (list.length - 1 === index) {
-        state.select = index ? list[index - 1] : {}
-    } else {
-        state.select = list[index + 1]
-    }
-    list.splice(index, 1)
-}
+  if (list.length - 1 === index) {
+    state.select = index ? list[index - 1] : {}
+  } else {
+    state.select = list[index + 1]
+  }
+
+  list.splice(index, 1)
+},
 ```
 
 ## ElementCate 组件
@@ -843,15 +811,9 @@ DELETE_ELEMENT(state, { list, index }) {
 ```javascript
 // elements -> input -> config.vue
 <template slot="option">
-  <el-checkbox
-     v-model="data.options.disabled"
-     :disabled="data.options.readonly"
-  >禁用</el-checkbox>
-  <el-checkbox
-     v-model="data.options.readonly"
-     :disabled="data.options.disabled"
- >只读</el-checkbox>
- ...
+  <el-checkbox v-model="data.options.disabled" :disabled="data.options.readonly">禁用</el-checkbox>
+  <el-checkbox v-model="data.options.readonly" :disabled="data.options.disabled">只读</el-checkbox>
+  ...
 </template>
 ```
 
@@ -873,41 +835,41 @@ DELETE_ELEMENT(state, { list, index }) {
 ```javascript
 // elements -> number -> view.vue
 <common-view>
-    <el-input-number
-      :value='element.options.defaultValue'
-      :controls-position="element.options.controlsPosition"
-    />
+  <el-input-number
+    :value="element.options.defaultValue"
+    :controls-position="element.options.controlsPosition"
+  />
 </common-view>
 
 // elements -> number -> config.vue
 <el-form-item label="默认值">
-   <el-input-number
-     :max="data.options.max"
-     :min="data.options.min"
-     :step="data.options.step"
-     v-model="data.options.defaultValue"
-   />
+  <el-input-number
+    v-model="data.options.defaultValue"
+    :max="data.options.max"
+    :min="data.options.min"
+    :step="data.options.step"
+  />
 </el-form-item>
 ```
 
 ### 单选框组
 
-&emsp;&emsp;单选框组布局方式分为块级和行内，选项包括静态数据和动态数据，暂不考虑动态数据，选项为`label-value`对形式，内部引用`draggable`拖动列表，选项可删除和新增，添加选项生成随机`label-value`对，选中选项设置默认值，清空列表时默认值清空，选中项删除，清空默认值。注意`el-radio`组件，若不显示`label`，可传入双括号空值。
+&emsp;&emsp;单选框组布局方式分为块级和行内，选项包括静态数据和动态数据，暂不考虑动态数据，选项为`label-value`对形式，内部引用`draggable`拖动列表，选项可删除和新增，添加选项生成随机`label-value`对，选中选项设置默认值，清空列表时默认值清空，选中项删除，清空默认值。注意`el-radio`组件，若不显示`label`，可传入`nbsp`空位符。
 
 ```javascript
 // elements -> radio -> view.vue
 <el-radio
-    v-for="(item, index) in element.options.options"
-    style="{
-        display: element.options.inline
-        ? 'inline-block' : 'block'
-    }"
->{{ item.label }}</el-radio>
+  v-for="(item, index) in element.options.options"
+  style="{
+    display: element.options.inline
+    ? 'inline-block' : 'block'
+  }"
+  >{{ item.label }}</el-radio>
 
 // elements -> radio -> config.vue
 <li ...>
-   <el-radio :label="item.value">{{ }}</el-radio>
-   ...
+  <el-radio :label="item.value" class="hidden-label">&nbsp;</el-radio>
+  ...
 </li>
 ```
 
@@ -918,13 +880,14 @@ DELETE_ELEMENT(state, { list, index }) {
 ```javascript
 // elements -> checkbox -> config.vue
 handleDeleteOptions(element, index) {
-   var i = this.data.options.defaultValue.indexOf(element.value)
+  const i = this.data.options.defaultValue.indexOf(element.value)
 
-   if (i > -1) {
-      this.data.options.defaultValue.splice(i, 1)
-   }
-   this.data.options.options.splice(index, 1)
-}
+  if (i > -1) {
+    this.data.options.defaultValue.splice(i, 1)
+  }
+
+  this.data.options.options.splice(index, 1)
+},
 ```
 
 ### 时间选择器
@@ -934,22 +897,13 @@ handleDeleteOptions(element, index) {
 ```javascript
 // elements -> time -> config.vue
 <el-form-item label="默认值">
-   <el-time-picker
-     key="range"
-     v-if="data.options.isRange"
-     is-range
-     ...
-   />
-   <el-time-picker
-    key="default"
-    v-else
-    ...
-  />
+  <el-time-picker v-if="data.options.isRange" key="range" is-range ... />
+  <el-time-picker v-else key="default" ... />
 </el-form-item>
 
 handleRangeChange() {
-   this.data.options.defaultValue = this.data.options.isRange ? null : ""
-}
+  this.data.options.defaultValue = this.data.options.isRange ? null : ''
+},
 ```
 
 ### 日期选择器
@@ -962,15 +916,15 @@ export default {
   data() {
     return {
       type: [
-      ...
-          {
-              label: "日期时间范围",
-              value: "datetimerange",
-              format: "yyyy-MM-dd HH:mm:ss",
-              type: null,
-              isRange: true,
-        }
-      ]
+        {
+          label: '日期时间范围',
+          value: 'datetimerange',
+          format: 'yyyy-MM-dd HH:mm:ss',
+          type: null,
+          isRange: true,
+        },
+      ],
+    }
   },
   methods: {
     handleTypeChange(value) {
@@ -979,8 +933,8 @@ export default {
       this.data.options.format = showType.format
       this.data.options.defaultValue = showType.type
       ...
-    }
-  }
+    },
+  },
 }
 ```
 
@@ -990,11 +944,7 @@ export default {
 
 ```javascript
 // elements -> rate -> config.vue
-<el-rate
-  ...
-  :allow-half="data.options.isAllowhalf"
-  :max="data.options.max"
-/>
+<el-rate ... :allow-half="data.options.isAllowhalf" :max="data.options.max" />
 ```
 
 ### 颜色选择器
@@ -1004,17 +954,8 @@ export default {
 ```javascript
 // elements -> color -> config.vue
 <el-form-item label="默认值">
-  <el-color-picker
-    key="alpha"
-    v-if="data.options.showAlpha"
-    ...
-    show-alpha
-  />
-  <el-color-picker
-    key="default"
-    v-else
-    ...
- />
+  <el-color-picker v-if="data.options.showAlpha" key="alpha" ... show-alpha />
+  <el-color-picker v-else key="default" ... />
 </el-form-item>
 ```
 
@@ -1025,12 +966,16 @@ export default {
 ```javascript
 // elements -> select -> config.vue
 handleMultipleChange(multiple) {
-      var value = this.data.options.defaultValue
-      
-      this.data.options.defaultValue = multiple
-        ? value === null ? [] : [value]
-        : value.length ? value[0] : null
-}
+  var value = this.data.options.defaultValue
+
+  this.data.options.defaultValue = multiple
+    ? value === null
+      ? []
+      : [value]
+    : value.length
+    ? value[0]
+    : null
+},
 ```
 
 ### 开关
@@ -1040,10 +985,10 @@ handleMultipleChange(multiple) {
 ```javascript
 // elements -> switch -> view.vue
 <el-switch
- :active-color="element.options.isColor ? element.options.activeColor : '#409EFF'"
- :inactive-color="element.options.isColor ? element.options.inactiveColor : '#C0CCDA'"
- :active-text="element.options.isText ? element.options.activeText : ''"
- :inactive-text="element.options.isText ? element.options.inactiveText : ''"
+  :active-color="element.options.isColor ? element.options.activeColor : '#409EFF'"
+  :inactive-color="element.options.isColor ? element.options.inactiveColor : '#C0CCDA'"
+  :active-text="element.options.isText ? element.options.activeText : ''"
+  :inactive-text="element.options.isText ? element.options.inactiveText : ''"
 />
 ```
 
@@ -1054,10 +999,10 @@ handleMultipleChange(multiple) {
 ```javascript
 // elements -> slider -> config.vue
 <el-slider
+  v-model="data.options.defaultValue"
   :max="data.options.max"
   :min="data.options.min"
   :step="data.options.step"
-  v-model="data.options.defaultValue"
 />
 ```
 
@@ -1068,7 +1013,7 @@ handleMultipleChange(multiple) {
 ```javascript
 // elements -> text -> view.vue
 <div :style="{ width: element.options.width }">
-  <span style='word-break: break-all;'>{{ value }}</span>
+  <span style="word-break: break-all">{{ value }}</span>
 </div>
 ```
 
@@ -1091,9 +1036,9 @@ handleMultipleChange(multiple) {
 // elements -> cascader -> view.vue
 <el-cascader
   :props="{
-     value: element.options.props.value,
-     label: element.options.props.label,
-     children: element.options.props.children,
+    value: element.options.props.value,
+    label: element.options.props.label,
+    children: element.options.props.children,
   }"
   :options="[]"
   ...
@@ -1107,7 +1052,7 @@ handleMultipleChange(multiple) {
 ```javascript
 // elements -> divider -> view.vue
 <el-divider :content-position="element.options.textPosition">
-    {{ element.name }}
+  {{ element.name }}
 </el-divider>
 ```
 
@@ -1123,20 +1068,22 @@ handleMultipleChange(multiple) {
   :class="[
     'view-form-item',
     {
-       active: select.key === element.key,
-       grid: element.type === 'grid',
+      active: select.key === element.key,
+      grid: element.type === 'grid',
     },
   ]"
   ...
-> ... </div>
+>
+  ...
+</div>
 
 // layout.scss
-.view-form-item{
-    ...
+.view-form-item {
+  ...
 }
 
-.view-form-item.grid{
-    ...
+.view-form-item.grid {
+  ...
 }
 ```
 
@@ -1145,34 +1092,35 @@ handleMultipleChange(multiple) {
 ```javascript
 // elements -> grid -> view.vue
 <el-row type="flex">
-    <el-col :span="12">
-      <draggable
-        v-model="list"
-        v-bind="{
-          group: 'view'
-        }"
-      >
-        <transition-group tag="div" class="el-col-list">
-          <div v-for="(element, index) in list" :key="index">
-            <span>{{ element }}</span>
-          </div>
-        </transition-group>
-      </draggable>
-    </el-col>
-    <el-col :span="12">
-        <div class="el-col-list"></div>
-    </el-col>
+  <el-col :span="12">
+    <draggable
+      v-model="list"
+      v-bind="{
+        group: 'view',
+      }"
+    >
+      <transition-group tag="div" class="el-col-list">
+        <div v-for="(element, index) in list" :key="index">
+          <span>{{ element }}</span>
+        </div>
+      </transition-group>
+    </draggable>
+  </el-col>
+  <el-col :span="12">
+    <div class="el-col-list"></div>
+  </el-col>
 </el-row>
 
 ...
 export default {
+  data() {
     ...
-    data(){
-        return {
-            list: []
-        }
+    return {
+      list: [],
     }
+  },
 }
+
 ```
 
 &emsp;&emsp;;`el-col-list`内元素渲染为表单组件，局部批量注册组件。
@@ -1180,41 +1128,37 @@ export default {
 ```javascript
 // elements -> grid -> view.vue
 <transition-group tag="div" class="el-col-list">
-    <component
-       v-for="(element, index) in list" :key="index"
-       :is="element.component"
-       :element="element"
-    />
+  <component :is="element.component" v-for="(element, index) in list" :key="index" :element="element" />
 </transition-group>
 
-import Draggable from "vuedraggable"
-import components from "elements/view"
+import Draggable from 'vuedraggable'
+import components from 'elements/view'
 
 export default {
   ...
-  name: "DwGrid",
+  name: 'DwGrid',
   components: {
     Draggable,
-    ...components
+    ...components,
   },
-  data(){
+  data() {
     return {
-      list: []
+      list: [],
     }
-  }
+  },
 }
 ```
 
 &emsp;&emsp;;`ElementCate`元素拖入，控制台会报错组件未注册，但是代码内明确注册了组件。在生命周期`beforeCreate`内打印`this.$options.components`，页面注册的组件只有`Draggable`和栅格`DwGrid`。其余批量注册的组件均不存在，即组件并未注册。造成错误的原因是组件之间的循环引用，若表单元素全局注册，这种错误不会存在。但是组件局部注册，`DwGrid`内部引用`DwGrid`，就变成了一个循环，组件不知道如何完全解析出自身。解决方式有两种，[vue](https://cn.vuejs.org/v2/guide/components-edge-cases.html#%E7%BB%84%E4%BB%B6%E4%B9%8B%E9%97%B4%E7%9A%84%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8) 官方给出了示例，由于是批量注册，`webpack`的异步`import`不适用，在生命周期`beforeCreate`时去注册它。
 
 ```javascript
-import components from "elements/view"
+import components from 'elements/view'
 
 export default {
   ...
   beforeCreate() {
-     Object.assign(this.$options.components, components)
-  }
+    Object.assign(this.$options.components, components)
+  },
 }
 ```
 
@@ -1223,51 +1167,42 @@ export default {
 ```javascript
 // elements -> grid -> view.vue
 <transition-group class="el-col-list" ...>
-    <div
-      v-for="element in list"
-      :key="element.key"
-      :class="[
-         'view-form-item',
-         {
-           active: select.key === element.key,
-          grid: element.type === 'grid',
-         },
-     ]"
-     :data-model="element.model"
-     @click.stop="handleSelect(element)"
-   >
-       <component
-           :is="element.component"
-           :element="element"
-       />
+  <div
+    v-for="element in list"
+    :key="element.key"
+    :class="[
+      'view-form-item',
+      {
+        active: select.key === element.key,
+        grid: element.type === 'grid',
+      },
+    ]"
+    :data-model="element.model"
+    @click.stop="handleSelect(element)"
+  >
+    <component :is="element.component" :element="element" />
 
-       <div class="item-drag" v-if="select.key === element.key">
-           <i class="iconfont icon-drag drag-icon"></i>
-       </div>
-
-       <div class="item-action" v-if="select.key === element.key">
-           <i
-             class="iconfont icon-clone"
-             @click.stop="handleClone"
-           ></i>
-           <i
-             class="iconfont icon-trash"
-             @click.stop.once="handleDelete"
-           ></i>
-       </div>
+    <div v-if="select.key === element.key" class="item-drag">
+      <i class="iconfont icon-drag drag-icon"></i>
     </div>
+
+    <div v-if="select.key === element.key" class="item-action">
+      <i class="iconfont icon-clone" @click.stop="handleClone"></i>
+      <i class="iconfont icon-trash" @click.stop.once="handleDelete"></i>
+    </div>
+  </div>
 </transition-group>
 
 export default {
   methods: {
     handleSelect(element) {
-      store.commit("SET_SELECT", element)
+      store.commit('SET_SELECT', element)
     },
 
-    handleClone() {},
+    handleClone() { },
 
-    handleDelete() {}
-  }
+    handleDelete() { },
+  },
 }
 ```
 
@@ -1278,20 +1213,15 @@ export default {
 ```javascript
 // ViewFrom.vue
 <transition-group class="view-form">
-    <widget
-       v-for="(element, index) in data.list"
-       :index='index'
-       :key="element.key"
-       :element="element"
-    />
+  <widget v-for="(element, index) in data.list" :key="element.key" :index="index" :element="element" />
 </transition-group>
 
-import Widget from "./Widget"
+import Widget from './Widget'
 
 export default {
   components: {
-    Widget
-  }
+    Widget,
+  },
 }
 ```
 
@@ -1300,20 +1230,15 @@ export default {
 ```javascript
 // elements -> grid -> view.vue
 <transition-group class="el-col-list">
-    <widget
-       v-for="(element, index) in list"
-       :index='index'
-       :key="element.key"
-       :element="element"
-    />
+  <widget v-for="(element, index) in list" :key="element.key" :index="index" :element="element" />
 </transition-group>
 
-// import Widget from "components/ButtonView/Widget.vue"
+// import Widget from 'components/ButtonView/Widget.vue'
 
 export default {
   components: {
-    Widget: () => import("components/ButtonView/Widget.vue")
-  }
+    Widget: () => import('components/ButtonView/Widget.vue'),
+  },
 }
 ```
 
@@ -1323,35 +1248,31 @@ export default {
 // elements -> index.js
 const layout = [
   {
-     ...
-     type: "grid",
-     name: "栅格布局",
-     columns: [
-       {
-            list: []
-       }
-       ...
-    ]
-  }
+    ...
+    type: 'grid',
+    name: '栅格布局',
+    columns: [
+      {
+        list: [],
+      },
+      ...
+    ],
+  },
 ]
 
 // elements -> grid -> view.vue
 <el-row>
-    <el-col
-      :span="12"
-      v-for="(column, index) in element.columns"
-      :key="index"
-    >
-      <draggable v-model="column.list" ...>
-          ...
-          <widget
-             v-for="(element, index) in column.list"
-             :index='index'
-             :key="element.key"
-             :element="element"
-          />
-      </draggable>
-    </el-col>
+  <el-col v-for="(column, index) in element.columns" :key="index" :span="12">
+    <draggable v-model="column.list" ...>
+      ...
+      <widget
+        v-for="(element, index) in column.list"
+        :key="element.key"
+        :index="index"
+        :element="element"
+      />
+    </draggable>
+  </el-col>
 </el-row>
 ```
 
@@ -1361,46 +1282,48 @@ const layout = [
 // elements -> index.js
 const layout = [
   {
-     ...
-     type: "grid",
-     name: "栅格布局",
-     options: {
-        gutter: 0,
-        isFlex: true,
-        justify: "start",
-        align: "top",
+    ...
+    type: 'grid',
+    name: '栅格布局',
+    options: {
+      gutter: 0,
+      isFlex: true,
+      justify: 'start',
+      align: 'top',
     },
     columns: [
-       {
-            span: 12,
-            xs: 12,
-            sm: 12,
-            md: 12,
-            lg: 12,
-            xl: 12,
-            list: []
-       }
-       ...
-    ]
-  }
+      {
+        span: 12,
+        xs: 12,
+        sm: 12,
+        md: 12,
+        lg: 12,
+        xl: 12,
+        list: [],
+      },
+      ...
+    ],
+  },
 ]
 
 // elements -> grid -> view.vue
 <el-row
-    type="flex"
-    :gutter="element.options.gutter"
-    :justify="element.options.justify"
-    :align="element.options.align"
+  type="flex"
+  :gutter="element.options.gutter"
+  :justify="element.options.justify"
+  :align="element.options.align"
+>
+  <el-col
+    :xs="element.options.isFlex ? undefined : column.xs"
+    :sm="element.options.isFlex ? undefined : column.sm"
+    :md="element.options.isFlex ? undefined : column.md"
+    :lg="element.options.isFlex ? undefined : column.lg"
+    :xl="element.options.isFlex ? undefined : column.xl"
+    :span="column.span"
+    ...
   >
-    <el-col
-      :xs="element.options.isFlex ? undefined : column.xs"
-      :sm="element.options.isFlex ? undefined : column.sm"
-      :md="element.options.isFlex ? undefined : column.md"
-      :lg="element.options.isFlex ? undefined : column.lg"
-      :xl="element.options.isFlex ? undefined : column.xl"
-      :span="column.span"
-      ...
-    > ... </el-col>
+    ...
+  </el-col>
 </el-row>
 ```
 
@@ -1409,16 +1332,14 @@ const layout = [
 ```javascript
 // elements -> grid -> view.vue
 <el-row ...>
-    <el-col ...>
-        <draggable @add="handleAdd($event, column)" ...>
-            ...
-        </draggable>
-    </el-col>
+  <el-col ...>
+    <draggable ... @add="handleAdd($event, column)"> ... </draggable>
+  </el-col>
 </el-row>
 
 handleAdd({ newIndex }, column) {
-   store.commit("SET_SELECT", column.list[newIndex])
-}
+  store.commit('SET_SELECT', column.list[newIndex])
+},
 ```
 
 &emsp;&emsp;类比原始`ViewForm.vue`，删除元素传参包括索引值、元素列表，`Widget.vue`声明组件传值`data`，栅格内也是如此。
@@ -1426,20 +1347,20 @@ handleAdd({ newIndex }, column) {
 ```javascript
 // ViewForm.vue
 <widget
-   v-for="(element, index) in data.list"
-   :index='index'
-   :data='data'
-   :key="element.key"
-   :element="element"
+  v-for="(element, index) in data.list"
+  :key="element.key"
+  :index="index"
+  :data="data"
+  :element="element"
 />
 
 // elements -> grid -> view.vue
 <widget
-   v-for="(element, index) in column.list"
-   :index="index"
-   :data='column'
-   :key="element.key"
-   :element="element"
+  v-for="(element, index) in column.list"
+  :key="element.key"
+  :index="index"
+  :data="column"
+  :element="element"
 />
 ```
 
@@ -1448,24 +1369,25 @@ handleAdd({ newIndex }, column) {
 ```javascript
 // store -> index.js
 CLONE_ELEMENT(state, { index, element, list }) {
-    ...
-    if (el.type === "grid") {
-       resetGridKey(el)
-    }
-    ...
-    function resetGridKey(element) {
-       element.columns.forEach((column) => {
-          column.list.forEach((el) => {
-              var key = uuid()
-              el.key = key
-              el.model = el.type + "_" + key
-              if (el.type === "grid") {
-                  resetGridKey(el)
-              }
-          })
+  if (el.type === 'grid') {
+    resetGridKey(el)
+  }
+
+  function resetGridKey(element) {
+    element.columns.forEach(column => {
+      column.list.forEach(el => {
+        const key = uuid()
+
+        el.key = key
+        el.model = el.type + '_' + key
+
+        if (el.type === 'grid') {
+          resetGridKey(el)
+        }
       })
-   }
-}
+    })
+  }
+},
 ```
 
 ## Dialog 公共对话框和 AceEditor
@@ -1475,20 +1397,20 @@ CLONE_ELEMENT(state, { index, element, list }) {
 ```javascript
 // layout -> components -> ButtonView.vue
 handleUploadJson() {
-      formatJson(this.$refs.uploadAceEditor.getValue())
-        .then((json) => {
-          store.commit("SET_DATA", json)
-          this.showUpload = false
-        })
-        .catch((err) => {
-          this.$message({
-            message: "数据格式有误",
-            type: "error",
-            center: true,
-          })
-          console.error(err)
-        })
-}
+  formatJson(this.$refs.uploadAceEditor.getValue())
+    .then(json => {
+      store.commit('SET_DATA', json)
+      this.showUpload = false
+    })
+    .catch(err => {
+      this.$message({
+        message: '数据格式有误',
+        type: 'error',
+        center: true,
+      })
+      console.error(err)
+    })
+},
 ```
 
 &emsp;&emsp;粘贴`json`数据，只有用户事先授予网站或应用对剪切板的访问许可后，才能使用异步剪切板读取方法 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/clipboard)。使用`navigator.clipboard`来访问剪切板，`readText()`异步读取剪切板内容，由于浏览器出于安全考虑，非本地或者网站是`http`协议，都不能读取剪切板内容。可在`http`或`https`网站控制台打印`navigator.clipboard`，`http`协议网站为`undefined`。故只有当`https`网站或者用户授予才可粘贴，否则显示取消按钮，由用户手动粘贴。
@@ -1497,26 +1419,26 @@ handleUploadJson() {
 // layout -> components -> ButtonView.vue
 ...
 <template slot="action">
-   <el-button size="small" v-if="showPasteBtn" @click="handlePaste"
-   >粘贴</el-button>
-   <el-button size="small" v-else @click="showUpload = false"
-   >取消</el-button>
+  <el-button v-if="showPasteBtn" size="small" @click="handlePaste">粘贴</el-button>
+
+  <el-button v-else size="small" @click="showUpload = false">取消</el-button>
 </template>
 
 ...
 export default {
-    data(){
-        return {
-            showPasteBtn: !!navigator.clipboard
-        }
+  data() {
+    return {
+      showPasteBtn: !!navigator.clipboard,
+    }
+  },
+  methods: {
+    ...
+    handlePaste() {
+      navigator.clipboard.readText().then(res => {
+        this.$refs.uploadAceEditor.setValue(res)
+      })
     },
-    methods: {
-        ...
-        handlePaste() {
-          navigator.clipboard.readText().then((res) => {
-            this.$refs.uploadAceEditor.setValue(res)
-          })
-        }
+  },
 }
 ```
 
@@ -1524,49 +1446,48 @@ export default {
 
 ```javascript
 // layout -> components -> ButtonView.vue
-<el-button ... class="copyJson" @click="handleCopyJson">
-    复制</el-button
->
+<el-button ... class="copyJson" @click="handleCopyJson"> 复制</el-button>
 
 handleCopyJson() {
-  this.handleCopyText("jsonAceEditor", ".copyJson")
-}
+  this.handleCopyText('jsonAceEditor', '.copyJson')
+},
 
 handleCopyText(ref, className) {
-   copyText(this.$refs[ref].getValue(), className)
-     .then((res) => {
-       this.$message({
-          message: "复制成功",
-          type: "success",
-          center: true,
-       })
-     })
-     .catch((err) => {
-       this.$message({
-          message: "复制失败",
-          type: "error",
-          center: true,
-       })
-     })
-}
+  copyText(this.$refs[ref].getValue(), className)
+    .then(res => {
+      this.$message({
+        message: '复制成功',
+        type: 'success',
+        center: true,
+      })
+    })
+    .catch(err => {
+      this.$message({
+        message: '复制失败',
+        type: 'error',
+        center: true,
+      })
+    })
+},
 
 // utils -> index.js
 function copyText(text, className) {
+  const clipboard = new Clipboard(className, {
+    text: () => text,
     ...
-    var clipboard = new Clipboard(className, {
-        text: () => text
+  })
+
+  return new Promise((resolve, reject) => {
+    clipboard.on('success', () => {
+      resolve()
+      clipboard.destroy()
     })
-    
-    return new Promise((resolve, reject) => {
-        clipboard.on('success', () => {
-            resolve()
-            clipboard.destroy()
-        })
-        clipboard.on('error', () => {
-            reject()
-            clipboard.destroy()
-        })
+
+    clipboard.on('error', () => {
+      reject()
+      clipboard.destroy()
     })
+  })
 }
 ```
 
@@ -1575,30 +1496,30 @@ function copyText(text, className) {
 ```javascript
 // layout -> components -> ButtonView.vue
 <public-dialog>
-    ...
-    <generate-form :data="data" />
+  ...
+  <generate-form :data="data" />
 </public-dialog>
 
 ...
 export default {
-    computed(){
-        data(){
-            return store.state.data
-        }
-    }
+  computed: {
+    data() {
+      return store.state.data
+    },
+  },
 }
 
 // components -> ButtonView -> GenerateForm.vue
 <div class="generate-form">
-    <el-form ...>
-      <component .../>
-    </el-form>
+  <el-form ...>
+    <component ... />
+  </el-form>
 </div>
 
 export default {
-    props:{
-        data:{ ... }
-    }
+  props: {
+    data: { ... },
+  },
 }
 ```
 
@@ -1606,23 +1527,24 @@ export default {
 
 ```javascript
 // components -> ButtonView -> GenerateForm.vue
-<component ... :draggable="false"/>
+<component ... :draggable="false" />
 
 // elements -> grid -> view.vue
 <el-col>
-    <draggable v-if='draggable' > ... </draggable>
-    <template v-else>
-        <component ...>
-    </template>
+  <draggable v-if="draggable"> ... </draggable>
+  
+  <template v-else>
+    <component ...>
+  </template>
 </el-col>
 
-import components from "elements/view"
+import components from 'elements/view'
 
 export default {
-    beforeCreate(){
-        Object.assign(this.$options.components, components)
-    }
-    ...
+  beforeCreate() {
+    Object.assign(this.$options.components, components)
+  },
+  ...
 }
 ```
 
@@ -1630,43 +1552,36 @@ export default {
 
 ```javascript
 // elements -> input -> view.vue
-<input :value='value' />
+<input :value="value" />
 
 ...
 export default {
   ...
   props: {
-    value: {}
-  }
+    value: {},
+  },
 }
 
 // components -> ButtonView -> Widget.vue
-<component
-   ...
-   :value='element.options.defaultValue'
-   draggable
-/>
+<component ... :value="element.options.defaultValue" draggable />
 ```
 
 &emsp;&emsp;点击预览尚不可显示默认值，而且默认值必然与表单组件双向绑定。故需自定义表单组件元素的 [v-model](https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model)，声明传入组件的`prop`，同时表单值变化触发某个事件的时候，更新`prop`。文字和`html`不做双向绑定，但是内部依然可以组件传值`value`，另外分割线无需组件传值。
 
 ```javascript
 // elements -> input -> view.vue
-<el-input ...
-    :value="value"
-    @input="value => $emit('change', value)"
-/>
+<el-input ... :value="value" @input="value => $emit('change', value)" />
 
 export default {
   ...
   model: {
-    prop: "value",
-    event: "change"
+    prop: 'value',
+    event: 'change',
   },
   props: {
     ...
     value: {},
-  }
+  },
 }
 ```
 
@@ -1674,54 +1589,53 @@ export default {
 
 ```javascript
 // components -> ButtonView -> GenerateForm.vue
-<el-form :model='models' ...>
-    <components
-        v-model='models[element.model]'
-        :models='models'
-        ...
-    />
+<el-form :model="models" ...>
+  <components v-model="models[element.model]" :models="models" ... />
 </el-form>
 
 export default {
-  data(){
-      return {
-          models: {}
-      }
+  data() {
+    return {
+      models: {},
+    }
   },
   created() {
     this.handleSetModels()
   },
-  handleSetModels() {
-      var models = {}
+  methods: {
+    handleSetModels() {
+      const models = {}
+
       getGridModel(this.data.list)
+
       this.models = models
+
       function getGridModel(list) {
-        list.forEach((element) => {
-          if (element.type === "grid") {
+        list.forEach(element => {
+          if (element.type === 'grid') {
             element.columns.forEach(column => {
               if (column.list.length) {
                 getGridModel(column.list)
               }
             })
           } else {
-            if (element.type !== "divider") {
+            if (element.type !== 'divider') {
               models[element.model] = element.options.defaultValue
             }
-        }
-     }
+          }
+        })
+      }
+    },
+  },
 }
 
 // elements -> grid -> view.vue
-<components
-   v-model='models[element.model]'
-   :models='models'
-   ...
-/>
+<components v-model="models[element.model]" :models="models" ... />
 
 export default {
-    props:{
-        models:{ ... }
-    }
+  props: {
+    models: { ... },
+  },
 }
 ```
 
@@ -1730,16 +1644,16 @@ export default {
 ```javascript
 // components -> ButtonView -> GenerateForm.vue
 getData() {
-      return deepClone(this.models)
-}
+  return deepClone(this.models)
+},
 
 // layout -> components -> ButtonView.vue
-<generate-form :data="data" ref="generateForm" .../>
+<generate-form ref="generateForm" :data="data" ... />
 
 handleGetData() {
-      this.models = this.$refs.generateForm.getData()
-      this.showPreviewData = true
-}
+  this.models = this.$refs.generateForm.getData()
+  this.showPreviewData = true
+},
 ```
 
 ## Tinymce 富文本编辑器
@@ -1751,35 +1665,26 @@ handleGetData() {
 ```javascript
 // elements -> editor -> view.vue
 images_upload_handler: (blobInfo, success, failure) => {
-  this.$emit("editor-upload-image", {
-     blobInfo,
-     success,
-     failure,
-     model: this.element.model,
-   })
-}
+  this.$emit('editor-upload-image', {
+    blobInfo,
+    success,
+    failure,
+    model: this.element.model,
+  })
+},
 
 // elements -> grid -> view.vue
-<component
-    @editor-upload-image="
-        data => $emit('editor-upload-image', data)"
-/>
+<component @editor-upload-image="data => $emit('editor-upload-image', data)" />
 
 // components -> ButtonView -> GenerateForm.vue
-<component
-    @editor-upload-image="
-        data => $emit('editor-upload-image', data)"
-/>
+<component @editor-upload-image="data => $emit('editor-upload-image', data)" />
 
 // layout -> components -> ButtonView.vue
-<generate-form
-   ...
-   @editor-upload-image="editorUploadImage"
-/>
+<generate-form ... @editor-upload-image="editorUploadImage" />
 
-editorUploadImage({ model, blobInfo, success, failure }) {
-    success("data:image/jpeg;base64," + blobInfo.base64())
-}
+editorUploadImage({ blobInfo, success }) {
+  success('data:image/jpeg;base64,' + blobInfo.base64())
+},
 ```
 
 ## blank 自定义区域
@@ -1792,27 +1697,27 @@ editorUploadImage({ model, blobInfo, success, failure }) {
 
 ```javascript
 <generate-form>
-    <div slot='A'>A</div>
-    <div slot='B'>B</div>
-    <div slot='C'>C</div>
-    ...
+  <div slot="A">A</div>
+  <div slot="B">B</div>
+  <div slot="C">C</div>
+  ...
 </generate-form>
 
 // generate-form
 <div>
-    <blank-A>
-        <template slot='A'>
-            <slot name='A' />
-        </template >
-        <template slot='B'>
-            <slot name='B' />
-        </template >
-    </blank-A>
+  <blank-A>
+    <template slot="A">
+      <slot name="A" />
+    </template>
+    <template slot="B">
+      <slot name="B" />
+    </template>
+  </blank-A>
 </div>
 
 // black-A
 <div>
-    <slot name='A'>
+  <slot name="A" />
 </div>
 ```
 
@@ -1820,51 +1725,51 @@ editorUploadImage({ model, blobInfo, success, failure }) {
 
 ```javascript
 <generate-form>
-    <div slot='A'>A</div>
-    <div slot='B'>B</div>
-    <div slot='C'>C</div>
-    ...
+  <div slot="A">A</div>
+  <div slot="B">B</div>
+  <div slot="C">C</div>
+  ...
 </generate-form>
 
 // generate-form
 <div>
-    <grid-1>
-        <template slot='A'>
-            <slot name='A' />
-        </template >
-        <template slot='B'>
-            <slot name='B' />
-        </template >
-    </grid-1>
+  <grid-1>
+    <template slot="A">
+      <slot name="A" />
+    </template>
+    <template slot="B">
+      <slot name="B" />
+    </template>
+  </grid-1>
 </div>
 
 // grid1
 <div>
-    <grid-2>
-        <template slot='A'>
-            <slot name='A' />
-        </template >
-        <template slot='B'>
-            <slot name='B' />
-        </template >
-    </grid-2>
+  <grid-2>
+    <template slot="A">
+      <slot name="A" />
+    </template>
+    <template slot="B">
+      <slot name="B" />
+    </template>
+  </grid-2>
 </div>
 
 // grid-2
 <div>
-    <black-B>
-        <template slot='A'>
-            <slot name='A' />
-        </template >
-        <template slot='B'>
-            <slot name='B' />
-        </template >
-    </black-B>
+  <black-B>
+    <template slot="A">
+      <slot name="A" />
+    </template>
+    <template slot="B">
+      <slot name="B" />
+    </template>
+  </black-B>
 </div>
 
 // black-B
 <div>
-    <slot name='B'>
+  <slot name="B" />
 </div>
 ```
 
@@ -1872,52 +1777,47 @@ editorUploadImage({ model, blobInfo, success, failure }) {
 
 ```javascript
 // components -> ButtonView -> GenerateForm.vue
-<component :slots='slots'>
-    <template
-        v-for="slot in slots"
-        :slot="slot"
-        slot-scope="scope"
-    >
-       <slot :name="slot" :model="scope.model" />
-    </template>
+<component :slots="slots">
+  <template v-for="slot in slots" :slot="slot" slot-scope="scope">
+    <slot :name="slot" :model="scope.model" />
+  </template>
 </component>
 
 handleSetModels() {
-  var models = {}
-  var slots = []
+  const models = {}
+  const slots = []
+
   getGridModel(this.data.list)
+
   this.models = models
   this.slots = slots
+
   function getGridModel(list) {
-     list.forEach((element) => {
-      if (element.type === "grid") {
+    list.forEach(element => {
+      if (element.type === 'grid') {
         ...
       } else {
-        if (element.type === "blank") {
+        if (element.type === 'blank') {
           slots.push(element.model)
         }
         ...
       }
     })
   }
-}
+},
 
 // elements -> grid -> view.vue
-<component :slots='slots'>
-    <template
-        v-for="slot in slots"
-        :slot="slot"
-        slot-scope="scope"
-    >
-        <slot :name="slot" :model="scope.model" />
-    </template>
+<component :slots="slots">
+  <template v-for="slot in slots" :slot="slot" slot-scope="scope">
+    <slot :name="slot" :model="scope.model" />
+  </template>
 </component>
 
 // elements -> blank -> view.vue
 <div>
-    <slot :name="element.model" :model="models">
-       <div class="custom-area">{{ element.model }}</div>
-    </slot>
+  <slot :name="element.model" :model="models">
+    <div class="custom-area">{{ element.model }}</div>
+  </slot>
 </div>
 ```
 
@@ -1928,33 +1828,29 @@ handleSetModels() {
 &emsp;&emsp;表单重置其实调用`el-form` `resetFields`方法基本就能完成重置，但是时间和日期选择器重置存在`bug`。时间范围下绑定值`times`，初始值`null`，选择时间后重置，`times`值为`[ null ]`，绑定值空数组`[]`，打开时间选择器无法选择时间。日期范围下均存在这种`bug`，故范围选择方式统一默认值`null`，表单内部重置重写一次。
 
 ```javascript
-<el-form :model='form' ref="form">
-  <el-form-item prop='times' label="时间范围">
-    <el-time-picker
-      value-format="HH-mm-ss"
-      is-range
-      v-model="form.times"
-    ></el-time-picker>
+<el-form ref="form" :model="form">
+  <el-form-item prop="times" label="时间范围">
+    <el-time-picker v-model="form.times" value-format="HH-mm-ss" is-range></el-time-picker>
   </el-form-item>
 </el-form>
 
 <el-button @click="$refs.form.resetFields()">重置</el-button>
 
 export default {
-    data(){
-        return {
-            form:{
-                times: null
-            }
-        }
+  data() {
+    return {
+      form: {
+        times: null,
+      },
     }
+  },
 }
 
 // components -> ButtonView -> GenerateForm.vue
 reset() {
   this.$refs.modelsForm.resetFields()
   this.resetTimePicker()
-}
+},
 
 resetTimePicker() {
   for (const key of Object.keys(this.models)) {
@@ -1966,7 +1862,7 @@ resetTimePicker() {
       this.models[key] = null
     }
   }
-}
+},
 ```
 
 ### 校验规则
@@ -1974,68 +1870,61 @@ resetTimePicker() {
 &emsp;&emsp;校验规则大多数涉及必填，只有单行文本和多行文本较为特殊。单行文本支持验证器验证和正则表达式验证，多行文本支持正则表达式验证。必填字段星号可由组件传值`el-fom-item` `required`属性控制。
 
 ```javascript
-<el-form-item :required="element.options.required" >...</el-form-item>
+<el-form-item :required="element.options.required">...</el-form-item>
 ```
 
 &emsp;&emsp;;`element-ui` `el-form`表单验证方式包括四种，必填方式最为常用，指定`required` `true`开启必填，正则表达式方式`pattern`可直接指定正则表达式，验证器方式包括字符串`string`、数字`number`、整数`interger`、浮点数`float`、`URL`类型、`16`进制`hex`、电子邮箱`email`等，自定义验证方式最灵活，可定制化设置验证规则，详细参考 [element-ui](https://element.eleme.cn/2.14/#/zh-CN/component/form)。
 
 ```javascript
 rules: {
-  name: [
-     { required: true, message: '请输入姓名' }
-  ],
-  phone: [
-     { pattern: /^1[3456789]d{9}$/, message: '格式有误' }
-  ],
-  email: [
-     { type: 'email', message: '格式有误' }
- ],
- psw: [
-    { validator: validatePsw }
- ]
-}
+  name: [{ required: true, message: '请输入姓名' }],
+  phone: [{ pattern: /^1[3456789]d{9}$/, message: '格式有误' }],
+  email: [{ type: 'email', message: '格式有误' }],
+  psw: [{ validator: validatePsw }],
+},
 ```
 
 &emsp;&emsp;表单初始化时不仅创建`models`、`slots`，验证规则`rules`也要创建。所有属性均会添加必填方式，但是`required`为`false`不会开启必填。`isPattern`为正则验证方式，其中单行文本和多行文本独有，`new RegExp`实例化正则。
 
 ```javascript
 // components -> ButtonView -> GenerateForm.vue
-<el-form>
+<el-form />
 
-handleSetModels() {
-      ...
-      var rules = {}
-      getGridModel(this.data.list)
-      this.rules = rules
-      function getGridModel(list) {
-        list.forEach((element) => {
-          if (element.type === "grid") {
-            ...
-          } else {
-            rules[element.model] = [
-              {
-                required: !!element.options.required,
-                message:
-                  element.options.requiredMessage || `请输入${element.name}`,
-              },
-            ]
-            
-            if (element.options.isType) {
-              rules[element.model].push({
-                type: element.options.type,
-                message:
-                  element.options.typeMessage || `${element.name}验证不匹配`,
-              })
-            }
-            if (element.options.isPattern) {
-              rules[element.model].push({
-                pattern: new RegExp(element.options.pattern),
-                message:
-                  element.options.patternMessage || `${element.name}格式不匹配`,
-              })
-            }
-         }
-     })
+function handleSetModels() {
+  const rules = {}
+  ...
+  getGridModel(this.data.list)
+
+  this.rules = rules
+
+  function getGridModel(list) {
+    list.forEach(element => {
+      if (element.type === 'grid') {
+        ...
+      } else {
+        rules[element.model] = [
+          {
+            required: !!element.options.required,
+            message: element.options.requiredMessage || `请输入${element.name}`,
+          },
+        ]
+
+        if (element.options.isType) {
+          rules[element.model].push({
+            type: element.options.type,
+            message: element.options.typeMessage || `${element.name}验证不匹配`,
+          })
+        }
+
+        if (element.options.isPattern) {
+          rules[element.model].push({
+            pattern: new RegExp(element.options.pattern),
+            message: element.options.patternMessage || `${element.name}格式不匹配`,
+          })
+        }
+      }
+    })
+  }
 }
 ```
 
@@ -2043,22 +1932,24 @@ handleSetModels() {
 
 ```javascript
 <common-view ...>
-    <el-input
-        type='number'
-        @input='input'
-        v-if='["number", "integer", "float"].includes(element.options.type)'
-    />
-    <el-input @input='input' v-else/>
+  <el-input
+    v-if="element.options.isType && ['number', 'integer', 'float'].includes(element.options.type)"
+    type="number"
+    @input="input"
+  />
+
+  <el-input v-else @input="input" />
 </common-view>
 
 input(value) {
-  const type = this.element.options.type
+  const { type, isType } = this.element.options
 
-  if (["number", "integer", "float"].includes(type) && value !== "") {
-     value = Number(value)
+  if (isType && ['number', 'integer', 'float'].includes(type) && value !== '') {
+    value = Number(value)
   }
-  this.$emit("change", value)
-}
+
+  this.$emit('change', value)
+},
 ```
 
 ### 生成代码
@@ -2067,22 +1958,18 @@ input(value) {
 
 ```javascript
 // elements -> cascader -> view.vue
-<el-cascader
-    ...
-    :options="remoteOption
-    && remoteOption[element.options.remoteOption]"
->
+<el-cascader ... :options="remoteOption && remoteOption[element.options.remoteOption]" />
 ```
 
 &emsp;&emsp;若组件使用了富文本编辑器，默认包含事件`editor-upload-image`及其对应处理函数。
 
 ```javascript
 editorUploadImage({ model, blobInfo, success, failure }) {
-    // success('图片src')/failure('失败说明')可异步调用
-    // success('http://xxx.xxx.xxx/xxx/image-url.png')
-    // failure('上传失败')
-    success('data:image/jpeg;base64,' + blobInfo.base64())
-}
+  // success(图片地址) / failure(失败说明) 可异步调用
+  // success('http://xxx.xxx.xxx/xxx/image-url.png')
+  // failure('上传失败')
+  success('data:image/jpeg;base64,' + blobInfo.base64())
+}, 
 ```
 
 &emsp;&emsp;插槽部分根据`slots`列表插入组件内部，默认包含插槽名和变量绑定方式。`editData`传入组件内部，`GenerateForm.vue`内部需要合并默认值和`editData`。
@@ -2097,30 +1984,30 @@ this.models = Object.assign(models, deepClone(this.value))
 
 ```javascript
 // compoents -> AceEditor.vue
-this.editor.session.on("change", (delta) => {
-   this.$emit("change", this.getValue())
+this.editor.session.on('change', delta => {
+  this.$emit('change', this.getValue())
 })
 
 // elements -> html -> config.vue
-<ace-editor @change="handelChange" .../>
+<ace-editor ... @change="handelChange" />
 
 handelChange(text) {
-   this.data.options.defaultValue = text
-}
+  this.data.options.defaultValue = text
+},
 ```
 
 &emsp;&emsp;若表单内包括多个`html`组件，切换组件发现`AceEditor`内部值并未发生改变。`html`字段属性始终是同一个`AceEditor`，所以值不会发生改变。内部需要监听`html`对象的改变，调用组件内部`setValue`方法赋值。元素拖入立即执行监听`hander`，默认对象非深度监听，但是不能开启深度监听，原因是因为组件内部`change`事件触发更新默认值时，开启深度监听后，`hander`会触发再次调用组件内`setValue`，`setValue`再次触发`change`，会造成循环调用页面卡死。即监听对象引用改变，不监听对象内容改变即可。
 
 ```javascript
 data: {
-   handler() {
-     this.$nextTick(() => {
-       this.$refs.htmlAceEditor.setValue(this.data.options.defaultValue)
-     })
-   },
-   deep: false,
-   immediate: true
-}
+  handler() {
+    this.$nextTick(() => {
+      this.$refs.htmlAceEditor.setValue(this.data.options.defaultValue)
+    })
+  },
+  deep: false,
+  immediate: true,
+},
 ```
 
 ## 发布维护
@@ -2131,23 +2018,20 @@ data: {
 
 ```javascript
 // index.js
-const components = [
-    GenerateForm,
-    MakingForm
-]
+const components = [GenerateForm, MakingForm]
 
-const install = (Vue) => {
-  components.forEach((component) => {
+const install = Vue => {
+  components.forEach(component => {
     Vue.component(component.name, component)
   })
 }
 
 export default {
-  install
+  install,
 }
 
 // 引用方式
-import DwFormMaking from "dw-form-making"
+import DwFormMaking from 'dw-form-making'
 Vue.use(DwFormMaking)
 ```
 
@@ -2155,16 +2039,13 @@ Vue.use(DwFormMaking)
 
 ```javascript
 // index.js
-import GenerateForm from "components/ButtonView/GenerateForm"
-import MakingForm from "./layout/index"
+import GenerateForm from 'components/ButtonView/GenerateForm'
+import MakingForm from './layout/index'
 
-export {
-    GenerateForm,
-    MakingForm
-}
+export { GenerateForm, MakingForm }
 
 // 调用方式
-import { GenerateForm, MakingForm } from "dw-form-making"
+import { GenerateForm, MakingForm } from 'dw-form-making'
 
 Vue.component(GenerateForm.name, GenerateForm)
 Vue.component(MakingForm.name, MakingForm)
@@ -2175,9 +2056,9 @@ Vue.component(MakingForm.name, MakingForm)
 ```javascript
 // package.json
 "scripts": {
-    ...
-    "publish": "vue-cli-service build --target lib --name DwFormMaking ./src/index.js"
-}
+  ...
+  "publish": "vue-cli-service build --target lib --name DwFormMaking ./src/index.js",
+},
 ```
 
 &emsp;&emsp;配置`package.json`，详细描述发布包所需字段。
@@ -2217,7 +2098,7 @@ Vue.component(MakingForm.name, MakingForm)
 
 ### Git 远程库维护
 
-&emsp;&emsp;;`github`新建仓库后，本地再关联远程仓库。
+&emsp;&emsp;;`GitHub`新建仓库后，本地再关联远程仓库。
 
 ```javascript
 git remote add origin https://github.com/username/repository.git
@@ -2231,7 +2112,7 @@ git push origin master
 
 ### 在线预览
 
-&emsp;&emsp;;`github`提供了静态页面的预览功能，并默认展示分支下的`index.html`文件。
+&emsp;&emsp;;`GitHub`提供了静态页面的预览功能，并默认展示分支下的`index.html`文件。
 
 &emsp;&emsp;因此可以单独创建一个`page`分支。
 
@@ -2249,7 +2130,7 @@ git branch page
 git push origin page
 ```
 
-&emsp;&emsp;假设上述都没有问题，那么将会在`github`查看到如下分支结构。
+&emsp;&emsp;假设上述都没有问题，那么将会在`GitHub`查看到如下分支结构。
 
 ![](/app/form-making/branch.png)
 
@@ -2277,18 +2158,26 @@ git push origin page
 
 ## 更新日志
 
-### 20/12/11 17:18
+### 2020/12/11 17:18
 
 &emsp;&emsp;可能你也注意到了，代码中用到`store`的地方都是引入再使用，为什么不放在`vue`原型对象`prototype`上，代码中将最大程度还原`vuex`的调用方式。
 
 ```javascript
-import store from "./store"
+import store from './store'
 Vue.prototype.$store = store
 ```
 
 &emsp;&emsp;但是发布为 [vue](https://cn.vuejs.org/v2/guide/plugins.html) 插件，`store`放在`vue`的原型上不是那么理想，首先来看看组件`install`方法，第一个参数是`Vue`构造器，也就是执行`Vue.use()`时的`Vue`，倘若像上述给予`Vue`原型上添加`$store`，有一个很糟糕的情况，则是`$store`关键字被占用了，页面只有单独定义其他关键字，否则`$store`直接被覆盖掉。更糟糕的情况则是引用`vuex`状态管理的项目，由于`vuex`在`beforeCreate`首行注入`$store`，若同时集成表单工具，可能会导致工具崩溃，出现意料之外的`bug`。
 
 &emsp;&emsp;此次更新修复了栅格复制`key`值的`bug`，删除掉组件内部分未引用的变量。并且在工具内控制台输出了彩蛋（[试一试](https://dongwei1125.github.io/dw-form-making/)），不包括`npm`组件。
+
+### 2022/03/05 17:35
+
+&emsp;&emsp;虽然是个人维护的小项目，代码风格大多数都是统一的，但是也会存在很多不合理的风格。因此根据 [vscode 插件与 npm 包，保存时自动修复代码格式错误](../js/eslint-prettier.md) 一文，引入了`eslint`和`prettier`来规范和格式化项目的代码。组件内`props`传值类型和默认值也极为不合理，通过`eslint`检测已经全部修复。
+
+&emsp;&emsp;另外在仓库下新增了`deploy.sh`脚本，主要用来快捷部署`Pages`静态页面。
+
+&emsp;&emsp;由于`GitHub`的仓库经常访问缓慢或者无响应，因此利用`Gitee`镜像了此仓库（[看一看](https://gitee.com/dongwei1125/dw-form-making)）。
 
 ##  🎉 写在最后
 
@@ -2298,4 +2187,4 @@ Vue.prototype.$store = store
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

@@ -17,8 +17,9 @@
  - 旧脚手架项目如何接入格式化工具
  - 代码提交时自动格式化并规范提交日志
  - `git hook`工具`husky`版本由`v4`迁移至`v7`时，如何修改相关配置项
+ - 常见的格式化问题以及处理方式
 
-&emsp;&emsp;如果你仅关注如何使用，不关心配置流程和步骤，那么你可以跳过并浏览每个章节的小结部分，或者也可以访问 [Github](https://github.com/dongwei1125/eslint-prettier) 仓库。
+&emsp;&emsp;如果你仅关注如何使用，不关心配置流程和步骤，那么你可以跳过并浏览每个章节的小结部分，或者也可以访问 [GitHub](https://github.com/dongwei1125/eslint-prettier) 仓库。
 
 ## 准备工作
 
@@ -109,10 +110,15 @@ git version 2.27.0.windows.1
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     }
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
 ```
 
@@ -192,12 +198,10 @@ npm i eslint eslint-plugin-vue -D
 // .eslintrc.js
 module.exports = {
   root: true,
-  extends: [
-    'plugin:vue/recommended'
-  ],
+  extends: ['plugin:vue/recommended'],
   rules: {
-    quotes: ['error', 'single']
-  }
+    quotes: ['error', 'single'],
+  },
 }
 ```
 
@@ -278,7 +282,7 @@ npx eslint src/App.vue --fix
 ```javascript
 // .eslintrc.js
 module.exports = {
-  ....
+  ...
   rules: {
     ...
     'vue/script-indent': ['error', 2, {
@@ -356,8 +360,8 @@ module.exports = {
 ```javascript
 // .vscode/settings.json
 {
-    ...
-    "editor.formatOnSave": true,
+  ...
+  "editor.formatOnSave": true,
 }
 ```
 
@@ -571,10 +575,15 @@ module.exports = {
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     }
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
 ```
 
@@ -1015,6 +1024,169 @@ git commit -m 'xxx' --no-verify
 
 &emsp;&emsp;两种解决方式，方式一可升级`node`版本，方式二则可安装`lint-staged`的`v11.2.6`及以下版本，推荐方式二。
 
+### 维护配置文件到 package.json
+
+&emsp;&emsp;诸如`.eslintrc.js`和`.prettierrc.js`等配置文件，都维护在开发目录下，显得多而复杂，另外后期此类文件都是不用修改的，还有另外一种配置方式，就是维护至`package.json`下。
+
+&emsp;&emsp;;`eslint`。
+
+```javascript
+// .eslintrc.js
+module.exports = {
+  root: true,
+  extends: ['plugin:vue/recommended', 'plugin:prettier/recommended'],
+  rules: {
+    quotes: ['error', 'single'],
+  },
+}
+
+// package.json
+{
+  ...
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "plugin:vue/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+      "quotes": [
+        "error",
+        "single"
+      ]
+    }
+  }
+}
+```
+
+&emsp;&emsp;;`prettier`。
+
+```javascript
+// .prettierrc.js
+module.exports = {
+  semi: false,
+  printWidth: 110,
+  singleQuote: true,
+  endOfLine: 'crlf',
+  arrowParens: 'avoid',
+}
+
+// package.json
+{
+  ...
+  "prettier": {
+    "semi": false,
+    "printWidth": 110,
+    "singleQuote": true,
+    "endOfLine": "crlf",
+    "arrowParens": "avoid"
+  }
+}
+```
+
+&emsp;&emsp;;`husky`。
+
+```javascript
+// .huskyrc.json
+{
+  "hooks": {
+    "pre-commit": "lint-staged",
+    "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+  }
+}
+
+// package.json
+{
+  ...
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
+```
+
+&emsp;&emsp;;`lint-staged`。
+
+```javascript
+// .lintstagedrc.json
+{
+  "src/**/*.{js,vue}": [
+    "eslint --fix",
+    "git add"
+  ]
+}
+
+// package.json
+{
+  ...
+  "lint-staged": {
+    "src/**/*.{js,vue}": [
+      "eslint --fix",
+      "git add"
+    ]
+  }
+}
+```
+
+&emsp;&emsp;;`commitlint`。
+
+```javascript
+// commitlint.config.js
+module.exports = {
+  extends: ['@commitlint/config-conventional'],
+}
+
+// package.json
+{
+  ...
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  }
+}
+```
+
+&emsp;&emsp;;`babel`。
+
+```javascript
+// babel.config.js
+module.exports = {
+  presets: ['@vue/cli-plugin-babel/preset'],
+}
+
+// package.json
+{
+  ...
+  "babel": {
+    "presets": [
+      "@vue/cli-plugin-babel/preset"
+    ]
+  }
+}
+```
+
+&emsp;&emsp;;`browserslist`。
+
+```javascript
+// .browserslistrc
+> 1%
+last 2 versions
+not dead
+
+// package.json
+{
+  ...
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
+```
+
 ### 如何配置 vue 代码片段？
 
 &emsp;&emsp;;`vetur`提供了代码片段用来提高开发效率。
@@ -1128,4 +1300,4 @@ export default {
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

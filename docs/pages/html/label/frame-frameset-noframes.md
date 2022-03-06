@@ -2,6 +2,8 @@
 
 ![](/html/label/frame-frameset-noframes/banner.jpg)
 
+## 概述
+
 &emsp;&emsp;;[frame](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/frame) 可定义特定区域，用于显示`HTML`文档。
 
 &emsp;&emsp;;`HTML5`已废弃，不再支持`frame`，但是当前仍有一部分浏览器支持。
@@ -19,11 +21,11 @@
 <html lang="en">
 
 <frameset rows='10%, *'>
-    <frame src='header.html'></frame>
-    <frameset cols='30%, *'>
-        <frame src='aside.html'></frame>
-        <frame src='content.html'></frame>
-    </frameset>
+  <frame src='header.html'></frame>
+  <frameset cols='30%, *'>
+    <frame src='aside.html'></frame>
+    <frame src='content.html'></frame>
+  </frameset>
 </frameset>
 
 </html>
@@ -39,11 +41,11 @@
 ```javascript
 // index.html
 <frameset rows='10%, *'>
-    <frame src='header.html'></frame>
-    <frameset cols='30%, *'>
-        <frame src='aside.html'></frame>
-        <frame src='content.html' marginheight='50px'></frame>
-    </frameset>
+  <frame src='header.html'></frame>
+  <frameset cols='30%, *'>
+    <frame src='aside.html'></frame>
+    <frame src='content.html' marginheight='50px'></frame>
+  </frameset>
 </frameset>
 
 // content.html
@@ -51,7 +53,7 @@
 <html lang="en">
 
 <body>
-    content
+  content
 </body>
 
 </html>
@@ -119,14 +121,14 @@
 <html lang="en">
 
 <frameset rows='10%, *'>
-    <frame src="header.html" />
-    <frameset cols='30%, *'>
-        <frame src="aside.html" />
-        <frame name='content' src='user.html' />
-    </frameset>
-    <noframes>
-        <p>It seems your browser does not support frames.</p>
-    </noframes>
+  <frame src="header.html" />
+  <frameset cols='30%, *'>
+    <frame src="aside.html" />
+    <frame name='content' src='user.html' />
+  </frameset>
+  <noframes>
+    <p>It seems your browser does not support frames.</p>
+  </noframes>
 </frameset>
 
 </html>
@@ -136,7 +138,7 @@
 <html lang="en">
 
 <body>
-    <p>欢迎进入人员管理系统！！！</p>
+  <p>欢迎进入人员管理系统！！！</p>
 </body>
 
 </html>
@@ -146,11 +148,11 @@
 <html lang="en">
 
 <body>
-    <ul>
-        <li><a href="user.html" target="content">人员管理</a></li>
-        <li><a href="leave.html" target="content">请假管理</a></li>
-        <li><a href="live.html" target="content">住宿管理</a></li>
-    </ul>
+  <ul>
+    <li><a href="user.html" target="content">人员管理</a></li>
+    <li><a href="leave.html" target="content">请假管理</a></li>
+    <li><a href="live.html" target="content">住宿管理</a></li>
+  </ul>
 </body>
 
 </html>
@@ -164,7 +166,7 @@
 <html lang="en">
 
 <body>
-    user
+  user
 </body>
 
 </html>
@@ -174,7 +176,7 @@
 <html lang="en">
 
 <body>
-    leave
+  leave
 </body>
 
 </html>
@@ -184,7 +186,7 @@
 <html lang="en">
 
 <body>
-    live
+  live
 </body>
 
 </html>
@@ -198,4 +200,4 @@
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

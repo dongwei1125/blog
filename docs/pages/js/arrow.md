@@ -4,7 +4,9 @@
 
 ## 前言
 
-&emsp;&emsp;;`ES6`中的 [箭头函数](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Arrow_functions)   作用非常简单，即简化函数且不绑定`this`。此文仅记录箭头函数的部分特性，方便查阅，希望对你有用。
+&emsp;&emsp;;`ES6`中的 [箭头函数](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Functions/Arrow_functions) 作用非常简单，即简化函数且不绑定`this`。
+
+&emsp;&emsp;内容仅是记录箭头函数的部分特性，包括一些发散和总结，希望对你有用。
 
 ## 语法特性
 
@@ -95,7 +97,7 @@ foo.method.prototype // AsyncGenerator {}
 ```javascript
 function _new(constructor, ...args) {
   const result = {}
-  
+
   Object.setPrototypeOf(result, constructor.prototype)
   constructor.apply(result, args)
 
@@ -341,4 +343,4 @@ const f = (first, ...first) => { } // Uncaught SyntaxError: Duplicate parameter 
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

@@ -11,7 +11,7 @@ cd docs/.vuepress/dist
 
 git init
 git add -A
-git commit -m 'feat: init blog'
+git commit -m 'feat: deploy pages'
 
 # 如果发布到 https://<USERNAME>.github.io
 git push -f git@github.com:dongwei1125/dongwei1125.github.io.git master

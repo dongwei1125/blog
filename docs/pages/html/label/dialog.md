@@ -2,6 +2,8 @@
 
 ![](/html/label/dialog/banner.jpg)
 
+## 概述
+
 &emsp;&emsp;;[dialog](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/dialog) 是`HTML5`新增的语义化双标签，用于展示一个交互式的模态对话框。
 
 &emsp;&emsp;绝大多数浏览器都不支持，仅有`Chrome`等浏览器支持。
@@ -85,8 +87,8 @@
 &emsp;&emsp;也可以关闭`ESC`的默认行为。
 
 ```javascript
-document.onkeydown = (ev) => {
-  if (ev.key === "Escape") {
+document.onkeydown = ev => {
+  if (ev.key === 'Escape') {
     ev.preventDefault()
   }
 }
@@ -146,7 +148,7 @@ document.onkeydown = (ev) => {
     dialog.close()
   })
 
-  dialog.addEventListener('close', (ev) => {
+  dialog.addEventListener('close', ev => {
     console.log('close')
   })
 </script>
@@ -158,34 +160,34 @@ document.onkeydown = (ev) => {
 
 ```javascript
 <style>
-    dialog::backdrop {
-        background: rgba(0, 0, 0, 0.5);
-    }
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
 </style>
 
 <body>
-    <button>showModal</button>
-    <dialog>
-        <form method="dialog">
-            <div>
-                <input type="text">用户
-            </div>
-            <button type="submit">提交</button>
-        </form>
-    </dialog>
+  <button>showModal</button>
+  <dialog>
+    <form method="dialog">
+      <div>
+        <input type="text">用户
+      </div>
+      <button type="submit">提交</button>
+    </form>
+  </dialog>
 
-    <script>
-        var btn = document.querySelector('button')
-        var dialog = document.querySelector('dialog')
+  <script>
+    var btn = document.querySelector('button')
+    var dialog = document.querySelector('dialog')
 
-        btn.addEventListener('click', () => {
-            dialog.showModal()
-        })
+    btn.addEventListener('click', () => {
+      dialog.showModal()
+    })
 
-        dialog.addEventListener('close', (ev) => {
-            console.log('close')
-        })
-    </script>
+    dialog.addEventListener('close', ev => {
+      console.log('close')
+    })
+  </script>
 </body>
 ```
 
@@ -209,7 +211,7 @@ document.onkeydown = (ev) => {
     dialog.showModal()
   })
 
-  dialog.addEventListener('cancel', (ev) => {
+  dialog.addEventListener('cancel', ev => {
     console.log('cancel')
   })
 </script>
@@ -225,47 +227,47 @@ document.onkeydown = (ev) => {
 
 ```javascript
 <style>
-    dialog::backdrop {
-        background: rgba(0, 0, 0, 0.5);
-    }
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
 </style>
 
 <button class='outer-btn'>打开外层模态框</button>
 
 <dialog class="outer-dig">
-    <p>hello world</p>
-    <button class="outer-close-btn">关闭</button>
-    <button class="outer-open-btn">打开内层模态框</button>
+  <p>hello world</p>
+  <button class="outer-close-btn">关闭</button>
+  <button class="outer-open-btn">打开内层模态框</button>
 </dialog>
 
 <dialog class="inner-dig">
-    <p>hello world</p>
-    <button class="inner-close-btn">关闭</button>
+  <p>hello world</p>
+  <button class="inner-close-btn">关闭</button>
 </dialog>
 
 <script>
-    var outerBtn = document.querySelector('.outer-btn')
-    var outerCloseBtn = document.querySelector('.outer-close-btn')
-    var outerOpenBtn = document.querySelector('.outer-open-btn')
-    var innerCloseBtn = document.querySelector('.inner-close-btn')
-    var outerDig = document.querySelector('.outer-dig')
-    var innerDig = document.querySelector('.inner-dig')
+  var outerBtn = document.querySelector('.outer-btn')
+  var outerCloseBtn = document.querySelector('.outer-close-btn')
+  var outerOpenBtn = document.querySelector('.outer-open-btn')
+  var innerCloseBtn = document.querySelector('.inner-close-btn')
+  var outerDig = document.querySelector('.outer-dig')
+  var innerDig = document.querySelector('.inner-dig')
 
-    outerBtn.addEventListener('click', () => {
-        outerDig.showModal()
-    })
+  outerBtn.addEventListener('click', () => {
+    outerDig.showModal()
+  })
 
-    outerOpenBtn.addEventListener('click', () => {
-        innerDig.showModal()
-    })
+  outerOpenBtn.addEventListener('click', () => {
+    innerDig.showModal()
+  })
 
-    outerCloseBtn.addEventListener('click', () => {
-        outerDig.close()
-    })
+  outerCloseBtn.addEventListener('click', () => {
+    outerDig.close()
+  })
 
-    innerCloseBtn.addEventListener('click', () => {
-        innerDig.close()
-    })
+  innerCloseBtn.addEventListener('click', () => {
+    innerDig.close()
+  })
 </script>
 ```
 
@@ -279,27 +281,27 @@ document.onkeydown = (ev) => {
 
 ```javascript
 <style>
-    dialog::backdrop {
-        background: rgba(0, 0, 0, 0.5);
-    }
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+  }
 </style>
 
 <button>showModal</button>
 <dialog>
-    <p>hello world</p>
+  <p>hello world</p>
 </dialog>
 
 <script>
-    var btn = document.querySelector('button')
-    var dialog = document.querySelector('dialog')
+  var btn = document.querySelector('button')
+  var dialog = document.querySelector('dialog')
 
-    btn.addEventListener('click', () => {
-        dialog.showModal()
-    })
+  btn.addEventListener('click', () => {
+    dialog.showModal()
+  })
 
-    dialog.addEventListener('click', (ev) => {
-        console.log(ev.target)
-    })
+  dialog.addEventListener('click', ev => {
+    console.log(ev.target)
+  })
 </script>
 ```
 
@@ -311,18 +313,18 @@ document.onkeydown = (ev) => {
 
 ```javascript
 dialog {
-    padding: 0;
-    border: none;
+  padding: 0;
+  border: none;
 }
 
 dialog .content {
-    padding: 1em;
+  padding: 1em;
 }
 
 <dialog>
-    <div class="content">
-        <p>hello world</p>
-    </div>
+  <div class="content">
+    <p>hello world</p>
+  </div>
 </dialog>
 ```
 
@@ -331,8 +333,8 @@ dialog .content {
 &emsp;&emsp;然后再根据节点的`nodeName`判断是否关闭`Dialog`。
 
 ```javascript
-dialog.addEventListener("click", function(ev) {
-  if (ev.target.nodeName === "DIALOG") this.close()
+dialog.addEventListener('click', function (ev) {
+  if (ev.target.nodeName === 'DIALOG') this.close()
 })
 ```
 
@@ -343,25 +345,25 @@ dialog.addEventListener("click", function(ev) {
 ```javascript
 // dialog/index.css
 dialog {
-    padding: 0;
-    border: none;
+  padding: 0;
+  border: none;
 }
 
 dialog .content {
-    padding: 1em;
+  padding: 1em;
 }
 
 dialog::backdrop {
-    background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
 }
 
 // dialog/index.js
 window.addEventListener('load', () => {
-    document.querySelectorAll('dialog[close-on-click-modal]').forEach(dialog => {
-        dialog.addEventListener('click', function (ev) {
-            if (ev.target.nodeName === 'DIALOG') this.close()
-        })
+  document.querySelectorAll('dialog[close-on-click-modal]').forEach(dialog => {
+    dialog.addEventListener('click', function (ev) {
+      if (ev.target.nodeName === 'DIALOG') this.close()
     })
+  })
 })
 ```
 
@@ -369,28 +371,28 @@ window.addEventListener('load', () => {
 
 ```javascript
 <head>
-    <script src="dialog/index.js"></script>
-    <link rel="stylesheet" href="dialog/index.css">
+  <script src="dialog/index.js"></script>
+  <link rel="stylesheet" href="dialog/index.css">
 </head>
 
 <body>
-    <button>showModal</button>
-    <dialog close-on-click-modal>
-        <div class="content">
-            <p>hello world</p>
-        </div>
-    </dialog>
+  <button>showModal</button>
+  <dialog close-on-click-modal>
+    <div class="content">
+      <p>hello world</p>
+    </div>
+  </dialog>
 
-    <script>
-        window.onload = () => {
-            var btn = document.querySelector('button')
-            var dialog = document.querySelector('dialog')
+  <script>
+    window.onload = () => {
+      var btn = document.querySelector('button')
+      var dialog = document.querySelector('dialog')
 
-            btn.addEventListener('click', () => {
-                dialog.showModal()
-            })
-        }
-    </script>
+      btn.addEventListener('click', () => {
+        dialog.showModal()
+      })
+    }
+  </script>
 </body>
 ```
 
@@ -402,14 +404,14 @@ window.addEventListener('load', () => {
 
 ```javascript
 dialog:not([open]) {
-    opacity: 0;
-    visibility: hidden;
-    display: block;
+  opacity: 0;
+  visibility: hidden;
+  display: block;
 }
 
 dialog {
-    opacity: 1;
-    transition: opacity 2s ease;
+  opacity: 1;
+  transition: opacity 2s ease;
 }
 ```
 
@@ -423,56 +425,56 @@ dialog {
 
 ```javascript
 <head>
-    <link rel="stylesheet" href="node_modules/dialog-polyfill/dialog-polyfill.css">
-    <style>
-        dialog::backdrop {
-            background: rgba(0, 0, 0, 0.5);
-        }
+  <link rel="stylesheet" href="node_modules/dialog-polyfill/dialog-polyfill.css">
+  <style>
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.5);
+    }
 
-        dialog+.backdrop {
-            background: rgba(0, 0, 0, 0.5);
-        }
+    dialog+.backdrop {
+      background: rgba(0, 0, 0, 0.5);
+    }
 
-        dialog {
-            padding: 0;
-            border: none;
-        }
+    dialog {
+      padding: 0;
+      border: none;
+    }
 
-        dialog .content {
-            padding: 1em;
-        }
+    dialog .content {
+      padding: 1em;
+    }
 
-        dialog:not([open]) {
-            opacity: 0;
-            visibility: hidden;
-            display: block;
-        }
+    dialog:not([open]) {
+      opacity: 0;
+      visibility: hidden;
+      display: block;
+    }
 
-        dialog {
-            opacity: 1;
-            transition: opacity 2s ease;
-        }
-    </style>
+    dialog {
+      opacity: 1;
+      transition: opacity 2s ease;
+    }
+  </style>
 </head>
 
 <body>
-    <button>showModal</button>
-    <dialog>
-        <div class="content">
-            <p>hello world</p>
-        </div>
-    </dialog>
+  <button>showModal</button>
+  <dialog>
+    <div class="content">
+      <p>hello world</p>
+    </div>
+  </dialog>
 
-    <script src="node_modules/dialog-polyfill/dist/dialog-polyfill.js"></script>
-    <script>
-        var btn = document.querySelector('button')
-        var dialog = document.querySelector('dialog')
+  <script src="node_modules/dialog-polyfill/dist/dialog-polyfill.js"></script>
+  <script>
+    var btn = document.querySelector('button')
+    var dialog = document.querySelector('dialog')
 
-        dialogPolyfill.registerDialog(dialog)
-        btn.addEventListener('click', () => {
-            dialog.showModal()
-        })
-    </script>
+    dialogPolyfill.registerDialog(dialog)
+    btn.addEventListener('click', () => {
+      dialog.showModal()
+    })
+  </script>
 </body>
 ```
 
@@ -484,4 +486,4 @@ dialog {
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

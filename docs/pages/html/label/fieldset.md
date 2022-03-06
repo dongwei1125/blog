@@ -2,6 +2,8 @@
 
 ![](/html/label/fieldset/banner.jpg)
 
+## 概述
+
 &emsp;&emsp;;[fieldset](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/fieldset) 用于对表单中的控件元素进行分组。
 
 &emsp;&emsp;;`fieldset`是块级双标签，绝大多数浏览器都支持。
@@ -14,23 +16,23 @@
 
 ```javascript
 <form method="post" action="http://www.baidu.com">
+  <div>
+    <label for="username">用户名</label>
+    <input type="text" name="username">
+  </div>
+  <fieldset disabled>
+    <legend>支付信息</legend>
     <div>
-        <label for="username">用户名</label>
-        <input type="text" name="username">
+      <label for="phone">手机号</label>
+      <input type="text" name="phone">
     </div>
-    <fieldset disabled>
-        <legend>支付信息</legend>
-        <div>
-            <label for="phone">手机号</label>
-            <input type="text" name="phone">
-        </div>
-        <div>
-            <label for="type">支付方式</label>
-            <input type="radio" name='type' value="1" id="type-1"><label for="type-1">现金</label>
-            <input type="radio" name='type' value="0" id="type-0"><label for="type-0">其他</label>
-        </div>
-    </fieldset>
-    <button type="submit">提交</button>
+    <div>
+      <label for="type">支付方式</label>
+      <input type="radio" name='type' value="1" id="type-1"><label for="type-1">现金</label>
+      <input type="radio" name='type' value="0" id="type-0"><label for="type-0">其他</label>
+    </div>
+  </fieldset>
+  <button type="submit">提交</button>
 </form>
 ```
 
@@ -50,7 +52,7 @@
 
 ```javascript
 fieldset[disabled] {
-    pointer-events: none;
+  pointer-events: none;
 }
 ```
 
@@ -58,17 +60,17 @@ fieldset[disabled] {
 
 ```javascript
 fieldset {
-    position: relative;
+  position: relative;
 }
 
 fieldset[disabled]::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0);
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
 }
 ```
 
@@ -76,33 +78,33 @@ fieldset[disabled]::after {
 
 ```javascript
 <body>
-    ...
-    <script>
-        function forEach(array, callback) {
-            for (var i = 0; i < array.length; i++) {
-                callback(array[i], i, array)
-            }
-        }
+  ...
+  <script>
+    function forEach(array, callback) {
+      for (var i = 0; i < array.length; i++) {
+        callback(array[i], i, array)
+      }
+    }
 
-        var fieldsets = document.getElementsByTagName('fieldset')
-        var inputs = []
-        var buttons = []
+    var fieldsets = document.getElementsByTagName('fieldset')
+    var inputs = []
+    var buttons = []
 
-        forEach(fieldsets, function (fieldset) {
-            if (fieldset.disabled) {
-                buttons = fieldset.getElementsByTagName('button')
-                inputs = fieldset.getElementsByTagName('input')
+    forEach(fieldsets, function (fieldset) {
+      if (fieldset.disabled) {
+        buttons = fieldset.getElementsByTagName('button')
+        inputs = fieldset.getElementsByTagName('input')
 
-                forEach(buttons, function (button) {
-                    button.disabled = true
-                })
-
-                forEach(inputs, function (input) {
-                    input.disabled = true
-                })
-            }
+        forEach(buttons, function (button) {
+          button.disabled = true
         })
-    </script>
+
+        forEach(inputs, function (input) {
+          input.disabled = true
+        })
+      }
+    })
+  </script>
 </body>
 ```
 
@@ -122,23 +124,23 @@ fieldset[disabled]::after {
 
 ```javascript
 <form method="post" id="form" action="http://www.baidu.com">
-    <div>
-        <label for="username">用户名</label>
-        <input type="text" name="username">
-    </div>
-    <button type="submit">提交</button>
+  <div>
+    <label for="username">用户名</label>
+    <input type="text" name="username">
+  </div>
+  <button type="submit">提交</button>
 </form>
 <fieldset form="form">
-    <legend>支付信息</legend>
-    <div>
-        <label for="phone">手机号</label>
-        <input type="text" name="phone">
-    </div>
-    <div>
-        <label for="type">支付方式</label>
-        <input type="radio" name='type' value="1" id="type-1"><label for="type-1">现金</label>
-        <input type="radio" name='type' value="0" id="type-0"><label for="type-0">其他</label>
-    </div>
+  <legend>支付信息</legend>
+  <div>
+    <label for="phone">手机号</label>
+    <input type="text" name="phone">
+  </div>
+  <div>
+    <label for="type">支付方式</label>
+    <input type="radio" name='type' value="1" id="type-1"><label for="type-1">现金</label>
+    <input type="radio" name='type' value="0" id="type-0"><label for="type-0">其他</label>
+  </div>
 </fieldset>
 ```
 
@@ -162,7 +164,7 @@ fieldset[disabled]::after {
 
 ```javascript
 legend {
-    padding: 0 50px;
+  padding: 0 50px;
 }
 ```
 
@@ -172,14 +174,14 @@ legend {
 
 ```javascript
 legend {
-    padding: 0;
-    animation: marginLeft 2s infinite alternate;
+  padding: 0;
+  animation: marginLeft 2s infinite alternate;
 }
 
 @keyframes marginLeft {
-    100% {
-        margin-left: 160px;
-    }
+  100% {
+    margin-left: 160px;
+  }
 }
 ```
 
@@ -189,8 +191,8 @@ legend {
 
 ```javascript
 legend {
-    padding: 0;
-    text-align: right;
+  padding: 0;
+  text-align: right;
 }
 ```
 
@@ -208,24 +210,24 @@ legend {
 
 ```javascript
 .hr {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .hr::after,
-.hr::before{
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: #000;
+.hr::before {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #000;
 }
 
 .hr::before {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .hr::after {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 <div class="hr">分隔线</div>
@@ -235,18 +237,20 @@ legend {
 
 ```javascript
 fieldset {
-    padding: 0;
-    margin: 0;
-    border: none;
-    border-top: 1px solid #000;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-top: 1px solid #000;
 }
 
 legend {
-    margin: auto;
-    padding: 0 10px;
+  margin: auto;
+  padding: 0 10px;
 }
 
-<fieldset><legend>分割线</legend></fieldset>
+<fieldset>
+  <legend>分割线</legend>
+</fieldset>
 ```
 
 #### 文字环绕
@@ -257,55 +261,62 @@ legend {
 
 ```javascript
 .container {
-    position: relative;
-    width: 300px;
-    height: 300px;
+  position: relative;
+  width: 300px;
+  height: 300px;
 }
 
 fieldset {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-top: 10px solid #000;
-    box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-top: 10px solid #000;
+  box-sizing: border-box;
 }
 
 legend {
-    font-size: 24px;
-    line-height: 10px;
-    font-weight: bold;
-    padding: 0 10px;
-    animation: move 2s infinite linear alternate;
+  font-size: 24px;
+  line-height: 10px;
+  font-weight: bold;
+  padding: 0 10px;
+  animation: move 2s infinite linear alternate;
 }
 
 fieldset:nth-of-type(2) {
-    transform: rotate(90deg);
+  transform: rotate(90deg);
 }
 
 fieldset:nth-of-type(3),
 fieldset:nth-of-type(3) legend {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 fieldset:nth-of-type(4) {
-    transform: rotate(-90deg);
+  transform: rotate(-90deg);
 }
 
-
 @keyframes move {
-    100% {
-        margin-left: 70px;
-    }
+  100% {
+    margin-left: 70px;
+  }
 }
 
 <div class="container">
-    <fieldset><legend>CSS</legend></fieldset>
-    <fieldset><legend>HTML</legend></fieldset>
-    <fieldset><legend>JavaScript</legend></fieldset>
-    <fieldset><legend>TypeScript</legend></fieldset>
+  <fieldset>
+    <legend>CSS</legend>
+  </fieldset>
+  <fieldset>
+    <legend>HTML</legend>
+  </fieldset>
+  <fieldset>
+    <legend>JavaScript</legend>
+  </fieldset>
+  <fieldset>
+    <legend>TypeScript</legend>
+  </fieldset>
 </div>
 ```
 
@@ -317,4 +328,4 @@ fieldset:nth-of-type(4) {
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

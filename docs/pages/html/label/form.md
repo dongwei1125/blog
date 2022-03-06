@@ -2,6 +2,8 @@
 
 ![](/html/label/form/banner.jpg)
 
+## 概述
+
 &emsp;&emsp;;[form](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/form) 是块级双标签，用于指定一个表单区域，并向服务器提交信息。
 
 ## 属性
@@ -20,8 +22,8 @@
 
 ```javascript
 <form action="" method="post" accept="image/png, image/gif">
-    <input type="file">
-    <button type="submit">提交</button>
+  <input type="file">
+  <button type="submit">提交</button>
 </form>
 ```
 
@@ -68,8 +70,8 @@
 
 ```javascript
 <form action="" method="post" autocomplete="on">
-    <input type="text" name="username"><br>
-    <button type="submit">提交</button>
+  <input type="text" name="username"><br>
+  <button type="submit">提交</button>
 </form>
 ```
 
@@ -87,18 +89,18 @@
 
 ```javascript
 <form action="">
-    <input type="input" required>
-    <button type="button">提交</button>
+  <input type="input" required>
+  <button type="button">提交</button>
 </form>
 <script>
-    const form = document.querySelector('form')
-    const input = document.querySelector('input')
-    const btn = document.querySelector('button')
+  const form = document.querySelector('form')
+  const input = document.querySelector('input')
+  const btn = document.querySelector('button')
 
-    btn.addEventListener('click', () => {
-        console.log('input:', form.checkValidity())
-        console.log('form:', form.checkValidity())
-    })
+  btn.addEventListener('click', () => {
+    console.log('input:', form.checkValidity())
+    console.log('form:', form.checkValidity())
+  })
 </script>
 ```
 
@@ -110,16 +112,16 @@
 
 ```javascript
 <form action="">
-    <input type="input" required>
-    <button type="button">提交</button>
+  <input type="input" required>
+  <button type="button">提交</button>
 </form>
 <script>
-    const form = document.querySelector('form')
-    const btn = document.querySelector('button')
+  const form = document.querySelector('form')
+  const btn = document.querySelector('button')
 
-    btn.addEventListener('click', function(){
-        console.log('form:', form.reportValidity())
-    })
+  btn.addEventListener('click', function () {
+    console.log('form:', form.reportValidity())
+  })
 </script>
 ```
 
@@ -130,9 +132,9 @@
 &emsp;&emsp;自定义表单元素的提示文字，`IE9`及以下浏览器不支持。
 
 ```javascript
-const input = document.querySelector("input")
+const input = document.querySelector('input')
 
-input.setCustomValidity("请输入文字")
+input.setCustomValidity('请输入文字')
 ```
 
 ![](/html/label/form/setCustomValidity.png)
@@ -148,7 +150,7 @@ input.setCustomValidity("请输入文字")
 &emsp;&emsp;如下为`Chrome`浏览器包含的只读属性和属性值。
 
 ```javascript
-const input = document.querySelector("input")
+const input = document.querySelector('input')
 
 console.log(input.validity)
 ```
@@ -161,28 +163,28 @@ console.log(input.validity)
 
 ```javascript
 input {
-    outline: none;
+  outline: none;
 }
 
 input:valid {
-    border: 1px solid #409eff;
+  border: 1px solid #409eff;
 }
 
 input:invalid {
-    border: 1px solid #f56c6c;
+  border: 1px solid #f56c6c;
 }
 
 <form>
-    <input type="text" pattern="[a-z]{5}" /><br>
-    <button type="button">提交</button>
+  <input type="text" pattern="[a-z]{5}" /><br>
+  <button type="button">提交</button>
 </form>
 <script>
-    const input = document.querySelector('input')
-    const btn = document.querySelector('button')
+  const input = document.querySelector('input')
+  const btn = document.querySelector('button')
 
-    btn.addEventListener('click', () => {
-        console.log('patternMismatch:', input.validity.patternMismatch)
-    })
+  btn.addEventListener('click', () => {
+    console.log('patternMismatch:', input.validity.patternMismatch)
+  })
 </script>
 ```
 
@@ -197,8 +199,8 @@ input:invalid {
 
 ```javascript
 input:invalid {
-    outline: none;
-    border: 1px solid #f56c6c;
+  outline: none;
+  border: 1px solid #f56c6c;
 }
 
 <input type="text" maxlength="5" />
@@ -217,16 +219,16 @@ input:invalid {
 
 ```javascript
 <form>
-    <input type="email" required minlength="10" />
-    <button type="button">提交</button>
+  <input type="email" required minlength="10" />
+  <button type="button">提交</button>
 </form>
 <script>
-    const input = document.querySelector('input')
-    const btn = document.querySelector('button')
+  const input = document.querySelector('input')
+  const btn = document.querySelector('button')
 
-    btn.addEventListener('click', () => {
-        console.log('input:', input.value, ', validationMessage:', input.validationMessage)
-    })
+  btn.addEventListener('click', () => {
+    console.log('input:', input.value, ', validationMessage:', input.validationMessage)
+  })
 </script>
 ```
 
@@ -246,9 +248,9 @@ input:invalid {
 
 ```javascript
 <form action="" method="POST">
-    <input type="text" name="username">
-    <input type="text" name="password">
-    <button type="submit">提交</button>
+  <input type="text" name="username">
+  <input type="text" name="password">
+  <button type="submit">提交</button>
 </form>
 ```
 
@@ -273,9 +275,9 @@ input:invalid {
 ```javascript
 <button type="submit">提交</button>
 
-const btn = document.querySelector("button")
+const btn = document.querySelector('button')
 
-btn.addEventListener("click", (event) => {
+btn.addEventListener('click', event => {
   event.preventDefault()
 })
 ```
@@ -303,9 +305,9 @@ function handler(event) {
 ```javascript
 <button type="submit" onclick="return handler(event)">提交</button>
 
-function handler(event){
-	...
-    return false
+function handler(event) {
+  ...
+  return false
 }
 ```
 
@@ -314,9 +316,9 @@ function handler(event){
 ```javascript
 <button type="submit" onclick="return handler(event)">提交</button>
 
-function handler(event){
-	...
-    return true
+function handler(event) {
+  ...
+  return true
 }
 ```
 
@@ -329,9 +331,9 @@ function handler(event){
   ...
 </form>
 
-const form = document.querySelector("form")
+const form = document.querySelector('form')
 
-form.addEventListener("submit", (event) => {
+form.addEventListener('submit', event => {
   event.preventDefault()
 })
 ```
@@ -354,12 +356,12 @@ function handler(event) {
 
 ```javascript
 <form action="" method="POST" onsubmit="return handler(event)">
-    ...
+  ...
 </form>
 
 function handler(event){
-	...
-    return true | false
+  ...
+  return true | false
 }
 ```
 
@@ -371,4 +373,4 @@ function handler(event){
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

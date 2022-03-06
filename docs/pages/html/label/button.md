@@ -2,6 +2,8 @@
 
 ![](/html/label/button/banner.jpg)
 
+## 概述
+
 &emsp;&emsp;;[button](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/button) 用于显示一个可点击的按钮，可用在表单或文档的其它地方。
 
 &emsp;&emsp;;`button`元素是内联双标签，不同浏览器下`button`样式不同，可以通过`CSS`修改。
@@ -34,7 +36,7 @@
 
 ```javascript
 <form id="form" action="" method="post">
-    <input type="text">
+  <input type="text">
 </form>
 <button type="reset" form='form'>按钮</button>
 ```
@@ -47,8 +49,8 @@
 
 ```javascript
 <form method="get" action="http://www.baidu.com">
-    <input type="text">
-    <button type="submit" formaction="http://www.jd.com">按钮</button>
+  <input type="text">
+  <button type="submit" formaction="http://www.jd.com">按钮</button>
 </form>
 ```
 
@@ -56,7 +58,7 @@
 
 ```javascript
 <form method="get" id="form">
-    <input type="text">
+  <input type="text">
 </form>
 <button type="submit" formaction="http://www.baidu.com" form="form">百度</button>
 <button type="submit" formaction="http://www.qq.com" form="form">qq</button>
@@ -70,8 +72,8 @@
 
 ```javascript
 <form method="post" action="http://www.baidu.com">
-    <input type="text">
-    <button type="submit" formenctype="multipart/form-data">按钮</button>
+  <input type="text">
+  <button type="submit" formenctype="multipart/form-data">按钮</button>
 </form>
 ```
 
@@ -89,9 +91,9 @@
 
 ```javascript
 <form method="post" action="http://www.baidu.com">
-    <input type="text" name="value">
-    <input type="text" name="desc">
-    <button type="submit" formenctype="">按钮</button>
+  <input type="text" name="value">
+  <input type="text" name="desc">
+  <button type="submit" formenctype="">按钮</button>
 </form>
 ```
 
@@ -115,8 +117,8 @@
 
 ```javascript
 <form method="post" action="http://www.baidu.com">
-    <input type="text">
-    <button type="submit" formmethod="get">按钮</button>
+  <input type="text">
+  <button type="submit" formmethod="get">按钮</button>
 </form>
 ```
 
@@ -128,8 +130,8 @@
 
 ```javascript
 <form method="post" action="http://www.baidu.com">
-    <input type="email" name="email">
-    <button type="submit">按钮</button>
+  <input type="email" name="email">
+  <button type="submit">按钮</button>
 </form>
 ```
 
@@ -156,8 +158,8 @@
 
 ```javascript
 <form method="post" action="http://www.baidu.com">
-    <input type="text">
-    <button type="submit" formtarget="_blank">按钮</button>
+  <input type="text">
+  <button type="submit" formtarget="_blank">按钮</button>
 </form>
 ```
 
@@ -167,8 +169,8 @@
 
 ```javascript
 <form method="post" action="http://www.baidu.com">
-    <input type="text" name="value">
-    <button type="submit" name="button" value="value">按钮</button>
+  <input type="text" name="value">
+  <button type="submit" name="button" value="value">按钮</button>
 </form>
 ```
 
@@ -196,8 +198,8 @@
 ```javascript
 <button type="menu" menu="menu">Dropdown</button>
 <menu id="menu">
-    <menuitem>hello</menuitem>
-    <menuitem>world</menuitem>
+  <menuitem>hello</menuitem>
+  <menuitem>world</menuitem>
 </menu>
 ```
 
@@ -210,8 +212,8 @@
 ```javascript
 <button id="btn" value="hello button">按钮</button>
 <script>
-    var btn = document.getElementById('btn')
-    console.log(btn.value)
+  var btn = document.getElementById('btn')
+  console.log(btn.value)
 </script>
 ```
 
@@ -226,7 +228,7 @@
 &emsp;&emsp;兼容方式也很简单，即在获取 `button`元素的 `value`属性值时统一使用 `getAttribute`。
 
 ```javascript
-btn.getAttribute("value")
+btn.getAttribute('value')
 ```
 
 ### form post 请求参数
@@ -239,13 +241,13 @@ btn.getAttribute("value")
 
 ```javascript
 <form action="http://127.0.0.1:3000" method="post">
-    <input type="text" name="input">
-    <button name="reset" value="button">重置</button>
-    <button type="submit" name="name" value="button">按钮</button>
+  <input type="text" name="input">
+  <button name="reset" value="button">重置</button>
+  <button type="submit" name="name" value="button">按钮</button>
 </form>
 ```
 
-&emsp;&emsp;;`IE8`及以上浏览器、`Chrome`、`FireFox`等。
+&emsp;&emsp;;`IE8`及以上浏览器、`Chrome`、`Firefox`等。
 
 ![](/html/label/button/IE8-post.png)
 
@@ -261,4 +263,4 @@ btn.getAttribute("value")
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

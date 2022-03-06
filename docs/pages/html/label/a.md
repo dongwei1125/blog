@@ -2,6 +2,8 @@
 
 ![](/html/label/a/banner.jpg)
 
+## 概述
+
 &emsp;&emsp;;[a](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/a) 元素可通过其`href`属性创建指向其他网页、文件、同一页面内的位置或其他`URL`的超链接。
 
 &emsp;&emsp;其基本属性及含义如下。
@@ -42,23 +44,23 @@
 
 ```javascript
 a:link {
-    color: pink;
+  color: pink;
 }
 
 a:visited {
-    color: orange;
+  color: orange;
 }
 
 a:focus {
-    color: blue;
+  color: blue;
 }
 
 a:hover {
-    color: red;
+  color: red;
 }
 
 a:active {
-    color: green;
+  color: green;
 }
 ```
 
@@ -80,88 +82,88 @@ a:active {
 ```javascript
 // main.html
 <head>
-    <style>
-        body {
-            width: 1500px;
-            margin: 10px auto;
-            display: flex;
-            flex-direction: column;
-        }
+  <style>
+    body {
+      width: 1500px;
+      margin: 10px auto;
+      display: flex;
+      flex-direction: column;
+    }
 
-        iframe {
-            width: 100%;
-        }
-    </style>
+    iframe {
+      width: 100%;
+    }
+  </style>
 </head>
 
 <body>
-    <iframe src="top.html" frameborder="0" height="300px"></iframe>
-    <iframe src="center.html" frameborder="0" height="600px"></iframe>
+  <iframe src="top.html" frameborder="0" height="300px"></iframe>
+  <iframe src="center.html" frameborder="0" height="600px"></iframe>
 </body>
 
 // top.html
 <head>
-    <style>
-        body {
-            width: 100%;
-            height: 300px;
-            margin: 0;
-            background-color: #FF952C;
-        }
-    </style>
+  <style>
+    body {
+      width: 100%;
+      height: 300px;
+      margin: 0;
+      background-color: #FF952C;
+    }
+  </style>
 </head>
 
 <body></body>
 
 // center.html
 <head>
-    <style>
-        body {
-            height: 600px;
-            background-color: #FFCC00;
-            display: flex;
-            margin: 0;
-        }
+  <style>
+    body {
+      height: 600px;
+      background-color: #FFCC00;
+      display: flex;
+      margin: 0;
+    }
 
-        iframe {
-            height: 500px;
-        }
-    </style>
+    iframe {
+      height: 500px;
+    }
+  </style>
 </head>
 
 <body>
-    <iframe src="left.html" frameborder="0" style="width: 200px;"></iframe>
-    <iframe src="right.html" frameborder="0" style="width: 1300px"></iframe>
+  <iframe src="left.html" frameborder="0" style="width: 200px;"></iframe>
+  <iframe src="right.html" frameborder="0" style="width: 1300px"></iframe>
 </body>
 
 // left.html
 <head>
-    <style>
-        body {
-            margin: 0;
-            width: 100%;
-            height: 500px;
-            background-color: #02BF0F;
-        }
-    </style>
+  <style>
+    body {
+      margin: 0;
+      width: 100%;
+      height: 500px;
+      background-color: #02BF0F;
+    }
+  </style>
 </head>
 
 <body></body>
 
 // right.html
 <head>
-    <style>
-        body {
-            margin: 0;
-            width: 100%;
-            height: 500px;
-            background-color: #2196F3;
-        }
-    </style>
+  <style>
+    body {
+      margin: 0;
+      width: 100%;
+      height: 500px;
+      background-color: #2196F3;
+    }
+  </style>
 </head>
 
 <body>
-    <a href="http://www.baidu.com" target="_self"  style="color: #fff;text-decoration: none;">百度</a>
+  <a href="http://www.baidu.com" target="_self" style="color: #fff;text-decoration: none;">百度</a>
 </body>
 ```
 
@@ -308,27 +310,32 @@ a:active {
 ```javascript
 <a href="javascript:void(0);" onclick="downloadFile(event)" src='https://www.baidu.com/logo.png'>download</a>
 <script>
-    function downloadFile(e) {
-        var url = e.target.getAttribute('src')
-        var image = new Image()
-        image.setAttribute('crossOrigin', 'anonymous')
-        image.src = url
-        image.onload = () => {
-            var canvas = document.createElement('canvas')
-            canvas.width = image.width
-            canvas.height = image.height
-            var ctx = canvas.getContext('2d')
-            ctx.drawImage(image, 0, 0, image.width, image.height)
-            var ext = image.src.substring(image.src.lastIndexOf('.') + 1).toLowerCase()
-            var name = image.src.substring(image.src.lastIndexOf('/') + 1)
-            var dataURL = canvas.toDataURL('image/' + ext)
+  function downloadFile(e) {
+    const url = e.target.getAttribute('src')
+    const image = new Image()
 
-            var a = document.createElement('a')
-            a.href = dataURL
-            a.download = name
-            a.click()
-        }
+    image.setAttribute('crossOrigin', 'anonymous')
+    image.src = url
+
+    image.onload = () => {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+
+      canvas.width = image.width
+      canvas.height = image.height
+
+      ctx.drawImage(image, 0, 0, image.width, image.height)
+
+      const ext = image.src.substring(image.src.lastIndexOf('.') + 1).toLowerCase()
+      const name = image.src.substring(image.src.lastIndexOf('/') + 1)
+      const dataURL = canvas.toDataURL('image/' + ext)
+
+      const a = document.createElement('a')
+      a.href = dataURL
+      a.download = name
+      a.click()
     }
+  }
 </script>
 ```
 
@@ -347,31 +354,36 @@ a:active {
 ```javascript
 <a href="javascript:void(0);" onclick="downloadFile(event)" src='https://www.baidu.com/logo.png'>download</a>
 <script>
-    function downloadFile(e) {
-        var url = e.target.getAttribute('src')
-        var image = new Image()
-        image.setAttribute('crossOrigin', 'anonymous')
-        image.src = url
-        image.onload = () => {
-            var canvas = document.createElement('canvas')
-            canvas.width = image.width
-            canvas.height = image.height
-            var ctx = canvas.getContext('2d')
-            ctx.drawImage(image, 0, 0, image.width, image.height)
-            var name = image.src.substring(image.src.lastIndexOf('/') + 1)
+  function downloadFile(e) {
+    const url = e.target.getAttribute('src')
+    const image = new Image()
 
-            canvas.toBlob((blob) => {
-                var url = window.URL.createObjectURL(blob)
-                var a = document.createElement('a')
-                a.href = url
-                a.download = name
-                a.click()
-                a.remove()
+    image.setAttribute('crossOrigin', 'anonymous')
+    image.src = url
 
-                window.URL.revokeObjectURL(url)
-            })
-        }
+    image.onload = () => {
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      const name = image.src.substring(image.src.lastIndexOf('/') + 1)
+
+      canvas.width = image.width
+      canvas.height = image.height
+
+      ctx.drawImage(image, 0, 0, image.width, image.height)
+
+      canvas.toBlob(blob => {
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+
+        a.href = url
+        a.download = name
+        a.click()
+        a.remove()
+
+        window.URL.revokeObjectURL(url)
+      })
     }
+  }
 </script>
 ```
 
@@ -386,22 +398,23 @@ a:active {
 ```javascript
 <a href="javascript:void(0);" onclick="downloadFile(event)" src='http://www.baidu.com/txt.txt'>download</a>
 <script>
-    function downloadFile(e) {
-        var url = e.target.getAttribute('src')
-        var name = url.substring(url.lastIndexOf('/') + 1)
+  function downloadFile(e) {
+    const url = e.target.getAttribute('src')
+    const name = url.substring(url.lastIndexOf('/') + 1)
 
-        axios.get(url, { responseType: 'blob' }).then(res => {
-            var blob = res.data
-            var url = URL.createObjectURL(blob)
-            var a = document.createElement('a')
-            a.href = url
-            a.download = name
-            a.click()
-            a.remove()
+    axios.get(url, { responseType: 'blob' }).then(res => {
+      const blob = res.data
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
 
-            window.URL.revokeObjectURL(url)
-        })
-    }
+      a.href = url
+      a.download = name
+      a.click()
+      a.remove()
+
+      window.URL.revokeObjectURL(url)
+    })
+  }
 </script>
 ```
 
@@ -413,4 +426,4 @@ a:active {
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

@@ -6,9 +6,9 @@
 
 ### 文件类型
 
-- 系统范围内的配置文件，包括系统上每一个用户及其仓库的通用配置，位于`Git`安装目录下`C:/Program Files/Git/etc/gitconfig`。
-- 用户级的配置文件，只适用当前用户，位于用户目录下`C:/Users/{username}/.gitconfig`。
-- 项目级的配置文件，只适用某个`Git`仓库，位于仓库目录下`.git/config`。
+- 系统范围内的配置文件，包括系统上每一个用户及其仓库的通用配置，位于`Git`安装目录下`C:/Program Files/Git/etc/gitconfig`
+- 用户级的配置文件，只适用当前用户，位于用户目录下`C:/Users/{username}/.gitconfig`
+- 项目级的配置文件，只适用某个`Git`仓库，位于仓库目录下`.git/config`
 
 &emsp;&emsp;;`Git`读取配置文件顺序依次为系统级、用户级、项目级，以上三个级别的配置都会覆盖上一层的配置。
 
@@ -321,8 +321,8 @@ A  ...
 M  ...
  M ...
 MM ...
-D ...
- D...
+D  ...
+ D ...
 ```
 
 #### git diff
@@ -377,7 +377,7 @@ git --no-pager log
 - `--abbrev-commit`：显示部分校验和
 - `--relative-date`：提交时间显示相对时间
 - `--graph`：图形显示分支合并历史
-- `--pretty`：格式化输出信息，包括可用选项`oneline`（校验和和提交说明）、`short`（不含提交时间）、`full`（作者和提交者的名字和电子邮箱）、`fuller`（日志追加提交者信息）、`format`（定制要显示的记录格式），其余可参考 [官方文档](https://git-scm.com/docs/pretty-formats)。
+- `--pretty`：格式化输出信息，包括可用选项`oneline`（校验和和提交说明）、`short`（不含提交时间）、`full`（作者和提交者的名字和电子邮箱）、`fuller`（日志追加提交者信息）、`format`（定制要显示的记录格式），其余可参考 [官方文档](https://git-scm.com/docs/pretty-formats)
 
 #### 自定义格式
 
@@ -434,10 +434,10 @@ git log --pretty=format:"%ad" --date=format:'%Y'
 
 #### 筛选
 
-&emsp;&emsp;如下命令筛选作者是`DonG`，时间在`2020-12-15 22:20:20`后，提交信息包括`update`，删除或添加字符串`cname`的最近`5`条提交。
+&emsp;&emsp;如下命令筛选作者是`xx`，时间在`2020-12-15 22:20:20`后，提交信息包括`update`，删除或添加字符串`cname`的最近`5`条提交。
 
 ```javascript
-git log --author=DonG --after="2020-12-15 22:20:20" --grep="update" -Scname -5
+git log --author=xx --after="2020-12-15 22:20:20" --grep="update" -Scname -5
 ```
 
 &emsp;&emsp;以下为`Git`筛选限制符。
@@ -468,7 +468,7 @@ git config --global alias.lg "log --graph --pretty=format:'%Cred%h%Creset -%C(ye
 - `/`结尾忽略指定目录及目录下文件
 - 要忽略指定模式以外的文件或目录，可以在模式前加上`!`取反
 
-```javascript
+```bash
 # 忽略所有 .log 结尾的文件
 *.log
 
@@ -1257,7 +1257,7 @@ git config --local commit.template ~/.gitmessage
 &emsp;&emsp;初始化`npm`，安装 [commitizen](https://github.com/commitizen/cz-cli) 和 [cz-conventional-changelog](https://github.com/commitizen/cz-conventional-changelog)。
 
 ```javascript
-cnpm install commitizen cz-conventional-changelog --save-dev
+npm install commitizen cz-conventional-changelog --save-dev
 ```
 
 &emsp;&emsp;初始化配置，使其支持`angular`的提交格式，其中`--save-exact`相当于锁定版本号。
@@ -1270,10 +1270,10 @@ npx commitizen init cz-conventional-changelog --save-dev --save-exact
 
 ```javascript
 {
-    ...
-    "scripts": {
-        	"commit": "npx git-cz"
-    }
+  ...
+  "scripts": {
+    "commit": "npx git-cz"
+  }
 }
 ```
 
@@ -1289,19 +1289,19 @@ npm run commit
 &emsp;&emsp;规范提交并未限制`git commit`命令提交，安装检测依赖`ghook`和`validate-commit-msg`，不满足格式的提交会被阻止。
 
 ```javascript
-cnpm install ghooks  validate-commit-msg --save-dev
+npm install ghooks  validate-commit-msg --save-dev
 ```
 
 &emsp;&emsp;配置 package.json。
 
 ```javascript
 {
-    ...
-    "config": {
-        "ghooks": {
-              "commit-msg": "validate-commit-msg"
-        }
+  ...
+  "config": {
+    "ghooks": {
+      "commit-msg": "validate-commit-msg"
     }
+  }
 }
 ```
 
@@ -1315,4 +1315,4 @@ cnpm install ghooks  validate-commit-msg --save-dev
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

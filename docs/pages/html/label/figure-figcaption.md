@@ -20,8 +20,8 @@
 
 ```javascript
 <figure>
-    <img src="image.png" alt="">
-    <figcaption>caption and descriptions</figcaption>
+  <img src="image.png" alt="">
+  <figcaption>caption and descriptions</figcaption>
 </figure>
 ```
 
@@ -40,8 +40,8 @@
 
 ```javascript
 <figure>
-    <img src="image.png" alt="">
-    <figcaption>caption and descriptions</figcaption>
+  <img src="image.png" alt="">
+  <figcaption>caption and descriptions</figcaption>
 </figure>
 ```
 
@@ -54,10 +54,10 @@
   <figcaption>code</figcaption>
   <pre>
     function log(val) {
-        console.log(val)
+      console.log(val)
     }
     
-    log('hello world')
+    log('hello world')      
   </pre>
 </figure>
 ```
@@ -70,7 +70,7 @@
 <figure>
   <figcaption>Shakespeare: </figcaption>
   <blockquote>Nutrition books in the world. There is no book in life, there is no sunlight; wisdom without
-        books, as if the birds do not have wings.</blockquote>
+    books, as if the birds do not have wings.</blockquote>
 </figure>
 ```
 
@@ -93,21 +93,21 @@
 
 ![](/html/label/figure-figcaption/apply.gif)
 
-&emsp;&emsp;首先构造 HTML 基础结构，字体和宽度稍作限制。
+&emsp;&emsp;首先构造`HTML`基础结构，字体和宽度稍作限制。
 
 ```javascript
 figure {
-    margin: auto;
-    min-width: 320px;
-    max-width: 480px;
-    max-height: 360px;
-    font-family: 'Raleway', Arial, sans-serif;
-    cursor: pointer;
+  margin: auto;
+  min-width: 320px;
+  max-width: 480px;
+  max-height: 360px;
+  font-family: 'Raleway', Arial, sans-serif;
+  cursor: pointer;
 }
 
 <figure>
-    <img src="iamge.png" alt="">
-    <figcaption></figcaption>
+  <img src="iamge.png" alt="">
+  <figcaption></figcaption>
 </figure>
 ```
 
@@ -115,18 +115,18 @@ figure {
 
 ```javascript
 figure {
-    ...
-    position: relative;
+  ...
+  position: relative;
 }
 
 figcaption {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    padding: 2em;
-    box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 2em;
+  box-sizing: border-box;
 }
 ```
 
@@ -147,21 +147,21 @@ figcaption {
 
 ```javascript
 figcaption {
-    ...
-    color: #fff;
-    text-align: center;
+  ...
+  color: #fff;
+  text-align: center;
 }
 
 figure h2 {
-    margin: 0;
-    font-size: 30px;
-    font-weight: 300;
-    text-transform: uppercase;
-    transform: scale(0.8);
+  margin: 0;
+  font-size: 30px;
+  font-weight: 300;
+  text-transform: uppercase;
+  transform: scale(0.8);
 }
 
 figure h2 span {
-    font-weight: 600;
+  font-weight: 600;
 }
 ```
 
@@ -169,14 +169,14 @@ figure h2 span {
 
 ```javascript
 figure p {
-    position: absolute;
-    left: 0;
-    bottom: 30px;
-    margin: 20px;
-    padding: 30px;
-    border: 2px solid #fff;
-    font-size: 18px;
-    transform: scale(0.8);
+  position: absolute;
+  left: 0;
+  bottom: 30px;
+  margin: 20px;
+  padding: 30px;
+  border: 2px solid #fff;
+  font-size: 18px;
+  transform: scale(0.8);
 }
 ```
 
@@ -187,33 +187,33 @@ figure p {
 &emsp;&emsp;再考虑鼠标悬浮样式，鼠标悬浮后图片放大`2`倍，透明度由`0.8`到`0.1`，字体均恢复原本大小，`p`标签由透明度`0`到`1`。
 
 ```javascript
-figure{
-    ...
-    overflow: hidden;
+figure {
+  ...
+  overflow: hidden;
 }
 
 figure p {
-    ...
-    opacity: 0;
+  ...
+  opacity: 0;
 }
 
 figure img {
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
-figure:hover img{
-    opacity: 0.1,
-    transform: scale(2);
+figure:hover img {
+  opacity: 0.1;
+  transform: scale(2);
 }
 
-figure:hover h2{
-    transform: scale(1);
+figure:hover h2 {
+  transform: scale(1);
 }
 
-figure:hover p{
-    transform: scale(1);
-    bottom: 0;
-    opacity: 1;
+figure:hover p {
+  transform: scale(1);
+  bottom: 0;
+  opacity: 1;
 }
 ```
 
@@ -224,9 +224,9 @@ figure:hover p{
 &emsp;&emsp;看着感觉很奇怪，`figure`加上渐变背景色试试。
 
 ```javascript
-figure{
-    ...
-    background: linear-gradient(-45deg, #34495e 0%, #cc6055 100%);
+figure {
+  ...
+  background: linear-gradient(-45deg, #34495e 0%, #cc6055 100%);
 }
 ```
 
@@ -238,18 +238,18 @@ figure{
 
 ```javascript
 figure h2 {
-    ...
-    transition: transform 0.35s;
+  ...
+  transition: transform 0.35s;
 }
 
 figure p {
-    ...
-    transition: opacity 0.35s, transform 0.35s, bottom 0.35s;
+  ...
+  transition: opacity 0.35s, transform 0.35s, bottom 0.35s;
 }
 
 figure img {
-    ...
-    transition: opacity 0.35s, transform 0.35s;
+  ...
+  transition: opacity 0.35s, transform 0.35s;
 }
 ```
 
@@ -263,85 +263,85 @@ figure img {
 
 ```javascript
 <style>
-    figure {
-        margin: auto;
-        min-width: 320px;
-        max-width: 480px;
-        max-height: 360px;
-        position: relative;
-        font-family: 'Raleway', Arial, sans-serif;
-        overflow: hidden;
-        background: linear-gradient(-45deg, #34495e 0%, #cc6055 100%);
-        cursor: pointer;
-    }
+  figure {
+    margin: auto;
+    min-width: 320px;
+    max-width: 480px;
+    max-height: 360px;
+    position: relative;
+    font-family: 'Raleway', Arial, sans-serif;
+    overflow: hidden;
+    background: linear-gradient(-45deg, #34495e 0%, #cc6055 100%);
+    cursor: pointer;
+  }
 
-    figcaption {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        padding: 2em;
-        box-sizing: border-box;
-        color: #fff;
-        text-align: center;
-    }
+  figcaption {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 2em;
+    box-sizing: border-box;
+    color: #fff;
+    text-align: center;
+  }
 
-    figure h2 {
-        margin: 0;
-        font-size: 30px;
-        font-weight: 300;
-        text-transform: uppercase;
-        transform: scale(0.8);
-        transition: transform 0.35s;
-    }
+  figure h2 {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 300;
+    text-transform: uppercase;
+    transform: scale(0.8);
+    transition: transform 0.35s;
+  }
 
-    figure h2 span {
-        font-weight: 600;
-    }
+  figure h2 span {
+    font-weight: 600;
+  }
 
-    figure p {
-        position: absolute;
-        left: 0;
-        bottom: 30px;
-        margin: 20px;
-        padding: 30px;
-        border: 2px solid #fff;
-        font-size: 18px;
-        transform: scale(0.8);
-        opacity: 0;
-        transition: opacity 0.35s, transform 0.35s, bottom 0.35s;
-    }
+  figure p {
+    position: absolute;
+    left: 0;
+    bottom: 30px;
+    margin: 20px;
+    padding: 30px;
+    border: 2px solid #fff;
+    font-size: 18px;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: opacity 0.35s, transform 0.35s, bottom 0.35s;
+  }
 
-    figure img {
-        opacity: 0.8;
-        transition: opacity 0.35s, transform 0.35s;
-    }
+  figure img {
+    opacity: 0.8;
+    transition: opacity 0.35s, transform 0.35s;
+  }
 
-    figure:hover img {
-        opacity: 0.1;
-        transform: scale(2);
-    }
+  figure:hover img {
+    opacity: 0.1;
+    transform: scale(2);
+  }
 
-    figure:hover h2 {
-        transform: scale(1);
-    }
+  figure:hover h2 {
+    transform: scale(1);
+  }
 
-    figure:hover p {
-        transform: scale(1);
-        bottom: 0;
-        opacity: 1;
-    }
+  figure:hover p {
+    transform: scale(1);
+    bottom: 0;
+    opacity: 1;
+  }
 </style>
 
 <body>
-    <figure>
-        <img src="image.png" alt="">
-        <figcaption>
-            <h2>Messy<span>Duke</span></h2>
-            <p>Duke is very bored. When he looks at the sky, he feels to run.</p>
-        </figcaption>
-    </figure>
+  <figure>
+    <img src="image.png" alt="">
+    <figcaption>
+      <h2>Messy<span>Duke</span></h2>
+      <p>Duke is very bored. When he looks at the sky, he feels to run.</p>
+    </figcaption>
+  </figure>
 </body>
 ```
 
@@ -353,4 +353,4 @@ figure img {
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

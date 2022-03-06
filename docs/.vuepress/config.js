@@ -38,8 +38,10 @@ module.exports = {
         text: '关于',
         items: [
           { text: 'GitHub', link: 'https://github.com/dongwei1125' },
+          { text: 'Gitee', link: 'https://gitee.com/dongwei1125' },
           { text: '掘金', link: 'https://juejin.cn/user/2621689331987783' },
-          { text: 'CSDN', link: 'https://blog.csdn.net/Don_GW' }
+          { text: 'CSDN', link: 'https://blog.csdn.net/Don_GW' },
+          { text: 'NPM', link: 'https://www.npmjs.com/~dongwei1125' }
         ]
       }
     ]

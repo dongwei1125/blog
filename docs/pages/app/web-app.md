@@ -18,7 +18,7 @@
 
 ### 预览地址
 
-&emsp;&emsp;;[蘑菇购](http://dongwei1125.github.io/mogugou)
+&emsp;&emsp;;[GitHub](http://dongwei1125.github.io/mogugou) / [Gitee](http://dongwei1125.gitee.io/mogugou)
 
 ### 示例图
 
@@ -106,23 +106,24 @@ import routes from './routes'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-  mode: 'history',
-  routes
+  mode: 'hash',
+  routes,
 })
 
 export default router
 
 // router -> routes.js
-export default [{
-        path: '/',
-        redirect: '/home'
-    },
-    {
-        path: '/home',
-        name: 'home',
-        component: () => import('views/home')
-    }
-    ...
+export default [
+  {
+    path: '/',
+    redirect: '/home',
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: () => import('views/home'),
+  },
+  ...
 ]
 ```
 
@@ -133,16 +134,16 @@ export default [{
 const path = require('path')
 
 function resolve(dir) {
-    return path.join(__dirname, dir)
+  return path.join(__dirname, dir)
 }
 
 module.exports = {
-    chainWebpack: (config) => {
-        config.resolve.alias
-            .set('@', resolve('src'))
-            .set('views', resolve('src/views'))
-            ...
-    }
+  chainWebpack: config => {
+    config.resolve.alias
+      .set('@', resolve('src'))
+      .set('views', resolve('src/views'))
+      ...
+  },
 }
 ```
 
@@ -158,33 +159,37 @@ module.exports = {
 
 // TabbarItem -> index.vue
 <div class="tabbar-item">
-    <router-link :to="to" tag="div">
-      <div
-        class="tabbar-item-icon"
-        :style="{ color: to === path ? activeColor : inactiveColor }"
-      >
-        <slot name="icon" />
-      </div>
-      <div
-        class="tabbar-item-text"
-        :style="{ color: to === path ? activeColor : inactiveColor }"
-      >
-        <slot name="text" />
-      </div>
-    </router-link>
+  <router-link :to="to" tag="div">
+    <div class="tabbar-item-icon" :style="{ color: to === path ? activeColor : inactiveColor }">
+      <slot name="icon" />
+    </div>
+    
+    <div class="tabbar-item-text" :style="{ color: to === path ? activeColor : inactiveColor }">
+      <slot name="text" />
+    </div>
+  </router-link>
 </div>
 
 export default {
   props: {
-    to: String,
-    activeColor: String,
-    inactiveColor: String
+    to: {
+      type: String,
+      default: '',
+    },
+    activeColor: {
+      type: String,
+      default: '',
+    },
+    inactiveColor: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     path() {
       return this.$route.path
-    }
-  }
+    },
+  },
 }
 ```
 
@@ -192,21 +197,22 @@ export default {
 
 ```javascript
 // layout -> Tabbar.vue
-<m-tabbar>
-      <m-tabbar-item to="/home" active-color="#ff8198" inactive-color="#555555">
-        <i slot="icon" class="iconfont icon-home"></i>
-        <span slot="text">首页</span>
-      </m-tabbar-item>
-      ...
-</m-tabbar>
+<common-tabbar>
+  <common-tabbar-item to="/home" active-color="#ff8198" inactive-color="#555555">
+    <i slot="icon" class="iconfont icon-home"></i>
+    <span slot="text">首页</span>
+  </common-tabbar-item>
+  ...
+</common-tabbar>
 
-import Tabbar from "components/Tabbar"
-import TabbarItem from "components/TabbarItem"
+import CommonTabbar from 'components/Tabbar'
+import CommonTabbarItem from 'components/TabbarItem'
 
 export default {
   components: {
-    MTabbar: Tabbar,
-    MTabbarItem: TabbarItem
+    CommonTabbar,
+    CommonTabbarItem,
+  },
 }
 ```
 
@@ -220,7 +226,7 @@ export default {
 ...
 
 // index.less
-@import '~assets/iconfont/iconfont.css'
+@import '~assets/iconfont/iconfont.css';
 
 // main.js
 import 'styles/index.less'
@@ -232,13 +238,14 @@ import 'styles/index.less'
 // App.vue
 <div id="app">
   <tabbar />
+
   <router-view />
 </div>
 
-import Tabbar from "layout/Tabbar"
+import Tabbar from 'layout/Tabbar'
 
 export default {
-  components: { Tabbar }
+  components: { Tabbar },
 }
 ```
 
@@ -248,7 +255,7 @@ export default {
 
 ```javascript
 // 安装
-cnpm i normalize.css --save
+npm i normalize.css --save
 
 // main.js
 import 'normalize.css'
@@ -260,7 +267,7 @@ import 'normalize.css'
 html,
 body,
 #app {
-    height: 100%;
+  height: 100%;
 }
 ```
 
@@ -278,10 +285,10 @@ router.beforeEach((to, from, next) => {
   path: '/home',
   name: 'home',
   meta: {
-     title: '首页'
+    title: '首页',
   },
-  component: () => import('views/home')
-},
+  component: () => import('views/home'),
+}
 ```
 
 ### NavBar
@@ -301,27 +308,26 @@ router.beforeEach((to, from, next) => {
 │   ├── app.js
 │   ├── db.js
 │   ├── router.js
+│   ├── const.js
+│   ├── utils.js
 ```
 
 &emsp;&emsp;;`app.js`启动数据服务，开放静态`static`文件夹，映射`/static`到`serve/static`。
 
 ```javascript
-app.use("/static/", express.static("./serve/static/"))
+app.use('/static/', express.static('./serve/static/'))
 ```
 
 &emsp;&emsp;;`db.js`本地数据库，`baseURL`为本机局域网`ip`，便于移动端访问本机数据，也方便调试。项目之前使用`ipconfig`手动输入的方式，这种方式不免显得繁琐，数据服务一启动便与项目没有实际关联性，没有必要再去修改一次`ip`地址。故使用`os`模块动态获取本机局域网`ip`，当然此种方式如若`PC`端访问图片失败，大概率是动态获取`ip`部分有误，注释相关代码，通过上一种方式修改`ip`即可。
 
 ```javascript
-const os = require("os")
-
+const os = require('os')
 const interfaces = os.networkInterfaces()
-
 const port = 3000
-
-var baseURL = "http://127.0.0.1:3000"
+const baseURL = 'http://127.0.0.1:3000'
 
 for (const key of Object.keys(interfaces)) {
-  const el = interfaces[key].find(el => el.family === "IPv4" && el.address !== "127.0.0.1")
+  const el = interfaces[key].find(el => el.family === 'IPv4' && el.address !== '127.0.0.1')
 
   el && (baseURL = `http://${el.address}:${port}`)
 }
@@ -331,14 +337,14 @@ for (const key of Object.keys(interfaces)) {
 
 ```javascript
 const db = require('./db')
+const { SUCCESS_CODE } = require('./const')
 
-router.get('/api/getBann', function (req, res) {
-    res.send({
-        message: "success",
-        result: db.banner,
-        status: "0",
-        success: true
-    })
+router.get('/api/getBann', (req, res) => {
+  res.json({
+    code: SUCCESS_CODE,
+    content: db.banner,
+    msg: 'success',
+  })
 })
 ...
 ```
@@ -347,11 +353,11 @@ router.get('/api/getBann', function (req, res) {
 
 ```javascript
 // 安装
-cnpm i nodemon --save-dev
+npm i nodemon --save-dev
 
-scripts: {
-    serve: "nodemon serve/app.js"
-}
+"scripts": {
+  "serve": "nodemon serve/app.js",
+},
 ```
 
 ### axios、api 封装
@@ -368,11 +374,10 @@ scripts: {
 ├── vue.config.js
 ```
 
-&emsp;&emsp;;`request.js`内`baseURL`独立出来，使用环境变量，放置`utils`工具类函数文件夹下。
+&emsp;&emsp;;`request.js`放置在`utils`工具类函数文件夹下。
 
 ```javascript
 const server = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
   timeout: 5000,
 })
 ```
@@ -380,7 +385,7 @@ const server = axios.create({
 &emsp;&emsp;开发与产品`URL`一般不一致，通常是配置环境变量，根目录创建`.env.development`文件，后期需要添加`.env.production`配置产品环境变量。
 
 ```javascript
-VUE_APP_BASE_API = "/api"
+VUE_APP_BASE_API = '/api'
 ```
 
 &emsp;&emsp;项目下尝试访问`express`请求通常情况会发生跨域报错，服务端可设置跨域部分，或者项目设置代理。
@@ -389,17 +394,15 @@ VUE_APP_BASE_API = "/api"
 // vue.config.js
 devServer: {
   port: 8000,
+  open: true,
   proxy: {
-     [process.env.VUE_APP_BASE_API]: {
-         target: 'http://127.0.0.1:3000/',
-         ws: false,
-         changeOrigin: true,
-         pathRewrite: {
-             ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-     }
+    [process.env.VUE_APP_BASE_API]: {
+      target: 'http://127.0.0.1:3000/',
+      ws: false,
+      changeOrigin: true,
+    },
   },
-}
+},
 ```
 
 &emsp;&emsp;引入`request.js`，设置请求`url`、请求方式，页面引用。
@@ -409,18 +412,18 @@ devServer: {
 import request from 'utils/request'
 
 export function getBann() {
-    return request({
-        url: '/api/getBann',
-        method: 'get'
-    })
+  return request({
+    url: '/api/getBann',
+    method: 'get',
+  })
 }
 
 // 引用页面
-import { getBann } from "api/home"
+import { getBann } from 'api/home'
 
 getBann()
-  .then((res) => {...})
-  .catch((err) => {...})
+  .then(res => { ... })
+  .catch(err => { ... })
 ```
 
 ## BetterScroll、vue-awesome-swiper
@@ -447,26 +450,26 @@ getBann()
 
 ```javascript
 ▼<Home>
-    <NavBar>
-    ▼<BetterScroll>
-         ▼<Swiper>
-             <SwiperSlide>
-         <RecommendView>
-         <FeatureView>
-         <IndexBar>
-        ▼<CardList>
-            <CardListItem>
+  <NavBar>
+  ▼<BetterScroll>
+    ▼<Swiper>
+      <SwiperSlide>
+    <RecommendView>
+    <FeatureView>
+    <IndexBar>
+    ▼<CardList>
+      <CardListItem>
 ```
 
 &emsp;&emsp;;`NavBar`默认`fiexed`定位屏幕顶部，会导致遮住`better-scroll`，`home`使用伪元素`before`规避。且`better-scroll`外层`wrapper`需要指定高度，尽量加上相对定位。
 
 ```javascript
 // styles -> index.less
-.m-home::before{
-    content: '';
-    display: block;
-    height: 44px;
-    width: 100%;
+.m-home::before {
+  content: '';
+  display: block;
+  height: 44px;
+  width: 100%;
 }
 
 // home -> index.vue
@@ -482,11 +485,11 @@ getBann()
 ```javascript
 // api -> home.js
 export function getRecom() {
-    return request(...)
+  return request( ... )
 }
 
 // home -> index.vue
-import { getBann } from "api/home"
+import { getBann } from 'api/home'
 ```
 
 &emsp;&emsp;;`IndexBar`也是公共组件，`components`新建`IndexBar`，组件参数传递数组，存在高亮切换和点击事件的抛出，同时含默认高亮，则将`IndexBar`封装`v-model`形式。`props`增加组件可复用性，不仅仅只依赖于`data`内数据`label-value`对形式，传递`props`可依赖多种形式。`model`、`props.data`是封装自定义组件`v-model`必备，具体步骤参考官方 [v-model](https://cn.vuejs.org/v2/guide/components-custom-events.html#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%BB%84%E4%BB%B6%E7%9A%84-v-model)，`index-bar-item`点击调用`change`，实现`v-model`。
@@ -494,57 +497,57 @@ import { getBann } from "api/home"
 ```javascript
 // IndexBar -> index.vue
 <div
+  v-for="item in data"
+  :key="item[props.value]"
   class="index-bar-item"
   :class="{ active: value === item[props.value] }"
   @click="itemClick(item)"
-  v-for="item in data"
-  :key="item[props.value]"
->...</div>
+>
+  ...
+</div>
 
 export default {
+  model: {
+    value: 'value',
+    event: 'change',
+  },
   props: {
     data: {
       type: Array,
       default: () => [],
     },
-    value: {},
+    value: {
+      type: String,
+      default: '',
+    },
     props: {
       type: Object,
       default: () => ({
-        label: "label",
-        value: "value",
+        label: 'label',
+        value: 'value',
       }),
     },
   },
-  model: {
-    value: "value",
-    event: "change",
-  },
   methods: {
     itemClick(item) {
-      item[this.props.value] !== this.value &&
-        this.$emit("change", item[this.props.value])
+      item[this.props.value] !== this.value && this.$emit('change', item[this.props.value])
     },
-  }
+  },
 }
 
 // home -> index.vue
-<index-bar
-  :data="indexBars"
-  v-model="currentBar"
-  @change="onChange"
-/>
+<index-bar v-model="currentBar" :data="indexBars" @change="onChange" />
 
-data:{
-    indexBars: [
-        {
-          label: "流行",
-          value: "0"
-        }
-        ...
-    ],
-    currentBar: "0"
-}
+data: {
+  indexBars: [
+    {
+      label: '流行',
+      value: '0',
+    },
+    ...
+  ],
+  currentBar: '0',
+},
 ```
 
 &emsp;&emsp;列表数据接口，传递参数包括点击`currentType`、`pageNum`、`pageSize`。图片异步加载必然导致`better-scroll`高度计算失误，每张图片加载完毕都要重新计算高度才合理，故`CardListItem`内图片`load`完毕需要抛出给首页，再调用`scroll`组件内`refresh`方法。首页与`CardListItem`组件之间的关系薄弱，或者说没有关系，组件间事件通信可采用`EventBus`事件总线的方式。
@@ -554,13 +557,13 @@ data:{
 Vue.prototype.$bus = new Vue()
 
 // CardListItem 发出
-onLoad(){
+onLoad() {
   this.$bus.$emit('imageLoad')
-}
+},
 
 // home -> index.vue 监听
-this.$bus.$on("imageLoad", () => {
-   this.$refs.scroll.refresh()
+this.$bus.$on('imageLoad', () => {
+  this.$refs.scroll.refresh()
 })
 ```
 
@@ -569,7 +572,7 @@ this.$bus.$on("imageLoad", () => {
 ```javascript
 export function debounce(func, delay = 20) {
   var timer = null
-  return function(...arg) {
+  return function (...arg) {
     if (timer) clearTimeout(timer)
 
     timer = setTimeout(() => {
@@ -583,17 +586,17 @@ export function debounce(func, delay = 20) {
 
 ```javascript
 // home -> index.vue
-<scroll @load='onLoad'>
+<scroll @load="onLoad" />
 
 onLoad() {
-   this.refresh = debounce(this.$refs.scroll.refresh, 20)
-}
+  this.refresh = debounce(this.$refs.scroll.refresh, 20)
+},
 
 mounted() {
-    this.$bus.$on("imageLoad", () => {
-      this.refresh && this.refresh()
-    })
-}
+  this.$bus.$on('imageLoad', () => {
+    this.refresh && this.refresh()
+  })
+},
 ```
 
 &emsp;&emsp;;`indexBar`吸顶，通过使`better-scroll`下的`InddexBar` `fixed`定位不可取，`better-scroll`使用`translate`会导致内部定位元素非理想状态，解决办法最好是`NavBar`同级再添加组件`IndexBar` `fixed`定位，`scroll`未到吸顶距离隐藏，吸顶距离则显示。`showTop`用于返回顶部，滚动距离高于一屏则显示返回顶部按钮。
@@ -602,20 +605,18 @@ mounted() {
 // home -> index.vue
 scroll({ y }) {
   this.$nextTick(() => {
-    this.showSticky =
-    this.$refs.indexBar && -y > this.$refs.indexBar.$el.offsetTop
+    this.showSticky = this.$refs.indexBar && -y > this.$refs.indexBar.$el.offsetTop
   })
 
   this.showTop = -y > document.body.clientHeight
-}
+},
 ```
 
 &emsp;&emsp;上拉加载、下拉刷新、`IndexBar`切换，下拉重新调用接口，上拉当前`pageNum++`，再获取数据，`list`数据使用`concat`拼接，或者使用`push(...array)`方式，`indexBar`切换重新获取数据，`scroll`滚动至`IndexBar`位置。
 
 ```javascript
 this.$nextTick(() => {
-  this.showSticky &&
-    this.$refs.scroll.scrollTo(0, -this.$refs.indexBar.$el.offsetTop, 0)
+  this.showSticky && this.$refs.scroll.scrollTo(0, -this.$refs.indexBar.$el.offsetTop, 0)
 })
 ```
 
@@ -635,13 +636,13 @@ this.$nextTick(() => {
 ```javascript
 // router -> routes.js
 {
-     path: '/detail/:id',
-     name: 'detail',
-     meta: {
-         title: '详情'
-     },
-     component: () => import('views/detail')
-}
+  path: '/detail/:id',
+  name: 'detail',
+  meta: {
+    title: '详情',
+  },
+  component: () => import('views/detail'),
+},
 
 // home -> index.vue
 this.$router.push({ path: `/detail/${id}` })
@@ -667,17 +668,17 @@ this.$router.push({ path: `/detail/${id}` })
 
 ```javascript
 ▼<Detail>
-    <NavBar>
-    ▼<BetterScroll>
-        ▼<Swiper>
-            <SwiperSlide>
-        <GoodsInfo>
-        <StoreInfo>
-        <ClothList>
-        <ParamsInfo>
-       <CommentList>
-       <RecommendList>
-    <SubmitBar>
+  <NavBar>
+  ▼<BetterScroll>
+    ▼<Swiper>
+      <SwiperSlide>
+    <GoodsInfo>
+    <StoreInfo>
+    <ClothList>
+    <ParamsInfo>
+    <CommentList>
+    <RecommendList>
+  <SubmitBar>
 ```
 
 &emsp;&emsp;组件大致同首页一致，`NavBar`差别较大，`NavBar`对公共组件的`NavBar`进行封装，组件自定义`v-model`，抛出`change`事件，点击实现类似锚点的功能，同时伴随高亮。大致原理点击获取元素的`value`值，`value`值查询`navbars`对应的`refName`，获取对应组件的`offsetTop`实现锚点。
@@ -685,11 +686,11 @@ this.$router.push({ path: `/detail/${id}` })
 ```javascript
 navbars: [
   {
-    label: "商品",
-    value: "0",
-    refName: "swiper"
-  }
-]
+    label: '商品',
+    value: '0',
+    refName: 'swiper',
+  },
+],
 
 this.$refs.scroll.scrollTo(0, -this.$refs[refName].$el.offsetTop)
 ```
@@ -697,7 +698,7 @@ this.$refs.scroll.scrollTo(0, -this.$refs[refName].$el.offsetTop)
 &emsp;&emsp;;`scroll`滚动过程中高亮伴随切换，在`scroll`事件中获取滚动距离，遍历`navbars`设置`currentBar`的值，同时`v-model`双向绑定`currentBar`，从而实现滚动高亮。
 
 ```javascript
-this.navbars.forEach((el) => {
+this.navbars.forEach(el => {
   if (this.$refs[el.refName] && -y >= this.$refs[el.refName].$el.offsetTop) {
     this.currentBar = el.value
   }
@@ -707,7 +708,7 @@ this.navbars.forEach((el) => {
 &emsp;&emsp;添加购物车需要`vuex`状态管理，需要用到的部分实质只有购物车的商品列表，故使用`vuex`显得大材小用，况且不用`vuex`也能实现迷你版状态管理。为了保留与`vuex`一致性，`store`下新增`index.js`、`vuex.js`，`vuex.js`声明`Store`类，构造函数默认观察`state`数据。
 
 ```javascript
-import Vue from "vue"
+import Vue from 'vue'
 
 class Store {
   constructor({ state, mutations }) {
@@ -730,20 +731,21 @@ export default { Store }
 import Vuex from './vuex'
 
 export default new Vuex.Store({
-    state: {
-        goods: []
-    },
-    mutations: {
-        ADD_GOODS(state, arg) {...},
-        ALL_CHECKED(state, val) {...}
-    }
+  state: {
+    goods: [],
+  },
+  mutations: {
+    ADD_GOODS(state, arg) { ... },
+
+    ALL_CHECKED(state, val) { ... },
+  },
 })
 ```
 
 &emsp;&emsp;页面实现`this.$store`方式调用还要将导出实例放置原型上，至此迷你版`vuex`调用方式与`vuex`趋于一致，`actions`、`gutters`暂时用不上。
 
 ```javascript
-import store from "./store"
+import store from './store'
 
 Vue.prototype.$store = store
 ```
@@ -751,13 +753,13 @@ Vue.prototype.$store = store
 &emsp;&emsp;添加购物车按钮点击，调用`mutations`方法。
 
 ```javascript
-this.$store.commit("ADD_GOODS", {...})
+this.$store.commit('ADD_GOODS', { ... })
 ```
 
 &emsp;&emsp;详情页面点击不同首页商品，只会请求同一商品，原因`keep-active`缓存了当前详情页，不会再次触发`created`，调整`App.vue`。
 
 ```javascript
-<keep-alive exclude="detail">
+<keep-alive exclude="Detail"></keep-alive>
 ```
 
 &emsp;&emsp;此时详情页`Tabbar`还存在，类比`keep-active`，组件传值`exclude`。
@@ -766,15 +768,18 @@ this.$store.commit("ADD_GOODS", {...})
 // layout -> Tabbar.vue
 export default {
   props: {
-    exclude: String,
+    exclude: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     show() {
-      const excludes = this.exclude.split(",")
+      const excludes = this.exclude.split(',')
 
       return !excludes.includes(this.$route.name)
-    }
-  }
+    },
+  },
 }
 
 // App.vue
@@ -784,7 +789,7 @@ export default {
 &emsp;&emsp;;`Message`消息提示组件封装，根据开源组件库 [element-ui](https://element.eleme.cn/#/zh-CN)，封装一个简单版的`Message`，`components`下新建`Message`，新建`main.vue`、`index.js`，`main.vue`内部`mounted`之后，固定延时关闭`Message`，同时执行关闭回调。
 
 ```javascript
-<transition name="fade" v-if="visible">
+<transition v-if="visible" name="fade">
   <div class="message">{{ message }}</div>
 </transition>
 
@@ -792,9 +797,9 @@ export default {
   data() {
     return {
       visible: true,
-      message: "",
+      message: '',
       duration: 2000,
-      onClose: null
+      onClose: null,
     }
   },
   mounted() {
@@ -803,28 +808,27 @@ export default {
 
       this.onClose && this.onClose()
     }, this.duration)
-  }
+  },
 }
 ```
 
 &emsp;&emsp;;`index.js`内部引入`Vue`，同时引入组件`Message`，创建组件构造器，通过`new`构造器创建组件实例，`$mount`挂载当前实例同时渲染为真实`DOM`，再追加至`body`内部，对外抛出`install`方法。
 
 ```javascript
-import Vue from "vue"
-
-import main from "./main.vue"
+import Vue from 'vue'
+import main from './main.vue'
 
 const MessageConstructor = Vue.extend(main)
 
-const Message = function(options) {
-  if (typeof options === "string") {
+const Message = function (options) {
+  if (typeof options === 'string') {
     options = {
-      message: options
+      message: options,
     }
   }
 
   const instance = new MessageConstructor({
-    data: options
+    data: options,
   })
 
   instance.$mount()
@@ -835,7 +839,7 @@ const Message = function(options) {
 export default {
   install() {
     Vue.prototype.$message = Message
-  }
+  },
 }
 ```
 
@@ -843,11 +847,11 @@ export default {
 
 ```javascript
 // mian.js
-import Message from "components/Message"
+import Message from 'components/Message'
 Vue.use(Message)
 
 // detail -> index.vue
-this.$message("商品添加成功!")
+this.$message('商品添加成功!')
 ```
 
 ### 购物车
@@ -856,10 +860,10 @@ this.$message("商品添加成功!")
 
 ```javascript
 computed: {
-   data() {
-      return this.$store.state.goods
-   }
-}
+  data() {
+    return this.$store.state.goods
+  },
+},
 ```
 
 &emsp;&emsp;目录结构。
@@ -876,12 +880,12 @@ computed: {
 
 ```javascript
 ▼<Cart>
-    <NavBar>
-    ▼<BetterScroll>
-        ▼<GoodsList>
-            <CheckButton>
-    ▼<TotalBar>
-        <CheckButton>
+  <NavBar>
+  ▼<BetterScroll>
+    ▼<GoodsList>
+      <CheckButton>
+  ▼<TotalBar>
+    <CheckButton>
 ```
 
 &emsp;&emsp;;`CheckButton`即公共选中按钮，`components`下新建`CheckButton`，内部实现`v-model`，内部通过切换背景色实现选中和取消，且内部点击事件阻止冒泡。可能存在当外部调用`CheckButton`时，带有`CheckButton`的整个卡片点击则`CheckButton`取消或者选中，此时修改`v-model`绑定值即可。但是当点击`CheckButton`时，由于本身`CheckButton`被点击时会切换，加上事件冒泡，外层卡片也会触发点击事件，再次修改`v-model`值，出现预期之外的结果，最好的办法就是阻止事件的冒泡。
@@ -894,34 +898,34 @@ computed: {
 
 ```javascript
 .check {
-    position: relative;
+  position: relative;
 
-    &::after {
-      content: "";
-      display: block;
-      position: absolute;
-      left: 0;
-      right: 0;
-     top: 0;
-     bottom: 0;
-   }
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
 }
 ```
 
 &emsp;&emsp;由于`keep-active`的缓存机制，导致列表无法下拉，主要由于初始情况`scroll`计算高度错误导致。解决办法一，添加`activated`事件，页面活动时，调用组件内部`refresh`事件更新高度。
 
 ```javascript
-activated(){
-    this.$nextTick(()=>{
-      this.$refs.scroll.refresh()
-    })
-}
+activated() {
+  this.$nextTick(() => {
+    this.$refs.scroll.refresh()
+  })
+},
 ```
 
 &emsp;&emsp;解决办法二，`keep-active`不缓存`cart`页面。
 
 ```javascript
-<keep-alive exclude="detail,cart">
+<keep-alive exclude="Cart,Detail"></keep-alive>
 ```
 
 ### 分类
@@ -939,8 +943,8 @@ activated(){
 
 ```javascript
 ▼<Category>
-    <NavBar>
-    <CatesList>
+  <NavBar>
+  <CatesList>
 ```
 
 ### 个人信息
@@ -960,10 +964,10 @@ activated(){
 
 ```javascript
 ▼<Profile>
-    <NavBar>
-    <UserInfo>
-    <CountInfo>
-    <OptionList>
+  <NavBar>
+  <UserInfo>
+  <CountInfo>
+  <OptionList>
 ```
 
 ## 优化部分
@@ -974,12 +978,12 @@ activated(){
 
 ```javascript
 // 安装
-cnpm i vue-lazyload --save
+npm i vue-lazyload --save
 
 // main.js
-import VueLazyload from "vue-lazyload"
+import VueLazyload from 'vue-lazyload'
 Vue.use(VueLazyload, {
-  loading: require('assets/placeholder.png')
+  loading: require('assets/placeholder.png'),
 })
 ```
 
@@ -989,7 +993,7 @@ Vue.use(VueLazyload, {
 
 ```javascript
 // 安装
-cnpm i fastclick --save
+npm i fastclick --save
 
 // main.js
 import FastClick from 'fastclick'
@@ -1002,26 +1006,26 @@ FastClick.attach(document.body)
 
 ```javascript
 // 安装
-cnpm install postcss-px-to-viewport --save-dev
+npm install postcss-px-to-viewport --save-dev
 
 // postcss.config.js
 module.exports = {
-    plugins: {
-        'postcss-px-to-viewport': {
-            unitToConvert: 'px',
-            viewportWidth: 375,
-            unitPrecision: 6,
-            propList: ['*'],
-            viewportUnit: 'vw',
-            fontViewportUnit: 'vw',
-            selectorBlackList: [],
-            minPixelValue: 1,
-            replace: true,
-            exclude: undefined,
-            include: undefined,
-            landscapeUnit: 'vw'
-        }
-    }
+  plugins: {
+    'postcss-px-to-viewport': {
+      unitToConvert: 'px',
+      viewportWidth: 375,
+      unitPrecision: 6,
+      propList: ['*'],
+      viewportUnit: 'vw',
+      fontViewportUnit: 'vw',
+      selectorBlackList: [],
+      minPixelValue: 1,
+      replace: true,
+      exclude: undefined,
+      include: undefined,
+      landscapeUnit: 'vw',
+    },
+  },
 }
 ```
 
@@ -1061,34 +1065,34 @@ nginx -t
 ...
 
 location / {
-   root   dist;
-   index  index.html index.htm;
+  root   dist;
+  index  index.html index.htm;
 }
 ```
 
 ## 后记
 
-&emsp;&emsp;项目基本思路均梳理大半，部分思路可能未提及，项目 [Github](https://github.com/dongwei1125/mogugou) 开放，可以克隆或者下载压缩包，仓库内存稍大，大约`464M`，压缩包下载`1`分钟左右，原因主要由于脱离网络接口，数据保存本地导致，详细情况开头已细致说明。整个项目非常适用新手练手，服务端数据服务只需要`npm run serve`即可开启。
+&emsp;&emsp;项目基本思路均梳理大半，部分思路可能未提及，项目 [GitHub](https://github.com/dongwei1125/mogugou) 开放，可以克隆或者下载压缩包，仓库内存稍大，大约`464M`，压缩包下载`1`分钟左右，原因主要由于脱离网络接口，数据保存本地导致，详细情况开头已细致说明。整个项目非常适用新手练手，服务端数据服务只需要`npm run serve`即可开启。
 
 &emsp;&emsp;由于`express`动态获取本机内网`ip`，所以完全可以手机访问`cli-service`启动的`Network`地址，实现手机浏览器也可预览的效果。
 
 ## 更新日志
 
-### 20-11-13 10:31
+### 2020/11/13 10:31
 
-&emsp;&emsp;图片存放项目中首次下载或克隆耗时太长，`express`也是获取本机局域网`ip`实现移动访问，项目显得比较冗余。倘若有一个图床，`express`负责返回不同图片地址，问题会得到根本程度的解决。于是利用`Github`，手动造一个图床，了解原理不用网上的`PicGo`也能实现。
+&emsp;&emsp;图片存放项目中首次下载或克隆耗时太长，`express`也是获取本机局域网`ip`实现移动访问，项目显得比较冗余。倘若有一个图床，`express`负责返回不同图片地址，问题会得到根本程度的解决。于是利用`GitHub`，手动造一个图床，了解原理不用网上的`PicGo`也能实现。
 
-&emsp;&emsp;实质就是开辟一个`Github`公开仓库，提交图片文件即可。仓库内部预览图片，点击原始数据获取图片原始`URL`，图片根目录一般是`https://github.com/用户名/仓库名/raw/master`，剩余部分则是图片在项目中的路径。
+&emsp;&emsp;实质就是开辟一个`GitHub`公开仓库，提交图片文件即可。仓库内部预览图片，点击原始数据获取图片原始`URL`，图片根目录一般是`https://github.com/用户名/仓库名/raw/master`，剩余部分则是图片在项目中的路径。
 
-> 注意`Github`图床不太稳定，图片经常会挂掉，加速地址访问也会挂掉。项目内目前使用的是`Gitee`图床，相对会稳定很多。
+> 注意`GitHub`图床不太稳定，图片经常会挂掉，加速地址访问也会挂掉。项目内目前使用的是`Gitee`图床，相对会稳定很多。
 
-&emsp;&emsp;删除掉原项目动态获取局域网`ip`，调整`baseURL`，`app.js`内静态文件关闭，删除`static`文件夹。图片详情推荐随机数生成可能存在相同情况优化。
+&emsp;&emsp;删除掉原项目动态获取局域网`ip`，`app.js`内静态文件关闭，删除`static`文件夹。图片详情推荐随机数生成可能存在相同情况优化。
 
-### 20-11-30 22:00
+### 2022/03/05 17:55
 
-&emsp;&emsp;项目有云服务器是可以实现访问并预览的，但是小项目练手没有必要，`github`开放了静态网页预览功能，可以调整部分代码实现。`ajax`部分去掉，`api`内不引入`request`工具函数，直接引入`serve`下`db.js`，合并`router.js`和`api`下函数。
+&emsp;&emsp;项目有云服务器是可以实现访问并预览的，但是小项目练手没有必要，`GitHub`开放了静态网页预览功能，可以调整部分代码实现。`ajax`部分去掉，`api`内不引入`request`工具函数，直接引入`serve`下`db.js`，合并`router.js`和`api`下函数。
 
-&emsp;&emsp;;`vue.config.js`新增`publicPath`，由于静态网页预览`history`模式刷新报错`404`，`router` `model`删除`history`模式，使用默认`hash`模式，并提交在`noajax`分支。
+&emsp;&emsp;实现浏览器静态网页的代码提交在`browser`分支，静态`Page`部署在`GitHub`，预览较慢，镜像页面也可以在 [Gitee](http://dongwei1125.gitee.io/mogugou) 访问。
 
 ##  🎉 写在最后
 
@@ -1098,4 +1102,4 @@ location / {
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

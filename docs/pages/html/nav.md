@@ -7,9 +7,6 @@ sidebar: false
 ## 标签
 
 - [HTML 标签汇总](label/html.md)
-- [Meta](label/meta.md)
-- [Link](label/link.md)
-- [Script](label/script.md)
 - [A](label/a.md)
 - [Audio](label/audio.md)
 - [Button](label/button.md)
@@ -20,6 +17,9 @@ sidebar: false
 - [Form](label/form.md)
 - [Frame Frameset Noframes](label/frame-frameset-noframes.md)
 - [Img](label/img.md)
+- [Meta](label/meta.md)
+- [Link](label/link.md)
+- [Script](label/script.md)
 
 ## 性能
 

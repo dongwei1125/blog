@@ -22,6 +22,7 @@
 ## 功能
 
  - [解析图片的瀑布流（含懒加载）原理，并搭配服务端交互数据](https://dongwei1125.github.io/pages/js/waterfall.html)
+ - [进行浏览器原生的图片懒加载的几种方式和原理](https://dongwei1125.github.io/pages/js/lazy.html)
 
 # HTML
 
@@ -70,13 +71,3 @@
 
  - [vue element web 表单设计工具](https://dongwei1125.github.io/pages/app/form-making.html)
  - [vue 购物 WebApp](https://dongwei1125.github.io/pages/app/web-app.html)
-
-#  🎉 写在最后
-
-🍻伙伴们，如果你已经看到了这里，觉得这些文章有帮助到你的话不妨点赞👍或 [Star](https://github.com/dongwei1125/blog) ✨支持一下哦！
-
-手动码字，如有错误，欢迎在评论区指正💬~
-
-你的支持就是我更新的最大动力💪~
-
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

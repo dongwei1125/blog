@@ -12,7 +12,7 @@
 
 ## 在线预览
 
-&emsp;&emsp;;[Don_GW](https://dongwei1125.github.io/)
+&emsp;&emsp;;[GitHub](https://dongwei1125.github.io/)
 
 ## 初始化
 
@@ -114,7 +114,7 @@ features:
   details: 享受 Vue + webpack 的开发体验，在 Markdown 中使用 Vue 组件，同时可以使用 Vue 来开发自定义主题。
 - title: 高性能
   details: VuePress 为每个页面预渲染生成静态的 HTML，同时在页面被加载的时候，将作为 SPA 运行。
-footer: Copyright © xxx
+footer: Copyright © xx
 ---
 ```
 
@@ -140,10 +140,10 @@ footer: Copyright © xxx
 
 ```javascript
 {
-    "scripts": {
-      "dev": "vuepress dev docs --temp .temp",
-      ...
-    }
+  "scripts": {
+    "dev": "vuepress dev docs --temp .temp",
+    ...
+  }
 }
 ```
 
@@ -164,49 +164,49 @@ node_modules
 
 ```javascript
 module.exports = {
-  title: "标题",
-  description: "描述",
+  title: '标题',
+  description: '描述',
   head: [
     [
-      "link",
+      'link',
       {
-        rel: "icon",
-        href: "/logo.png"
-      }
-    ]
+        rel: 'icon',
+        href: '/logo.png',
+      },
+    ],
   ],
   themeConfig: {
-    logo: "/logo.png",
-    lastUpdated: "最后更新时间",
-    sidebar: "auto",
+    logo: '/logo.png',
+    lastUpdated: '最后更新时间',
+    sidebar: 'auto',
     nav: [
       {
-        text: "首页",
-        link: "/"
+        text: '首页',
+        link: '/',
       },
       {
-        text: "分类",
+        text: '分类',
         items: [
           {
-            text: "文章",
-            link: "/pages/article.md"
+            text: '文章',
+            link: '/pages/article.md',
           },
           {
-            text: "笔记",
-            link: "/pages/note.md"
-          }
-        ]
+            text: '笔记',
+            link: '/pages/note.md',
+          },
+        ],
       },
       {
-        text: "关于",
-        link: "/pages/about.md"
+        text: '关于',
+        link: '/pages/about.md',
       },
       {
-        text: "百度",
-        link: "https://www.baidu.com/"
-      }
-    ]
-  }
+        text: '百度',
+        link: 'https://www.baidu.com/',
+      },
+    ],
+  },
 }
 ```
 
@@ -251,7 +251,7 @@ sidebar: false
 
 &emsp;&emsp;项目根目录创建`deploy.sh`脚本文件，粘贴如下内容。
 
-```javascript
+```bash
 #!/usr/bin/env sh
 
 # 确保脚本抛出遇到的错误
@@ -268,9 +268,9 @@ git add -A
 git commit -m 'message'
 
 # 如果发布到 https://<USERNAME>.github.io
-# git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
+git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
 
-cd -
+cd ../ && rm -rf dist
 ```
 
 &emsp;&emsp;脚本文件运行的大致过程为，首先执行`npm run build`打包项目文件，打包后文件位于`docs/.vuepress/dist`目录，因此执行`cd docs/.vuepress/dist`进入到目录下。
@@ -320,7 +320,7 @@ ssh-rsa ...
 
 &emsp;&emsp;再次修改下`deploy.sh`，`username`也是你的用户名。
 
-```javascript
+```bash
 # 如果发布到 https://<USERNAME>.github.io
 git push -f git@github.com:username/uaername.github.io.git master
 ```
@@ -345,4 +345,4 @@ git push -f git@github.com:username/uaername.github.io.git master
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

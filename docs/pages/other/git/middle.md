@@ -1117,10 +1117,10 @@ A —— B —— C —— D —— G —— ^D —— ^^D —— I <-- master <
 
 ```javascript
 git blame -L 2,5 readme.md
-^4832fe2 (DonG 2021-01-12 10:31:28 +0800 2)   hello
-9f6560e4 (DonG 2021-01-13 10:32:29 +0800 3)   world
-cd564aa5 (DonG 2021-01-14 10:33:30 +0800 4)   and
-7f3a6645 (DonG 2021-01-15 10:34:31 +0800 5)   git
+^4832fe2 (xx 2021-01-12 10:31:28 +0800 2)   hello
+9f6560e4 (xx 2021-01-13 10:32:29 +0800 3)   world
+cd564aa5 (xx 2021-01-14 10:33:30 +0800 4)   and
+7f3a6645 (xx 2021-01-15 10:34:31 +0800 5)   git
 ```
 
 &emsp;&emsp;范围也可指定行的个数，`+`表示往下，`-`表示往上。如下表示从第二行往下三行，则输出行号为`2`、`3`、`4`的行的提交信息。
@@ -1342,7 +1342,7 @@ git clone https://github.com/username/repo.git
 
 ```javascript
 git submodule init
-Submodule 'subrepo' (...) registered for path 'subrepo'
+Submodule 'subrepo' ( ... ) registered for path 'subrepo'
 ```
 
 &emsp;&emsp;初始化本地配置后，运行如下命令，抓取子模块内对应版本的文件。注意`Git`将会获得这些改动并更新子目录中的文件，但是会将子仓库留在一个游离的`HEAD`的状态，即子仓库不存在分支，没有本地分支来跟踪改动，执行`git checkout`检出其相应的工作分支即可。
@@ -1586,4 +1586,4 @@ git checkout .
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~

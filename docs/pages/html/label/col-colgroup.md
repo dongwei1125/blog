@@ -24,43 +24,43 @@
 
 ```javascript
 <style>
-    td {
-        width: 240px;
-        height: 30px;
-    }
+  td {
+    width: 240px;
+    height: 30px;
+  }
 
-    .col-1 {
-        background: lightblue;
-    }
+  .col-1 {
+    background: lightblue;
+  }
 
-    .col-23 {
-        background: pink;
-    }
+  .col-23 {
+    background: pink;
+  }
 </style>
 
 <table border="1">
-    <col class="col-1">
-    <col span="2" class="col-23">
-    <tr>
-        <th>Index</th>
-        <th>Language</th>
-        <th>Proportion</th>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>HTML</td>
-        <td>20.36%</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>CSS</td>
-        <td>19.64%</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>JavaScript</td>
-        <td>160.00%</td>
-    </tr>
+  <col class="col-1">
+  <col span="2" class="col-23">
+  <tr>
+    <th>Index</th>
+    <th>Language</th>
+    <th>Proportion</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>HTML</td>
+    <td>20.36%</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>CSS</td>
+    <td>19.64%</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>JavaScript</td>
+    <td>160.00%</td>
+  </tr>
 </table>
 ```
 
@@ -72,15 +72,15 @@
 
 ```javascript
 td:nth-child(1),
-th:nth-child(1){
-    background: lightblue;
+th:nth-child(1) {
+  background: lightblue;
 }
 
 td:nth-child(2),
 th:nth-child(2),
 td:nth-child(3),
 th:nth-child(3) {
-    background: pink;
+  background: pink;
 }
 ```
 
@@ -89,14 +89,14 @@ th:nth-child(3) {
 ```javascript
 td,
 th {
-    background: lightblue;
+  background: lightblue;
 }
 
-td+td,
-td+td+td,
-th+th,
-th+th+th {
-    background: pink;
+td + td,
+td + td + td,
+th + th,
+th + th + th {
+  background: pink;
 }
 ```
 
@@ -106,16 +106,16 @@ th+th+th {
 
 ```javascript
 <style>
-    td {
-        width: 240px;
-        height: 30px;
-    }
+  td {
+    width: 240px;
+    height: 30px;
+  }
 </style>
 
 <table border="1">
-    <col align="center">
-    <col align="right">
-    ...
+  <col align="center">
+  <col align="right">
+  ...
 </table>
 ```
 
@@ -127,17 +127,17 @@ th+th+th {
 
 ```javascript
 td:nth-child(1),
-th:nth-child(1){
-    text-align: center;
+th:nth-child(1) {
+  text-align: center;
 }
 
 td:nth-child(2),
 th:nth-child(2) {
-    text-align: right;
+  text-align: right;
 }
 
 <table border="1">
-    ...
+  ...
 </table>
 ```
 
@@ -147,10 +147,10 @@ th:nth-child(2) {
 
 ```javascript
 <table border="1">
-    <col bgcolor="lightblue">
-    <col bgcolor="#ccc">
-    <col bgcolor="rgb(0,0,255,0.9)">
-    ...
+  <col bgcolor="lightblue">
+  <col bgcolor="#ccc">
+  <col bgcolor="rgb(0,0,255,0.9)">
+  ...
 </table>
 ```
 
@@ -164,16 +164,16 @@ th:nth-child(2) {
 
 ```javascript
 <style>
-    td {
-        width: 240px;
-        height: 50px;
-    }
+  td {
+    width: 240px;
+    height: 50px;
+  }
 </style>
 
 <table border="1">
-    <col valign="top">
-    <col valign="bottom">
-    ...
+  <col valign="top">
+  <col valign="bottom">
+  ...
 </table>
 ```
 
@@ -185,17 +185,17 @@ th:nth-child(2) {
 
 ```javascript
 td:nth-child(1),
-th:nth-child(1){
-    vertical-align: top;
+th:nth-child(1) {
+  vertical-align: top;
 }
 
 td:nth-child(2),
 th:nth-child(2) {
-    vertical-align: bottom;
+  vertical-align: bottom;
 }
 
 <table border="1">
-    ...
+  ...
 </table>
 ```
 
@@ -205,16 +205,16 @@ th:nth-child(2) {
 
 ```javascript
 <style>
-    td {
-        height: 30px;
-    }
+  td {
+    height: 30px;
+  }
 </style>
 
 <table border="1">
-    <col width="120px">
-    <col width="360px">
-    <col width="240px">
-    ...
+  <col width="120px">
+  <col width="360px">
+  <col width="240px">
+  ...
 </table>
 ```
 
@@ -226,22 +226,22 @@ th:nth-child(2) {
 
 ```javascript
 .col-1 {
-    width: 120px;
+  width: 120px;
 }
 
 .col-2 {
-    width: 360px;
+  width: 360px;
 }
 
 .col-3 {
-    width: 240px;
+  width: 240px;
 }
 
- <table border="1">
-    <col class="col-1">
-    <col class="col-2">
-    <col class="col-3">
-    ...
+<table border="1">
+  <col class="col-1">
+  <col class="col-2">
+  <col class="col-3">
+  ...
 </table>
 ```
 
@@ -250,17 +250,17 @@ th:nth-child(2) {
 ```javascript
 td:nth-child(1),
 th:nth-child(1) {
-    width: 120px;
+  width: 120px;
 }
 
 td:nth-child(2),
 th:nth-child(2) {
-    width: 360px;
+  width: 360px;
 }
 
 td:nth-child(3),
 th:nth-child(3) {
-    width: 240px;
+  width: 240px;
 }
 ```
 
@@ -270,17 +270,17 @@ th:nth-child(3) {
 
 ```javascript
 <style>
-    td {
-        width: 240px;
-        height: 30px;
-    }
+  td {
+    width: 240px;
+    height: 30px;
+  }
 </style>
 
 <table border="1">
-    <col>
-    <col>
-    <col align="char" char=".">
-    ...
+  <col>
+  <col>
+  <col align="char" char=".">
+  ...
 </table>
 ```
 
@@ -294,17 +294,17 @@ th:nth-child(3) {
 
 ```javascript
 <style>
-    td {
-        width: 240px;
-        height: 30px;
-    }
+  td {
+    width: 240px;
+    height: 30px;
+  }
 </style>
 
 <table border="1">
-    <col>
-    <col>
-    <col align="char" char="." charoff="2">
-    ...
+  <col>
+  <col>
+  <col align="char" char="." charoff="2">
+  ...
 </table>
 ```
 
@@ -324,45 +324,45 @@ th:nth-child(3) {
 
 ```javascript
 <style>
-    td {
-        height: 30px;
-    }
+  td {
+    height: 30px;
+  }
 
-    colgroup {
-        background: lightblue;
-    }
+  colgroup {
+    background: lightblue;
+  }
 
-    .col-2 {
-        background: pink;
-    }
+  .col-2 {
+    background: pink;
+  }
 </style>
 
 <table border="1">
-        <colgroup span="2" width="180px">
-    		<col>
-    		<col class="col-2" width="360px">
-    		<col>
-		</colgroup>
-        <tr>
-            <th>Index</th>
-            <th>Language</th>
-            <th>Proportion</th>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>HTML</td>
-            <td>20.36%</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>CSS</td>
-            <td>19.64%</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>JavaScript</td>
-            <td>160.00%</td>
-        </tr>
+  <colgroup span="2" width="180px">
+    <col>
+    <col class="col-2" width="360px">
+    <col>
+  </colgroup>
+  <tr>
+    <th>Index</th>
+    <th>Language</th>
+    <th>Proportion</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>HTML</td>
+    <td>20.36%</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>CSS</td>
+    <td>19.64%</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>JavaScript</td>
+    <td>160.00%</td>
+  </tr>
 </table>
 ```
 
@@ -378,4 +378,4 @@ th:nth-child(3) {
 
 你的支持就是我更新的最大动力💪~
 
-[GitHub](https://github.com/dongwei1125)、[Blog](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
