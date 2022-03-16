@@ -1,4 +1,4 @@
-name: Mirror to Gitee Repo
+name: Mirror to Gitee repo
 
 on:
   push:
@@ -9,9 +9,10 @@ jobs:
   mirror:
     runs-on: ubuntu-latest
     steps:
-      - uses: wearerequired/git-mirror-action@v1.2.0
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
+      - uses: Yikun/hub-mirror-action@v1.2
         with:
-          source-repo: "git@github.com:dongwei1125/blog.git"
-          destination-repo: "git@gitee.com:dongwei1125/blog.git"
+          src: github/dongwei1125
+          dst: gitee/dongwei1125
+          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+          static_list: 'blog'
+          force_update: true

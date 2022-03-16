@@ -20,28 +20,31 @@ jobs:
         run: |
           npm install
           npm run build
-
+          
       - name: Deploy GitHub pages
-        uses: JamesIves/github-pages-deploy-action@v4.2.5
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          token: ${{ secrets.ACCESS_TOKEN }}
-          repository-name: dongwei1125/dongwei1125.github.io
-          branch: master
-          folder: docs/.vuepress/dist
-          single-commit: true
-          commit-message: 'feat: deploy pages'
+          deploy_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+          external_repository: dongwei1125/dongwei1125.github.io
+          publish_branch: master
+          publish_dir: docs/.vuepress/dist
+          allow_empty_commit: true
+          force_orphan: true
+          full_commit_message: 'feat: deploy pages'
 
   deploy-gitee:
     needs: deploy-github
     runs-on: ubuntu-latest
     steps:
-      - name: Mirror to Gitee Repo
-        uses: wearerequired/git-mirror-action@v1.2.0
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.GITEE_PRIVATE_KEY }}
+      - name: Mirror to Gitee repo
+        uses: Yikun/hub-mirror-action@v1.2
         with:
-          source-repo: "git@github.com:dongwei1125/dongwei1125.github.io.git"
-          destination-repo: "git@gitee.com:dongwei1125/dongwei1125.git"
+          src: github/dongwei1125
+          dst: gitee/dongwei1125
+          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+          mappings: "dongwei1125.github.io=>dongwei1125"
+          static_list: 'dongwei1125.github.io'
+          force_update: true
 
       - name: Deploy Gitee pages
         uses: yanglbme/gitee-pages-action@v1.4.0

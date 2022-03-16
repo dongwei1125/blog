@@ -57,6 +57,7 @@
 
 ## Git
 
+ - [多种方式同步 GitHub 代码至镜像仓库](https://dongwei1125.github.io/pages/other/git/mirror.html)
  - [比较全面的 Git 命令手册，几乎涵盖日常所有的使用场景（上）](https://dongwei1125.github.io/pages/other/git/upper.html)
  - [比较全面的 Git 命令手册，几乎涵盖日常所有的使用场景（中）](https://dongwei1125.github.io/pages/other/git/middle.html)
  - [比较全面的 Git 命令手册，几乎涵盖日常所有的使用场景（下）](https://dongwei1125.github.io/pages/other/git/lower.html)
