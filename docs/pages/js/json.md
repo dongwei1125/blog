@@ -8,7 +8,7 @@
 
 ## 语法特性
 
-&emsp;&emsp;;[JSON.stringify](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) 用于将`JavaScript`字符串或值转换为对象。
+&emsp;&emsp;;[JSON.stringify](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) 用于将`JavaScript`对象或值转换为`JSON`字符串。
 
 ### undefined、函数、Symbol
 
