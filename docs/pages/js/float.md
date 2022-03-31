@@ -26,7 +26,7 @@
 
 &emsp;&emsp;计算公式为。
 
-![](/js/float/ieee-fn.png)
+<LaTeX>V=(-1)^S2^{E-1023}(M+1)</LaTeX>
 
 &emsp;&emsp;;`11.25`的`64`位表示。
 
@@ -381,7 +381,7 @@ Number.MAX_VALUE + 1 === Number.MAX_VALUE // true
 
 &emsp;&emsp;按照`IEEE 754`的规范，只要大于等于以下数，就会被表示为`Infinity`。
 
-![](/js/float/infinity-fn.png)
+<LaTeX>2^{E_{max}}(2-\frac{2^{1-p}}{2})</LateX>
 
 &emsp;&emsp;;`64`位浮点数中，<code>E<sub>max</sub></code>为`1023`，`p`为`53`。
 

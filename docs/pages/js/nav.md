@@ -17,6 +17,7 @@ sidebar: false
 - [ES6 不完全手册（上）](es6/upper.md)
 - [关于 ES6 参数默认值形成的第三作用域问题](default-params.md)
 - [JavaScript 箭头函数](arrow.md)
+- [关于取消 ES6 函数尾递归的相关探究](tco.md)
 
 ## Vue
 
