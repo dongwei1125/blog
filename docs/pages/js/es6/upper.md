@@ -848,6 +848,162 @@ t.bind().name // bound anonymous
 
 > 注意`IE`浏览器不支持`Function.name`属性
 
+### 箭头函数
+
+&emsp;&emsp;;[JavaScript 箭头函数](../arrow.md)
+
+### 尾递归
+
+&emsp;&emsp;;[关于取消 ES6 函数尾递归的相关探究](../tco.md)
+
+## 数组
+
+### 扩展运算符
+
+&emsp;&emsp;扩展运算符（[...](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Spread_syntax)）用于将数组转为逗号分割的参数序列。
+
+```javascript
+f(...[1, 2, 3]) 
+
+// 转换为
+f(1, 2, 3)
+
+// 与 apply 类似
+f.apply(null, [1, 2, 3])
+```
+
+&emsp;&emsp;注意只有函数调用时，`...`才能放在括号中，否则解析阶段就会报错。
+
+```javascript
+console.log((...[1, 2])) // Uncaught SyntaxError: Unexpected token '...'
+```
+
+&emsp;&emsp;数组参数传给构造函数的场景。
+
+```javascript
+var args = [1, 2]
+function F(x, y) {
+  this.x = x
+  this.y = y
+}
+
+// ES6
+new F(...args) // F {x: 1, y: 2}
+
+// ES5 方式一
+function _F(args) {
+  var object = Object.create(F.prototype)
+  F.apply(object, args)
+
+  return object
+}
+new _F(args) // F {x: 1, y: 2}
+
+// ES5 方式二
+var _F = (function (constructor) {
+  function F(args) {
+    constructor.apply(this, args)
+  }
+
+  F.prototype = constructor.prototype
+
+  return F
+})(F)
+new _F(args) // F {x: 1, y: 2}
+```
+
+&emsp;&emsp;;`ES6`的方式最为简单清晰。对于`ES5`的第一种方式，运用了若构造函数有返回值且为对象，则返回此对象。`ES5`的第二种方式，自执行函数返回了内部函数`F`，`new _F()`相当于`new F()`（`F`为内部函数），而构造函数无返回值时，将返回`this`，因此实际返回的是内部函数`F`的实例。
+
+&emsp;&emsp;扩展运算符除了可以复制数组（浅拷贝）、合并数组之外，还能正确识别`Unicode`字符。
+
+```javascript
+'𠮷'.length // 2
+[...'𠮷'].length // 1
+```
+
+&emsp;&emsp;也可以解构部署了`Symbol.iterator`接口的对象。
+
+```javascript
+Number.prototype[Symbol.iterator] = function () {
+  var length = this
+  var index = 0
+
+  return {
+    next() {
+      return {
+        done: index > length,
+        value: index++,
+      }
+    },
+  }
+}
+
+[...5] // [0, 1, 2, 3, 4, 5]
+```
+
+### Array.from
+
+&emsp;&emsp;;[Array.from](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/from) 用于将类似数组和可遍历对象转化为数组。
+
+```javascript
+var arrayLike = {
+  0: 'foo',
+  1: 'bar',
+  length: 2,
+}
+
+// ES5
+[].slice.call(arrayLike) // ["foo", "bar"]
+
+// ES6
+Array.from(arrayLike) // ["foo", "bar"]
+```
+
+&emsp;&emsp;以下为`Array.from`的简单实现，其中`mapFn`用来对新数组的每个元素进行处理，作用类似数组的`map`方法。
+
+```javascript
+Array.from = function (arrayLike, mapFn) {
+  var iterator, result, step, length
+  var index = 0
+  var O = Object(arrayLike)
+  var iteratorMethod = O[Symbol.iterator]
+
+  if (iteratorMethod) {
+    iterator = iteratorMethod.call(O)
+
+    for (result = []; !(step = iterator.next()).done; index++) {
+      result[index] = step.value
+    }
+  } else {
+    result = Array.prototype.slice.call(O)
+  }
+
+  return mapFn ? result.map(mapFn) : result
+}
+```
+
+### Array.of
+
+&emsp;&emsp;;[Array.of](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/of) 用于将参数转换为数组。
+
+```javascript
+Array.of(1, 2, 3) // [1, 2, 3]
+```
+
+&emsp;&emsp;;`ES5`兼容。
+
+```javascript
+if (!Array.of) {
+  Array.of = function () {
+    return Array.prototype.slice.call(arguments)
+  }
+}
+```
+
+### copyWithin
+
+&emsp;&emsp;;[ES6 copyWithin](../copyWithin.md)
+
 ##  🎉 写在最后
 
 🍻伙伴们，如果你已经看到了这里，觉得这篇文章有帮助到你的话不妨点赞👍或 [Star](https://github.com/dongwei1125/blog) ✨支持一下哦！

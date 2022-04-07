@@ -18,6 +18,7 @@ sidebar: false
 - [关于 ES6 参数默认值形成的第三作用域问题](default-params.md)
 - [JavaScript 箭头函数](arrow.md)
 - [关于取消 ES6 函数尾递归的相关探究](tco.md)
+- [ES6 copyWithin](copyWithin.md)
 
 ## Vue
 
