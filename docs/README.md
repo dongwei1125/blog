@@ -1,7 +1,7 @@
 ---
 home: true
 heroImage: /header.jpg
-heroText: Don_GW
+heroText: 咚小喂
 tagline: 一纸记录关于 JavaScript, HTML 和 CSS
 features:
   - title: JavaScript

@@ -19,6 +19,7 @@ sidebar: false
 - [JavaScript 箭头函数](arrow.md)
 - [关于取消 ES6 函数尾递归的相关探究](tco.md)
 - [ES6 copyWithin](copyWithin.md)
+- [ES6 flat 与数组扁平化](flat.md)
 
 ## Vue
 

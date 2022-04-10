@@ -15,6 +15,7 @@
  - [JavaScript 箭头函数](https://dongwei1125.github.io/pages/js/arrow.html)
  - [关于取消 ES6 函数尾递归的相关探究](https://dongwei1125.github.io/pages/js/tco.html)
  - [ES6 copyWithin](https://dongwei1125.github.io/pages/js/copyWithin.html)
+ - [ES6 flat 与数组扁平化](https://dongwei1125.github.io/pages/js/flat.md)
 
 ## Vue
 

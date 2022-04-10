@@ -1004,6 +1004,213 @@ if (!Array.of) {
 
 &emsp;&emsp;;[ES6 copyWithin](../copyWithin.md)
 
+### find
+
+&emsp;&emsp;;[find](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/find) 用于返回数组中第一个符合条件的成员。
+
+```javascript
+[1, 4, -5, 10].find(n => n < 0) // -5
+```
+
+&emsp;&emsp;;`ES5`兼容。
+
+```javascript
+if (!Array.prototype.find) {
+  Array.prototype.find = function (callbackfn, thisArg) {
+    for (var i = 0; i < this.length; i++) {
+      if (callbackfn.call(thisArg, this[i], i, this)) {
+        return this[i]
+      }
+    }
+  }
+}
+```
+
+### findIndex
+
+&emsp;&emsp;;[findIndex](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex) 用于返回数组中第一个符合条件的成员的索引。
+
+```javascript
+[1, 4, -5, 10].findIndex(n => n < 0) // 2
+```
+
+&emsp;&emsp;;`ES5`兼容。
+
+```javascript
+if (!Array.prototype.findIndex) {
+  Array.prototype.findIndex = function (callbackfn, thisArg) {
+    for (var i = 0; i < this.length; i++) {
+      if (callbackfn.call(thisArg, this[i], i, this)) {
+        return i
+      }
+    }
+
+    return -1
+  }
+}
+```
+
+### fill
+
+&emsp;&emsp;;[fill](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/fill) 用于填充数组。
+
+```javascript
+[1, 2, 3].fill(4, 1, 2) // [1, 4, 3]
+```
+
+&emsp;&emsp;;`ES5` 兼容。
+
+```javascript
+function toAbsoluteIndex(target, len) {
+  return target < 0 ? len + target : Math.min(target, len)
+}
+
+if (Array.prototype.fill) {
+  Array.prototype.fill = function (value, start, end) {
+    var len = this.length
+    start = toAbsoluteIndex(start || 0, len)
+    end = end === undefined ? len : toAbsoluteIndex(end, len)
+
+    while (start < end) {
+      this[start++] = value
+    }
+
+    return this
+  }
+}
+```
+
+### keys
+
+&emsp;&emsp;;[keys](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/keys) 返回一个遍历器对象，可用`for...of`遍历或者`next`调用，遍历结果为键名。
+
+```javascript
+for (const result of ['a', 'b', 'c'].keys()) {
+  console.log(result)
+  // 0
+  // 1
+  // 2
+}
+```
+
+&emsp;&emsp;;`keys`的`Generator`实现。
+
+```javascript
+Array.prototype.keys = function* () {
+  for (var i = 0; i < this.length; i++) {
+    yield i
+  }
+}
+```
+
+### values
+
+&emsp;&emsp;;[values](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/values) 返回一个遍历器对象，遍历结果为键值。
+
+```javascript
+const values = ['a', 'b', 'c'].values() // Array Iterator {}
+
+values.next() // {value: "a", done: false}
+values.next() // {value: "b", done: false}
+```
+
+&emsp;&emsp;;`values`的`Generator`实现。
+
+```javascript
+Array.prototype.values = function* () {
+  for (var i = 0; i < this.length; i++) {
+    yield this[i]
+  }
+}
+```
+
+&emsp;&emsp;实际上原型上`values`与`[Symbol.iterator]`是等价的。
+
+```javascript
+Array.prototype.values === Array.prototype[Symbol.iterator] // true
+```
+
+### entries
+
+&emsp;&emsp;;[entries](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/entries) 返回一个遍历器对象，遍历结果为键值对。
+
+```javascript
+for (const result of ['a', 'b', 'c'].entries()) {
+  console.log(result)
+  // [0, "a"]
+  // [1, "b"]
+  // [2, "c"]
+}
+```
+
+&emsp;&emsp;;`entries`的`Generator`实现。
+
+```javascript
+Array.prototype.entries = function* () {
+  for (var i = 0; i < this.length; i++) {
+    yield [i, this[i]]
+  }
+}
+```
+
+### includes
+
+&emsp;&emsp;;[includes](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/includes) 用于判断数组是否包括指定的值，含`NaN`。其中第二个参数`fromIndex`用于指定开始查找的位置。
+
+```javascript
+[1, 2, 3].includes(1) // true
+[1, 2, NaN].includes(NaN) // true
+
+[1, 2, 3].includes(1, 1) // false
+```
+
+&emsp;&emsp;注意`fromIndex`若大于数组长度，将返回`false`。若小于`0`将从`fromIndex + length`位置开始，若还是小于`0`，则从`0`开始。
+
+```javascript
+[1, 2, 3].includes(1, 5) // false
+
+[1, 2, 3].includes(1, -2) // false
+[1, 2, 3].includes(1, -5) // true
+```
+
+&emsp;&emsp;;`ES5`兼容。
+
+```javascript
+function toAbsoluteIndex(target, len) {
+  return target < 0 ? len + target : Math.min(target, len)
+}
+
+function isNaNumber(value) {
+  return typeof value === 'number' && isNaN(value)
+}
+
+function isEqual(x, y) {
+  return x === y || (isNaNumber(x) && isNaNumber(y))
+}
+
+if (!Array.prototype.includes) {
+  Array.prototype.includes = function (el, fromIndex) {
+    var len = this.length
+    fromIndex = fromIndex || 0
+    var i = fromIndex + len < 0 ? 0 : toAbsoluteIndex(fromIndex, len)
+
+    while (i < len) {
+      if (isEqual(this[i], el)) {
+        return true
+      }
+
+      i++
+    }
+
+    return false
+  }
+}
+```
+
+### flat
+
+&emsp;&emsp;;[ES6 flat 与数组扁平化](../flat.md)
+
 ##  🎉 写在最后
 
 🍻伙伴们，如果你已经看到了这里，觉得这篇文章有帮助到你的话不妨点赞👍或 [Star](https://github.com/dongwei1125/blog) ✨支持一下哦！

@@ -20,7 +20,7 @@
 
 ```javascript
 function toAbsoluteIndex(target, len) {
-  return target < 0 ? len + target : target
+  return target < 0 ? len + target : Math.min(target, len)
 }
 
 Array.prototype.copyWithin = function (target, start, end) {
@@ -213,7 +213,7 @@ if (start < target && target < start + count) {
 
 ```javascript
 function toAbsoluteIndex(target, len) {
-  return target < 0 ? len + target : target
+  return target < 0 ? len + target : Math.min(target, len)
 }
 
 Array.prototype.copyWithin = function (target, start, end) {

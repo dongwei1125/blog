@@ -1,11 +1,11 @@
 module.exports = {
-  title: 'Don_GW',
+  title: '咚小喂',
   description: 'A paper about JavaScript, HTML and CSS.',
   head: [
-    ['link', { rel: 'icon', href: '/logo.png' }]
+    ['link', { rel: 'icon', href: '/header.jpg' }]
   ],
   themeConfig: {
-    logo: '/logo.png',
+    logo: '/header.jpg',
     lastUpdated: '最后更新时间',
     backToTop: true,
     sidebar: 'auto',
