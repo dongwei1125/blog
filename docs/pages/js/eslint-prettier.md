@@ -1195,7 +1195,7 @@ not dead
 
 #### vscode 中 vue.json 文件
 
-&emsp;&emsp;;`vscode`中键入`Shift + Ctrl + P`，输入`snppets`，选择配置用户代码片段。
+&emsp;&emsp;;`vscode`中键入`Shift + Ctrl + P`，输入`snippets`，选择配置用户代码片段。
 
 &emsp;&emsp;然后输入`vue`，选择`vue.json`。
 
