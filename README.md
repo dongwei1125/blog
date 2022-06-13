@@ -25,6 +25,7 @@
 
 ## 功能
 
+ - [自动化签到稀土掘金，拥抱 GitHub Actions 吧](https://dongwei1125.github.io/pages/js/actions.html)
  - [解析图片的瀑布流（含懒加载）原理，并搭配服务端交互数据](https://dongwei1125.github.io/pages/js/waterfall.html)
  - [进行浏览器原生的图片懒加载的几种方式和原理](https://dongwei1125.github.io/pages/js/lazy.html)
 

@@ -29,5 +29,6 @@ sidebar: false
 
 ## 功能
 
+- [自动化签到稀土掘金，拥抱 GitHub Actions 吧](actions.md)
 - [解析图片的瀑布流（含懒加载）原理，并搭配服务端交互数据](waterfall.md)
 - [进行浏览器原生的图片懒加载的几种方式和原理](lazy.md)

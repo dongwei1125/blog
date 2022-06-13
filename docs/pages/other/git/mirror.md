@@ -458,7 +458,7 @@ module.exports = {
 &emsp;&emsp;以下为各个`actions`的功能及参数的作用。
 
  - [checkout](https://github.com/marketplace/actions/checkout)：检出当前仓库。你可以想象成在虚拟机内克隆了当前仓库，然后就可以运行`package.json`中的`scripts`命令，例如`npm run build`等。
- - [setup-node](https://github.com/marketplace/actions/setup-node-js-environment)：虚拟机安装`node`环境。其中`node-version`用于指定`node`版本，`cache` [缓存](https://github.com/marketplace/actions/setup-node-js-environment#caching-packages-dependencies) 依赖项用以优化工作流执行时长
+ - [setup-node](https://github.com/marketplace/actions/setup-node-js-environment)：虚拟机安装`node`环境。其中`node-version`用于指定`node`版本
  - [actions-gh-pages](https://github.com/marketplace/actions/github-pages-action)：部署`GitHub Pages`页面。将`npm run build`命令构建出的`dist`目录，创建为新分支`page`用于部署。`force_orphan`表示`page`分支只生成一次提交记录，`full_commit_message`为提交说明，`allow_empty_commit`表示即使`dist`文件没有更新，也要重新提交
  - [hub-mirror-action](https://github.com/marketplace/actions/hub-mirror-action)：镜像同步仓库
  - [gitee-pages-action](https://github.com/marketplace/actions/gitee-pages-action)：部署`Gitee Pages`页面。其中`GITEE_PASSWORD`为`GitHub`仓库下添加的`Gitee`平台密码，`gitee-repo`和`branch`表示对`Gitee`下的`repo`仓库的`page`分支进行部署
@@ -476,12 +476,11 @@ jobs:
   deploy-github:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16.14.0'
-          cache: 'npm'
 
       - name: Depend install and build
         run: |
@@ -624,12 +623,11 @@ jobs:
   deploy-github:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '16.14.0'
-          cache: 'npm'
 
       - name: Depend install and build
         run: |
