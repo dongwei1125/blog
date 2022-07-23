@@ -11,6 +11,7 @@ sidebar: false
 - [JavaScript 正则表达式](regexp.md)
 - [你不知道的 JSON.stringify 特性](json.md)
 - [JavaScript 严格模式差异性对比](strict.md)
+- [JavaScript 属性描述符](descriptor.md)
 
 ## ES6
 

@@ -7,6 +7,7 @@
  - [JavaScript 正则表达式](https://dongwei1125.github.io/pages/js/regexp.html)
  - [你不知道的 JSON.stringify 特性](https://dongwei1125.github.io/pages/js/json.html)
  - [JavaScript 严格模式差异性对比](https://dongwei1125.github.io/pages/js/strict.html)
+ - [JavaScript 属性描述符](https://dongwei1125.github.io/pages/js/descriptor.html)
 
 ## ES6
 
@@ -34,9 +35,6 @@
 ## 标签
 
  - [HTML 标签汇总](https://dongwei1125.github.io/pages/html/label/html.html)
- - [Meta](https://dongwei1125.github.io/pages/html/label/meta.html)
- - [Link](https://dongwei1125.github.io/pages/html/label/link.html)
- - [Script](https://dongwei1125.github.io/pages/html/label/script.html)
  - [A](https://dongwei1125.github.io/pages/html/label/a.html)
  - [Audio](https://dongwei1125.github.io/pages/html/label/audio.html)
  - [Button](https://dongwei1125.github.io/pages/html/label/button.html)
@@ -47,6 +45,9 @@
  - [Form](https://dongwei1125.github.io/pages/html/label/form.html)
  - [Frame Frameset Noframes](https://dongwei1125.github.io/pages/html/label/frame-frameset-noframes.html)
  - [Img](https://dongwei1125.github.io/pages/html/label/img.html)
+ - [Meta](https://dongwei1125.github.io/pages/html/label/meta.html)
+ - [Link](https://dongwei1125.github.io/pages/html/label/link.html)
+ - [Script](https://dongwei1125.github.io/pages/html/label/script.html)
 
 ## 性能
 
