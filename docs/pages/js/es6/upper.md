@@ -4,7 +4,7 @@
 
 ## 前言
 
-&emsp;&emsp;此篇是阅读[《ES6 标准入门》](https://es6.ruanyifeng.com/)的记录小册，保留了阅读当时的记忆和拓展，以便于后续查阅，分享出来，希望对你有用。关于`ES6`的`API`更为详细的部分还是推荐参考《`ES6` 标准入门》，只是文中相对会精简很多，同时也包括一些未提及的内容。
+&emsp;&emsp;此篇是阅读[《ES6 标准入门》](https://es6.ruanyifeng.com/)的记录小册，保留了阅读当时的记忆和拓展，以便于后续查阅，分享出来，希望对你有用。关于`ES6`的`API`更为详细的部分还是推荐参考《`ES6`标准入门》，只是文中相对会精简很多，同时也包括一些未提及的内容。
 
 > `2015`年`6`月`ECMAScript`的第六个版本发布了，即通常所说的`ES6`（或者`ES2015`）
 
@@ -435,6 +435,10 @@ const { length } = 'hello' // 5
 
 ## 字符串
 
+### JSON
+
+&emsp;&emsp;;[你不知道的 JSON.stringify 特性](../json.md)
+
 ### 模板字符串
 
 &emsp;&emsp;若插值内是一个对象，将默认调用它的`toString`方法。
@@ -619,6 +623,10 @@ s.trimEnd() // '  foo'
 
 ## 正则
 
+### 表达式
+
+&emsp;&emsp;;[JavaScript 正则表达式](../regexp.md)
+
 ### 具名组匹配
 
 &emsp;&emsp;;`ES6`提取组匹配结果。
@@ -755,13 +763,19 @@ if (!Number.isInteger) {
 Number.isInteger(3.0000000000000002) // true
 ```
 
+### 浮点数
+
+&emsp;&emsp;;[JavaScript 浮点数陷阱](../float.md)
+
+&emsp;&emsp;;[JavaScript 浮点数取整](../integer.md)
+
 ## 函数
 
 ### length
 
-&emsp;&emsp;[length](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/length) 为函数对象的属性值，用于指明函数的形参个数，返回`第一个具有默认值之前的参数个数`。
+&emsp;&emsp;;[length](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Function/length) 为函数对象的属性值，用于指明函数的形参个数，返回`第一个具有默认值之前的参数个数`。
 
-&emsp;&emsp;`length`即预期传入的参数个数，若参数指定了默认值，预期传入的参数也就不包括此参数了，另外剩余参数也不会计入`length`中。
+&emsp;&emsp;;`length`即预期传入的参数个数，若参数指定了默认值，预期传入的参数也就不包括此参数了，另外剩余参数也不会计入`length`中。
 
 ```javascript
 (function (a, b, c) { }).length // 3
@@ -1210,6 +1224,501 @@ if (!Array.prototype.includes) {
 ### flat
 
 &emsp;&emsp;;[ES6 flat 与数组扁平化](../flat.md)
+
+### flatMap
+
+&emsp;&emsp;;[flatMap](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap) 用于对数组进行`map`，然后进行一层扁平化，执行效率相对高一些。
+
+```javascript
+Array.prototype.flatMap = function (callbackFn, thisArg) {
+  var arr = this.filter(() => true)
+
+  return arr.map(callbackFn.bind(thisArg)).flat(1)
+}
+
+arr.flatMap(x => [[x * 2]]) // [[2], [4], [6], [8]]
+```
+
+&emsp;&emsp;注意`map`虽然会在循环中跳过`empty`空位，但是却仍然将保留空位，利用`filter`可以跳过且不保留空位。
+
+### at
+
+&emsp;&emsp;;[at](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/at) 用于返回数组对应索引值的成员，可以为正数或者负数。
+
+```javascript
+Array.prototype.at = function (index) {
+  return this[index < 0 ? this.length + index : index]
+}
+
+var arr = [2, 3, 4]
+arr.at(1) // 3
+arr.at(-1) // 4
+```
+
+### 空位
+
+&emsp;&emsp;数组空位表示数组某一位置没有任何值。
+
+```javascript
+[, ,] // [empty, empty]
+new Array(3) // [empty, empty, empty]
+```
+
+&emsp;&emsp;可以理解为开辟了内存空间，但是空间中没有保存任何的变量，访问时只有返回`undefined`。
+
+```javascript
+var arr = [5, , 7] // [5, empty, 7]
+arr[1] === undefined // true
+```
+
+#### 跳过空位
+
+&emsp;&emsp;;`ES5`中的很多遍历方法都将跳过空位，例如`forEach`、`filter`、`reduce`、`every`、`some`，`for...in`也是。
+
+```javascript
+[5, , 7].forEach(function (v, i) {
+  console.log(i, v)
+  // 0 5
+  // 2 7
+}
+
+for (var i in [5, , 7]) {
+  console.log(i)
+  // 0
+  // 2
+}
+```
+
+&emsp;&emsp;比较特殊的，`map`也将跳过空位，但是结果会保留空位值。
+
+```javascript
+[5, , 7].map(function (v, i) {
+  console.log(i, v)
+  // 0 5
+  // 2 7
+  return v
+}) // [5, empty, 7]
+```
+
+#### 不跳过空位
+
+&emsp;&emsp;;`ES6`中的很多遍历方法则不会跳过空位，例如`find`、`findIndex`，`for...of`也是。
+
+```javascript
+for (var v of [5, , 7]) {
+  console.log(v)
+  // 5
+  // undefined
+  // 7
+}
+
+[5, , 7].find((v, i) => {
+  console.log(i, v)
+  // 0 5
+  // 1 undefined
+  // 2 7
+  return false
+})
+```
+
+#### 空位拷贝
+
+&emsp;&emsp;刚才也说了，空位是有内存空间的，但是没有存储变量。所以数组的拼接（`concat`）、转接（`copyWithin`）、翻转（`reverse`）、成员删除、添加或修改（`splice`）、取出或弹出（`slice`、`pop`）等，空位都将依然存在。
+
+```javascript
+[5, , 7].copyWithin(0, 1, 2) // [empty, empty, 7]
+[, , 1].reverse() // [1, empty, empty]
+```
+
+#### 访问
+
+&emsp;&emsp;访问数组的方法，例如`values`、`Array.from`等，则明确返回`undefined`。
+
+```javascript
+[...[5, , 7].values()] // [5, undefined, 7]
+```
+
+&emsp;&emsp;注意数组的`join`和`toString`方法会将`undefined`或者`null`转换为空字符串。而`empty`空位相当于是`undefined`，因此空位也会被转换为空字符串。
+
+```javascript
+[5, null, undefined].toString() // "5,,"
+[5, null, undefined, ,].join('#') // "5###"
+```
+
+&emsp;&emsp;还有一个`sort`较为特殊，空位会被置后。
+
+```javascript
+[9, , 5, 7].sort((x, y) => x - y) // [5, 7, 9, empty]
+[9, , 5, 7].sort((x, y) => y - x) // [9, 7, 5, empty]
+```
+
+#### 小结
+
+ - `ES5`的遍历方法，例如`forEach`、`reduce`、`some`等，将跳过空位。而`map`虽然会跳过，但是结果中会保留空位
+ - `ES6`的遍历方法，`find`、`findIndex`等，不会跳过空位
+ - 空位只是内存空间没有存储变量，故拼接、翻转等，空位依然存在
+ - 明确访问空位将返回`undefined`。在`join`和`toString`时将被转换为空字符串。`sort`时会将空位置后
+
+### sort
+
+&emsp;&emsp;;[JavaScript 中常见的排序类型](../sort.md)
+
+## 对象
+
+### 简写
+
+&emsp;&emsp;对象方法。
+
+```javascript
+const o = {
+  method: function () {
+    return 'hello'
+  }
+}
+
+console.log(o.method.prototype) // {constructor: ƒ}
+console.log(new o.method()) // method {}
+```
+
+&emsp;&emsp;以下为简写方式，注意简写后方法原型丢失，也不能作为构造函数了。根本原因在于简写后的方法，浏览器不再赋予`[[Construct]]`内部槽，因此不能作为构造函数，更多可参考箭头函数章节。
+
+```javascript
+const o = {
+  method() {
+    return 'hello'
+  }
+}
+
+console.log(o.method.prototype) // understand
+console.log(new o.method()) // Uncaught TypeError: o.method is not a constructor
+```
+
+### 描述符
+
+&emsp;&emsp;;[JavaScript 属性描述符](../descriptor.md)
+
+### Object.is
+
+&emsp;&emsp;;[Object.is](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is) 用于判断两个值是否严格相等，与`===`运算符相比较，`Object.is(NaN, NaN)`返回`true`，但是`Object(-0, 0)`返回`false`。
+
+&emsp;&emsp;;`ES5`兼容。
+
+```javascript
+if (!Object.is) {
+  Object.is = function (x, y) {
+    if (x === y) {
+      return x !== 0 || 1 / x === 1 / y
+    } else {
+      return x !== x && y !== y
+    }
+  }
+}
+```
+
+&emsp;&emsp;其中在`x === y`时，考虑`x`或`y`是否为`0`，若不为`0`，则返回`true`。若为`0`，则运用`1 / x === 1 / y`判断两者符号是否相同。
+
+&emsp;&emsp;注意一个变量若满足`v !== v`，即为`NaN`。因此`x !== x && y !== y`用于判断`x`和`y`是否都是`NaN`。
+
+### Object.assign
+
+&emsp;&emsp;;[Object.assign](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/assign) 用于将源对象的可枚举属性，浅复制到目标对象，并返回目标对象。
+
+&emsp;&emsp;也可用来合并数组。
+
+```javascript
+const foo = [1, 2, 3, 4]
+const bar = [5, 6, 7]
+
+Object.assign(foo, bar)
+foo // [5, 6, 7, 4]
+```
+
+&emsp;&emsp;源对象属性若为取值函数，将求值后再复制。
+
+```javascript
+const x = 1, y = 2
+const foo = {}
+const bar = {
+  get z() { return x + y }
+}
+
+Object.assign(foo, bar)
+foo // {z: 3}
+```
+
+&emsp;&emsp;基本类型会被包装为对象，再复制到目标对象，注意仅字符串会被合入对象。
+
+```javascript
+Object.assign({}, 'hello', undefined, null, 10, false) // {0: 'h', 1: 'e', 2: 'l', 3: 'l', 4: 'o'}
+Object.assign({}, new String('hello')) // {0: 'h', 1: 'e', 2: 'l', 3: 'l', 4: 'o'}
+```
+
+&emsp;&emsp;;`ES5`兼容，其中`objectKeys`用于获取对象原有（非继承）的属性。
+
+```javascript
+function objectKeys(object) {
+  var keys = []
+
+  for (var key in object) {
+    if (Object.hasOwnProperty.call(object, key)) {
+      keys.push(key)
+    }
+  }
+
+  return keys
+}
+
+if (!Object.assign) {
+  Object.assign = function (target) {
+    var T = Object(target)
+
+    for (var i = 1; i < arguments.length; i++) {
+      var S = Object(arguments[i])
+      var keys = objectKeys(S)
+      var key
+
+      for (var j = 0; j < keys.length; j++) {
+        key = keys[j]
+        T[key] = S[key]
+      }
+    }
+
+    return T
+  }
+}
+```
+
+### Object.getOwnPropertyDescriptors
+
+&emsp;&emsp;;[Object.getOwnPropertyDescriptors](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors) 用于返回对象自身的所有属性的描述符。
+
+```javascript
+var object = {
+  foo: 1,
+  get bar() {},
+}
+
+Object.getOwnPropertyDescriptors(object)
+// {
+//   bar: {
+//     configurable: true,
+//     enumerable: true,
+//     get: f bar(),
+//     set: undefined,
+//   },
+//   foo: {
+//     configurable: true,
+//     enumerable: true,
+//     value: 1,
+//     writable: true,
+//   },
+// }
+```
+
+&emsp;&emsp;兼容`IE8`。
+
+```javascript
+function ownKeys(object) {
+  var keys = []
+
+  for (var key in object) {
+    if (Object.hasOwnProperty.call(object, key)) {
+      keys.push(key)
+    }
+  }
+
+  return keys
+}
+
+if (!Object.getOwnPropertyDescriptors) {
+  Object.getOwnPropertyDescriptors = function (object) {
+    var key, result = {}, keys = ownKeys(object)
+
+    for (var i = 0; i < keys.length; i++) {
+      key = keys[i]
+
+      result[key] = Object.getOwnPropertyDescriptor(object, key)
+    }
+
+    return result
+  }
+}
+```
+
+### Object.setPrototypeOf
+
+&emsp;&emsp;;[Object.setPrototypeOf](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/setPrototypeOf) 用于指定对象的原型。
+
+> [Object.getPrototypeOf](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/GetPrototypeOf) 用于获取对象原型
+
+&emsp;&emsp;兼容`IE`。
+
+```javascript
+function setPrototypeOf(object, prototype) {
+  object.__proto___ = prototype
+
+  return object
+}
+
+function mixinProperties(object, prototype) {
+  for (var prop in prototype) {
+    if (!Object.hasOwnProperty.call(object, prop)) {
+      object[prop] = prototype[prop]
+    }
+  }
+
+  return object
+}
+
+if (!Object.setPrototypeOf) {
+  Object.setPrototypeOf = function (object, prototype) {
+    return '__proto__' in {} ? setPrototypeOf(object, prototype) : mixinProperties(object, prototype)
+  }
+}
+```
+
+### Object.keys
+
+&emsp;&emsp;;[Object.keys](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/keys) 用于返回对象的自身可枚举属性组成的数组。
+
+&emsp;&emsp;;`ES5`兼容。
+
+```javascript
+if (!Object.keys) {
+  Object.keys = function (object) {
+    var result = []
+
+    for (var prop in object) {
+      if (Object.hasOwnProperty.call(object, prop)) {
+        result.push(prop)
+      }
+    }
+
+    return result
+  }
+}
+```
+
+### Object.values
+
+&emsp;&emsp;;[Object.values](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/values) 用于返回对象的自身可枚举属性值组成的数组。
+
+&emsp;&emsp;;`ES5`兼容。
+
+```javascript
+if (!Object.values) {
+  Object.values = function (object) {
+    var result = []
+
+    for (var prop in object) {
+      if (Object.hasOwnProperty.call(object, prop)) {
+        result.push(object[prop])
+      }
+    }
+
+    return result
+  }
+}
+```
+
+### Object.entries
+
+&emsp;&emsp;;[Object.entries](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/entries) 用于返回对象的自身可枚举属性键值对组成的数组。
+
+&emsp;&emsp;;`ES5`兼容。
+
+```javascript
+if (!Object.entries) {
+  Object.entries = function (object) {
+    var result = []
+
+    for (var prop in object) {
+      if (Object.hasOwnProperty.call(object, prop)) {
+        result.push([prop, object[prop]])
+      }
+    }
+
+    return result
+  }
+}
+```
+
+### Object.formEntries
+
+&emsp;&emsp;;[Object.formEntries](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries) 用于将键值对转换为对象。
+
+```javascript
+var map = new Map()
+map.set('foo', 1)
+map.set({}, 'Object')
+
+Object.fromEntries(map) // {foo: 1, [object Object]: 'Object'}
+
+Object.fromEntries(new URLSearchParams('foo=1&bar=2'))
+// {foo: '1', bar: '2'}
+```
+
+&emsp;&emsp;替代版本。
+
+```javascript
+Object.fromEntries = function (iterable) {
+  var result = {}
+
+  for (const [key, value] of iterable) {
+    result[key] = value
+  }
+
+  return result
+}
+```
+
+### Object.hasOwn
+
+&emsp;&emsp;;[Object.hasOwn](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwn) 用于判断属性是否为对象自身的，旨在替代`Object.prototype.hasOwnProperty`。
+
+&emsp;&emsp;以下为判断对象是否含有某个属性。
+
+```javascript
+var object = { foo: 1 }
+
+object.hasOwnProperty('foo') // true
+```
+
+&emsp;&emsp;但是对于原型为`null`的对象就会报错，原因在于沿着原型链是查找不到`hasOwnProperty`方法的。
+
+```javascript
+var object = Object.create(null)
+
+object.hasOwnProperty('foo') // Uncaught TypeError: object.hasOwnProperty is not a function
+```
+
+&emsp;&emsp;所以最常见的判断方式为。
+
+```javascript
+var object = Object.create(null)
+
+Object.prototype.hasOwnProperty.call(object, 'foo') // false
+```
+
+&emsp;&emsp;写法上不免复杂，也不容易理解，而以`Object.hasOwn`相对简洁很多。
+
+```javascript
+var object = Object.create(null)
+
+Object.hasOwn(object, 'foo') // false
+```
+
+&emsp;&emsp;兼容`ES5`。
+
+```javascript
+if (!Object.hasOwn) {
+  Object.hasOwn = function (object, prop) {
+    return Object.prototype.hasOwnProperty.call(object, prop)
+  }
+}
+```
+
+[下一篇](middle.md)
 
 ##  🎉 写在最后
 
