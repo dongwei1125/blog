@@ -12,6 +12,7 @@ sidebar: false
 - [你不知道的 JSON.stringify 特性](json.md)
 - [JavaScript 严格模式差异性对比](strict.md)
 - [JavaScript 属性描述符](descriptor.md)
+- [JavaScript 中常见的排序类型](sort.md)
 
 ## ES6
 
@@ -21,7 +22,7 @@ sidebar: false
 - [关于取消 ES6 函数尾递归的相关探究](tco.md)
 - [ES6 copyWithin](copyWithin.md)
 - [ES6 flat 与数组扁平化](flat.md)
-- [JavaScript 中常见的排序类型](sort.md)
+- [ES6 Symbol](symbol.md)
 
 ## Vue
 

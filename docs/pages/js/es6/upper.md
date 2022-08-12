@@ -487,29 +487,6 @@ const tag = (raw, ...args) => { // ["", " + ", " = ", ""] [1, 2, 3]
 tag`${a} \x2b ${b} = ${a + b}` // 1 + 2 = 3
 ```
 
-### ToPrimitive
-
-&emsp;&emsp;深入一点来说，对象转换为原始值（原始类型包括`String`、`Number`、`Boolean`、`undefined`、`null`）时，都会进行 [ToPrimitive](https://tc39.es/ecma262/#sec-toprimitive) 抽象运算。
-
-&emsp;&emsp;;`ToPrimitive(input, preferredType)`，`input`为被转换对象，`preferredType`为期望返回的结果类型，包括`number`、`string`和`default`。
-
-&emsp;&emsp;一般的比如`+foo`正运算、`Number(object)`，`preferredType`为`number`。
-
-&emsp;&emsp;;`foo + baz`加法运算、`==`对象的隐式转换，`preferredType`为`default`。
-
-&emsp;&emsp;;`${foo}`模板字符串插值、`string.search(regexp)`、`String(object)`、`parseInt(object)`，`preferredType`为`string`。
-
-&emsp;&emsp;;`ToPrimitive`运算流程简述为。
-
- - 判断`input`是否为对象，不是则返回`input`
- - 判断对象是否有`[Symbol.toPrimitive](hint){}`方法，若有，则令此方法的参数`hint`为`preferredType`（若`preferredType`不存在，将`hint`设为`number`）。若方法的执行结果为非对象（原始值），则返回，否则抛出`TypeError`错误
- - 执行`OrdinaryToPrimitive(input, preferredType)`运算
-
-&emsp;&emsp;;`OrdinaryToPrimitive`运算流程简述为。
-
- - 若`hint`为`string`，先调用`toString()`，如果为非对象（原始值）那么返回它。否则再调用`valueOf()`，如果为非对象（原始值）那么返回它，否则抛出`TypeError`错误
-  - 若`hint`为`number/default`，恰好相反，会先调用`valueOf()`，再调用`toString()`
-
 ###  includes / startWith / endsWith
 
 &emsp;&emsp;;[includes](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/includes) 用于判断一个字符串是否在另一个字符串中，返回布尔值，注意第二个为可选参数，表示开始搜索的位置，默认为`0`。
@@ -584,7 +561,7 @@ if (!String.prototype.repeat) {
 ```javascript
 if (!String.prototype.padStart) {
   String.prototype.padStart = function (targetLength, padString) {
-    padString = padString || ' '
+    padString = padString || ''
 
     var fillLen = targetLength - this.length
     padString = padString.repeat(Math.ceil(fillLen / padString.length))
