@@ -27,8 +27,8 @@
 ├── src
 │   ├── juejin
 │   │   ├── api.js
+│   │   ├── httpInstance.js
 │   │   ├── index.js
-│   │   ├── request.js
 │   ├── utils
 │   │   ├── dingding.js
 │   │   ├── email.js
@@ -49,8 +49,8 @@
  - `docs`：文档
  - `node_modules`：依赖包
  - `src/juejin/api.js`：稀土掘金功能接口类
+ - `src/juejin/httpInstance.js`：`axios`实例，包括请求头和拦截器等
  - `src/juejin/index.js`：稀土掘金类
- - `src/juejin/request.js`：`node-fetch`封装的接口类，包括请求头和拦截器等
  - `src/utils/dingding.js`：钉钉机器人
  - `src/utils/email.js`：邮件
  - `src/utils/pushMessage.js`：消息通知函数
@@ -64,21 +64,9 @@
 
 ### 接口
 
-&emsp;&emsp;;`juejin`目录主要包括请求类、接口类和掘金类。
+&emsp;&emsp;;`juejin`目录主要包括`axios`实例、接口类和掘金类。
 
-&emsp;&emsp;;`request.js`内部请求类`Request`引入了 [node-fetch](https://github.com/node-fetch/node-fetch) 的`v2`版本，并在此基础上封装了`get`和`post`请求、请求和响应拦截器。另外请求头中添加了部分浏览器标识字段，简单避免服务器确认为机器人脚本。
-
-&emsp;&emsp;注意`fetch`中`get`请求是没有`body`参数体的。
-
-```javascript
-// src/juejin/request.js
-...
-const responce = await fetch(baseURL + url, {
-  method,
-  headers,
-  body: method !== 'GET' ? JSON.stringify(data) : undefined,
-})
-```
+&emsp;&emsp;;`httpInstance.js`内部在`axios`实例的基础上封装了请求头和响应拦截器。另外请求头中添加了部分浏览器标识字段，简单避免服务器确认为机器人脚本。
 
 &emsp;&emsp;;`api.js`内部接口类`Api`，内部封装了稀土掘金所有的接口，包括用户信息、签到、抽奖等。
 
@@ -176,7 +164,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
         with:
-          node-version: '16.14.0'
+          node-version: '16.14.2'
 
       - name: Depend install and serve
         env:
@@ -232,7 +220,7 @@ jobs:
 
 &emsp;&emsp;如何获取呢？
 
-&emsp;&emsp;浏览器进入稀土掘金首页，键入`F12`开启控制台。清空`Network`控制信息，点击用户头像上的签到赢好礼菜单。
+&emsp;&emsp;浏览器进入稀土掘金首页，键入`F12`开启控制台。清空`Network`控制信息，点击用户头像下菜单中的成长福利。
 
 ![](/js/actions/network.png)
 
@@ -256,7 +244,7 @@ jobs:
 
 ![](/js/actions/pop3.png)
 
-&emsp;&emsp;验证成功，复杂授权码。
+&emsp;&emsp;验证成功，复制授权码。
 
 ![](/js/actions/code.png)
 
@@ -328,7 +316,7 @@ jobs:
 
 ![](/js/actions/serve.png)
 
-&emsp;&emsp;启用成功，以后`GitHub`将每天定时运行脚本，时间上不是很准时，存在一定的延迟。
+&emsp;&emsp;启用成功，以后`GitHub`将每天定时运行脚本，北京时间`9`点左右，时间上不是很准时，存在一定的延迟。
 
 ![](/js/actions/log.png)
 
