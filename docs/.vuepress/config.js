@@ -1,5 +1,5 @@
 module.exports = {
-  title: '咚小喂',
+  title: 'DonV',
   description: 'A paper about JavaScript, HTML and CSS.',
   head: [
     ['link', { rel: 'icon', href: '/header.jpg' }]
