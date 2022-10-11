@@ -619,14 +619,14 @@ array // [1]
 | 特性 | `preventExtensions` | `seal` | `freeze` |
 | - | - | - | - |
 | `isExtensible`| `false` | `false` | `false` |
-| `isSealed` | - | `true` | `true` |
-| `isFrozen` | - | - | `true` |
+| `isSealed` | `false` | `true` | `true` |
+| `isFrozen` | `false` | `false` | `true` |
 | 添加属性 | 否 | 否 | 否 |
 | 修改原型的指向 | 否 | 否 | 否 |
-| `configurable`置为`false` | - | 是 | 是 |
-| 删除属性 | - | 否 | 否 |
-| 修改描述符的键值 | - | 不能修改除了`writable`和`value`之外的键，`writable`只能修改为`false` | 都不能修改 |
-| `writable`置为`false` | - | - | 是 |
+| `configurable`置为`false` | 否 | 是 | 是 |
+| 是否可删除属性 | 是 | 否 | 否 |
+| 修改描述符的键值 | 可修改 | 不能修改除了`writable`和`value`之外的键，`writable`只能修改为`false` | 都不能修改 |
+| `writable`置为`false` | 否 | 否 | 是 |
 
 &emsp;&emsp;关系图。
 
