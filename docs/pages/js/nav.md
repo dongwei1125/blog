@@ -23,6 +23,7 @@ sidebar: false
 - [ES6 copyWithin](copyWithin.md)
 - [ES6 flat 与数组扁平化](flat.md)
 - [ES6 Symbol](symbol.md)
+- [ES6 集合](collection.md)
 
 ## Vue
 
