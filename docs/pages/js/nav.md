@@ -24,6 +24,7 @@ sidebar: false
 - [ES6 flat 与数组扁平化](flat.md)
 - [ES6 Symbol](symbol.md)
 - [ES6 集合](collection.md)
+- [ES6 Proxy](proxy.md)
 
 ## Vue
 

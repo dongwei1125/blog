@@ -20,6 +20,7 @@
  - [ES6 flat 与数组扁平化](https://dongwei1125.github.io/pages/js/flat.md)
  - [ES6 Symbol](https://dongwei1125.github.io/pages/js/symbol.md)
  - [ES6 集合](https://dongwei1125.github.io/pages/js/collection.md)
+ - [ES6 Proxy](https://dongwei1125.github.io/pages/js/proxy.md)
 
 ## Vue
 
