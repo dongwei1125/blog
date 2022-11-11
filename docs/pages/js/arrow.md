@@ -119,18 +119,18 @@ _new(Person, 12)
 
 &emsp;&emsp;此处仅可以辅助说明，箭头函数不能作为构造函数。
 
-&emsp;&emsp;你应该了解的是，`JavaScript`的函数有`[[Call]]`和`[[Construct]]`两个内部槽，注意控制台是访问不到不可见的，你可以理解为是浏览器层面的东西，是引擎定义的内部槽。
+&emsp;&emsp;你应该了解的是，`JavaScript`的函数有`[[Call]]`和`[[Construct]]`两个内部方法，注意控制台是访问不到不可见的，你可以理解为是浏览器层面的东西，是引擎定义的内部方法。
 
 &emsp;&emsp;当函数直接调用时，将执行`[[Call]]`方法，运行函数体。而当通过`new`调用函数时，将执行`[[Construct]]`方法，运行类似刚才`_new`函数的一系列操作。
 
-&emsp;&emsp;在`ECMA262`规范的 [20.2.3](https://tc39.es/ecma262/#sec-properties-of-the-function-prototype-object) 中表明，没有`[[Construct]]`内部槽，是不能够作为构造函数的。
+&emsp;&emsp;在`ECMA262`规范的 [20.2.3](https://tc39.es/ecma262/#sec-properties-of-the-function-prototype-object) 中表明，没有`[[Construct]]`内部方法，是不能够作为构造函数的。
 
 > `20.2.3 Properties of the Function Prototype Object`</br>
 `The Function prototype object:`</br>
 `...`</br>
 `does not have a [[Construct]] internal method; it cannot be used as a constructor with the new operator.`
 
-&emsp;&emsp;所以最`根本`的原因是，浏览器引擎没有赋予箭头函数`[[Construct]]`这个内部槽，因此也就不能作为构造函数调用，而作为构造函数所应该具有的那些属性，浏览器也就没必要去实现，都返回`undefined`就行了。
+&emsp;&emsp;所以最`根本`的原因是，浏览器引擎没有赋予箭头函数`[[Construct]]`这个内部方法，因此也就不能作为构造函数调用，而作为构造函数所应该具有的那些属性，浏览器也就没必要去实现，都返回`undefined`就行了。
 
 ### 没有 arguments 实参列表
 
@@ -331,7 +331,7 @@ const f = (first, ...first) => { } // Uncaught SyntaxError: Duplicate parameter 
 ## 小结
  - 箭头函数没有`this`，它的`this`是根据词法作用域派生而来，由上下文决定。总是指向定义时的上层作用域下的`this`
  - 箭头函数没有原型`prototype`
- - 箭头函数不能作为构造函数，根本原因在于浏览器没有赋予箭头函数`[[Construct]]`内部槽
+ - 箭头函数不能作为构造函数，根本原因在于浏览器没有赋予箭头函数`[[Construct]]`内部方法
  - 箭头函数没有`arguments`、`super`和`new.taget`，但是可由外层最近的非箭头函数决定
  - 箭头函数不允许形参名重复，无论是否在严格模式下
 
