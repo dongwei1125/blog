@@ -279,6 +279,84 @@ object.foo = 2
 object // {foo: 2}
 ```
 
+### value
+
+&emsp;&emsp;指定属性值，默认为`undefined`。
+
+```javascript
+var object = {}
+
+Object.defineProperty(object, 'foo', {})
+
+object // {foo: undefined}
+```
+
+### get
+
+&emsp;&emsp;访问器`getter`，在访问对象属性时触发。
+
+```javascript
+var object = {}
+
+Object.defineProperty(object, 'foo', {
+  get() {
+    console.log('get')
+  },
+})
+
+object.foo // get
+```
+
+&emsp;&emsp;特别注意`get`函数内`this`会静默绑定。
+
+```javascript
+var object = {}
+
+Object.defineProperty(object, 'foo', {
+  get() {
+    console.log(this === object) // true
+  },
+})
+
+object.foo
+```
+
+&emsp;&emsp;观察发现，点运算符（`.`）左边的对象是谁，`this`就指向谁。
+
+```javascript
+var object = {}
+
+Object.defineProperty(object, 'foo', {
+  get() {
+    console.log(this === o) // true
+  },
+})
+
+var o = Object.create(object)
+
+o.foo
+```
+
+&emsp;&emsp;换句话说`this`指向触发读取操作时的对象。
+
+### set
+
+&emsp;&emsp;访问器`setter`，在修改对象属性值时触发。
+
+```javascript
+var object = {}
+
+Object.defineProperty(object, 'foo', {
+  set() {
+    console.log('set')
+  },
+})
+
+object.foo = 1 // set
+```
+
+&emsp;&emsp;类似的，`set`函数内`this`指向触发修改操作时的对象。
+
 ### 小结
 
  - 描述符分为数据和存取两种类型，数据类型包括`configurable`、`enumerable`、<code><b>writable</b></code>和<code><b>value</b></code>，存取类型包括`configurable`、`enumerable`、<code><b>get</b></code>和<code><b>set</b></code>
@@ -286,6 +364,7 @@ object // {foo: 2}
  - 若属性的`configurable`键值为`false`，不能删除此属性，也不能修改除了`writable`和`value`之外的键，且`writable`也只能修改为`false`
  - 若属性的`enumerable`为`false`，不可枚举此属性，或者说会被忽略。例如`for...in`、`Object.keys`、`JSON.stringify`和`Object.assign`
  - 若属性的`writable`为`false`，不可修改此属性
+ - 访问器属性有`get`和`set`，在访问对象属性时触发`get`，在修改对象属性值时触发`set`，两者内部都会静默绑定`this`，指向触发操作时的对象
 
 ## 对象
 
