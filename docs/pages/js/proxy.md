@@ -4,7 +4,7 @@
 
 ## 前言
 
-&emsp;&emsp;全文共计`4`万字左右，大约可阅读一小时，并不定时持续更新中。
+&emsp;&emsp;全文共计`5`万字左右，大约可阅读两小时，并不定时持续更新中。
 
 &emsp;&emsp;此文可能是关于`Proxy`相对较全的文章之一，总结了`Proxy`代理几乎所有的用法、示例和注意事项，也有对部分代码的细节分析。结合语法和`ECMAScript`规范，系统性地阐释了`JavaScript`对象的内部方法和内部槽，对比了普通对象与代理对象之间的差异和共同点。另外也包括一些运用场景，如何分析代理的错误问题，以及如何优化解决等等。
 
@@ -2270,6 +2270,566 @@ reflectTrap: 430.464ms
 defineProperty: 4.848ms
 ```
 
+### Polyfill 原理是什么？
+
+&emsp;&emsp;;`Proxy`的 [兼容性](https://caniuse.com/?search=proxy) 相对较好，但`IE`浏览器的任何版本都不支持。
+
+&emsp;&emsp;相关`polyfill`库内部都是用`Object.defineProperty`模拟`Proxy`语法，`es6-proxy-polyfill`相对较新，逻辑更加清晰，符合函数式编程。
+
+| `polyfill` | 兼容 | `traps` | 支持度 | 说明 |
+|:-:|:-:|:-:|:-:|:-:|
+| [proxy-polyfill](https://github.com/GoogleChrome/proxy-polyfill) | `IE9+` | `get`、`set`、`apply`和`construct` | 对象、函数 | 对象仅代理已存在属性，无法代理新属性 |
+| [es6-proxy-polyfill](https://github.com/ambit-tsai/es6-proxy-polyfill) | `IE6+` | `get`、`set`、`apply`和`construct` | 对象、函数和数组 | 非数组对象，仅代理已存在属性，无法代理新属性。`IE8`及以下依赖`object-defineproperty-ie`库支持 |
+
+&emsp;&emsp;以下将分析`es6-proxy-polyfill/src/index.js`核心部分。
+
+#### 内部类
+
+&emsp;&emsp;构造函数`Internal`创建内部实例，保存目标对象`target`和配置对象`handler`。外部统一调用实例方法来修改`target`，包括`GET`、`SET`、`CALL`和`CONSTRUCT`。
+
+```javascript
+var PROXY_TARGET = '[[ProxyTarget]]'
+var PROXY_HANDLER = '[[ProxyHandler]]'
+var GET = '[[Get]]'
+var SET = '[[Set]]'
+var CALL = '[[Call]]'
+var CONSTRUCT = '[[Construct]]'
+
+function Internal(target, handler) {
+  this[PROXY_TARGET] = target
+  this[PROXY_HANDLER] = handler
+}
+
+Internal.prototype[GET] = function () {}
+Internal.prototype[SET] = function () {}
+Internal.prototype[CALL] = function () {}
+Internal.prototype[CONSTRUCT] = function () {}
+```
+
+&emsp;&emsp;以`SET`修改属性值为例。
+
+```javascript
+Internal.prototype[SET] = function (property, value, receiver) {
+  var target = this[PROXY_TARGET], handler = this[PROXY_HANDLER]
+
+  if (handler.set == undefined) {
+    target[property] = value
+  } else if (typeof handler.set === 'function') {
+    var result = handler.set(target, property, value, receiver)
+
+    return Boolean(result)
+  }
+}
+```
+
+&emsp;&emsp;第一种情况在未指定`handler.set`时，默认修改目标对象。
+
+```javascript
+var object = { x: 1 }
+var handler = {}
+var proxy = new Proxy(object, handler)
+
+var internal = new Internal(object, handler)
+internal[SET]('x', 2)
+
+object // {x: 2}
+```
+
+&emsp;&emsp;第二种情况若指定了`handler.set`，则正确传递参数由`handler.set`来修改目标对象。
+
+```javascript
+var object = { x: 1 }
+var handler = {
+  set(target, property, value) {
+    return Reflect.set(target, property, value * 3)
+  },
+}
+var proxy = new Proxy(object, handler)
+
+var internal = new Internal(object, handler)
+internal[SET]('x', 2)
+
+object // {x: 6}
+```
+
+#### 观察函数
+
+&emsp;&emsp;;`observeProperty`观察对象已存在属性的读写操作，返回属性描述符。
+
+```javascript
+function observeProperty(obj, prop, internal) {
+  var desc = getOwnPropertyDescriptor(obj, prop)
+
+  return {
+    get: function () { console.log('get') },
+    set: function (value) { console.log('set') },
+    enumerable: desc.enumerable,
+    configurable: desc.configurable,
+  }
+}
+```
+
+&emsp;&emsp;先不考虑`get`和`set`内逻辑，修改为`log`函数。
+
+&emsp;&emsp;;`observeProperties`观察对象自身所有属性。
+
+```javascript
+function observeProperties(obj, internal) {
+  var names = getOwnPropertyNames(obj), descMap = {}
+
+  for (var i = names.length - 1; i >= 0; --i) {
+    descMap[names[i]] = observeProperty(obj, names[i], internal)
+  }
+  
+  return descMap
+}
+```
+
+&emsp;&emsp;配合`Object.defineProperties`，可拦截对象属性的读写操作。
+
+```javascript
+var object = { x: 1, y: 2 }
+
+var descMap = observeProperties(object)
+Object.defineProperties(object, descMap)
+
+object.x // get
+object.y = 2 // set
+```
+
+&emsp;&emsp;;`observeProto`观察对象原型链上所有属性，返回属性描述符。
+
+```javascript
+function observeProto(internal) {
+  var descMap = {}, proto = internal[PROXY_TARGET]
+
+  while ((proto = getPrototypeOf(proto))) {
+    var props = observeProperties(proto, internal)
+    objectAssign(descMap, props)
+  }
+
+  return descMap
+}
+```
+
+&emsp;&emsp;例如观察数组原型。
+
+```javascript
+var object = [1, 2, 3]
+var handler = {}
+
+var internal = new Internal(object, handler)
+observeProto(internal)
+```
+
+&emsp;&emsp;返回属性描述符，由数组每一级的原型对象的属性构成。
+
+![](/js/proxy/proto.png)
+
+&emsp;&emsp;暂时不关注`observeProto`作用，接着往下看。
+
+#### 主函数
+
+&emsp;&emsp;代理类型包括数组、对象和函数三种。
+
+```javascript
+function ProxyPolyfill(target, handler) {
+  ...
+  return createProxy(new Internal(target, handler))
+}
+
+function createProxy(internal) {
+  var proxy, target = internal[PROXY_TARGET]
+
+  if (typeof target === 'function') {
+    proxy = proxyFunction(internal)
+  } else if (target instanceof Array) {
+    proxy = proxyArray(internal)
+  } else {
+    proxy = proxyObject(internal)
+  }
+  return proxy
+}
+
+window.Proxy = ProxyPolyfill
+```
+
+&emsp;&emsp;分类型的原因是什么呢？
+
+&emsp;&emsp;返回值`proxy`类型与目标对象`target`类型存在一些关联。
+
+&emsp;&emsp;例如代理函数，若支持`proxy()`函数式调用，`proxy`类型一定为函数。
+
+```javascript
+var proxy = new Proxy(function () {}, {})
+
+proxy(1, 2)
+```
+
+#### 代理对象
+
+&emsp;&emsp;我们来手动编写一个代理对象函数`proxyObject`。
+
+```javascript
+function proxyObject(internal) {
+  var descMap, proxy = {}, target = internal[PROXY_TARGET]
+
+  descMap = observeProperties(target, internal)
+  Object.defineProperties(proxy, descMap)
+
+  return proxy
+}
+```
+
+&emsp;&emsp;观察并拦截了对象自身所有属性。
+
+```javascript
+var object = { x: 1, y: 2 }
+var handler = {}
+
+var internal = new Internal(object, handler)
+var proxy = proxyObject(internal)
+
+proxy.x // get
+proxy.y = 2 // set
+```
+
+&emsp;&emsp;然后考虑补全`observeProperty`函数内`set`和`get`。
+
+&emsp;&emsp;即修改和读取目标对象的属性，我们可以借助内部实例的`SET`和`GET`方法。
+
+```javascript
+function observeProperty(obj, prop, internal) {
+  var desc = getOwnPropertyDescriptor(obj, prop)
+
+  return {
+    get: function () {
+      return internal[GET](prop, this)
+    },
+    set: function (value) {
+      internal[SET](prop, value, this)
+    },
+    ...
+  }
+}
+```
+
+&emsp;&emsp;特别注意`set`和`get`内`this`实例默认指向调用者，恰好传至内部实例`receiver`参数。
+
+```javascript
+proxy.x // 1
+proxy.y = 3
+object // {x: 1, y: 3}
+```
+
+#### 代理数组
+
+&emsp;&emsp;;`proxyObject`也适用于数组类型。
+
+```javascript
+var object = [1, 2, 3]
+var handler = {}
+
+var internal = new Internal(object, handler)
+var proxy = proxyObject(internal)
+
+proxy[2] // 3
+```
+
+&emsp;&emsp;唯一差异在于无法代理数组的原型方法。
+
+```javascript
+proxy.join(',') // Uncaught TypeError: proxy.join is not a function
+```
+
+&emsp;&emsp;因为`proxy`并没有`join`属性，运行肯定报错。
+
+```javascript
+{
+  0: 1,
+  1: 2,
+  2: 3,
+  length: 3,
+}
+```
+
+&emsp;&emsp;那就很简单了，`proxy`添加`join`属性。
+
+```javascript
+function proxyArray(internal) {
+  var descMap, target = internal[PROXY_TARGET]
+  var proxy = {
+    get join() {
+      console.log('get')
+    },
+    set join(value) { 
+      console.log('set')
+    },
+  }
+
+  descMap = observeProperties(target, internal)
+  Object.defineProperties(proxy, descMap)
+
+  return proxy
+}
+```
+
+&emsp;&emsp;拦截了`join`属性。
+
+```javascript
+var object = [1, 2, 3]
+var handler = {}
+
+var internal = new Internal(object, handler)
+var proxy = proxyArray(internal)
+
+proxy.join // get
+```
+
+&emsp;&emsp;仍然借助内部实例方法，补全`get`和`set`。
+
+```javascript
+var proxy = {
+  get join() {
+    return internal[GET]('join', this)
+  },
+  set join(value) {
+    internal[GET]('join', value, this)
+  },
+}
+```
+
+&emsp;&emsp;还存在一个问题，即无法支持别的数组方法，例如`pop`、`reverse`等。
+
+&emsp;&emsp;刚才的`observeProto`就派上用场了，修改下`proxyArray`。
+
+```javascript
+function proxyArray(internal) {
+  var descMap, proxy = {}, target = internal[PROXY_TARGET]
+
+  descMap = observeProto(internal)
+  delete descMap.length
+  Object.defineProperties(proxy, descMap)
+
+  descMap = observeProperties(target, internal)
+  Object.defineProperties(proxy, descMap)
+
+  return proxy
+}
+```
+
+&emsp;&emsp;已经支持数组原型上的所有方法了。
+
+```javascript
+var object = [1, 2, 3]
+var handler = {}
+
+var internal = new Internal(object, handler)
+var proxy = proxyArray(internal)
+
+proxy.pop() // 3
+proxy
+// {
+//   0: 1,
+//   1: 2,
+//   at: ƒ at(),
+//   concat: ƒ concat(),
+//   ...
+//   hasOwnProperty: ƒ hasOwnProperty(),
+//   ...
+//   isPrototypeOf: ƒ isPrototypeOf(),
+//   ...
+//   valueOf: ƒ valueOf(),
+//   values: ƒ values(),
+// }
+```
+
+&emsp;&emsp;现在来看看`es6-proxy-polyfill`内部`proxyArray`，与我们编写的版本大同小异。
+
+```javascript
+function proxyArray(internal) {
+  var descMap, newProto, target = internal[PROXY_TARGET]
+
+  descMap = observeProto(internal)
+  newProto = objectCreate(getPrototypeOf(target), descMap)
+
+  descMap = observeProperties(target, internal)
+
+  return objectCreate(newProto, descMap)
+}
+```
+
+&emsp;&emsp;差异仅在`es6-proxy-polyfill`未将原型方法作为`proxy`的属性，个人猜测是为了不破坏`proxy`自身属性，将原型方法合并为对象放在`proxy`的原型链头部，并将其指向了目标对象的原型链，形成一条新原型链`newProto`，如橙色箭头指向。
+
+![](/js/proxy/newProto.png)
+
+#### 代理函数
+
+##### CALL / CONSTRUCT
+
+&emsp;&emsp;以下为内部实例上`CALL`方法，其中`target.apply(thisArg, argList)`用于将数组`argList`转换为参数数列。
+
+```javascript
+Internal.prototype[CALL] = function (thisArg, argList) {
+  var target = this[PROXY_TARGET], handler = this[PROXY_HANDLER]
+
+  if (handler.apply == undefined) {
+    return target.apply(thisArg, argList)
+  }
+  if (typeof handler.apply === 'function') {
+    return handler.apply(target, thisArg, argList)
+  }
+}
+```
+
+&emsp;&emsp;类似的在未指定`handler.apply`时，默认调用目标对象。
+
+```javascript
+var object = function (x, y) { return x + y }
+var handler = {}
+var proxy = new Proxy(object, handler)
+
+var internal = new Internal(object, handler)
+internal[CALL](null, [1, 2]) // 3
+```
+
+&emsp;&emsp;若指定了`handler.apply`，则正确传递参数由`handler.apply`来调用目标对象。
+
+```javascript
+var object = function (x, y) { return x + y }
+var handler = {
+  apply(target, thisArg, args) {
+    return Reflect.apply(target, thisArg, args) * 3
+  },
+}
+var proxy = new Proxy(object, handler)
+
+var internal = new Internal(object, handler)
+internal[CALL](null, [1, 2]) // 9
+```
+
+&emsp;&emsp;接着来看下`CONSTRUCT`方法。
+
+```javascript
+Internal.prototype[CONSTRUCT] = function (argList, newTarget) {
+  var newObj, target = this[PROXY_TARGET], handler = this[PROXY_HANDLER]
+
+  if (handler.construct == undefined) {
+    newObj = evaluateNew(target, argList)
+  } else if (typeof handler.construct === 'function') {
+    newObj = handler.construct(target, argList, newTarget)
+  }
+
+  return newObj
+}
+```
+
+&emsp;&emsp;也是类似的，在未指定`handler.construct`时，则默认`new`目标对象。
+
+```javascript
+var object = function (x, y) {
+  this.x = x
+  this.y = y
+}
+var handler = {}
+var proxy = new Proxy(object, handler)
+
+var internal = new Internal(object, handler)
+internal[CONSTRUCT]([1, 2], function F() {}) // object {x: 1, y: 2}
+```
+
+&emsp;&emsp;注意`ES6`构造函数中数组转参数数列很容易。
+
+```javascript
+new target(...argList)
+```
+
+&emsp;&emsp;但在`ES5`中较困难，借助`eval`或者`new Function`拼接参数才可实现。
+
+```javascript
+function evaluateNew(F, argList) {
+  argList = Array.prototype.slice.call(argList)
+
+  var executor = new Function('Ctor', 'return new Ctor(' + argList + ')')
+
+  return executor(F, argList)
+}
+```
+
+&emsp;&emsp;若指定了`handler.construct`，则正确传递参数由`handler.construct`来调用目标对象。
+
+```javascript
+var object = function (x, y) {
+  this.x = x
+  this.y = y
+}
+var handler = {
+  construct(target, args, newTarget) {
+    return Reflect.construct(target, args, newTarget)
+  },
+}
+var proxy = new Proxy(object, handler)
+
+var internal = new Internal(object, handler)
+internal[CONSTRUCT]([1, 2], function F() {}) // F {x: 1, y: 2}
+```
+
+##### proxyFunction
+
+&emsp;&emsp;主函数部分提及到，`proxy()`支持函数式调用，则返回值一定为函数。
+
+```javascript
+function proxyFunction(internal) {
+  function P() {
+    console.log('function')
+  }
+
+  return P
+}
+```
+
+&emsp;&emsp;拦截了函数式调用。
+
+```javascript
+var object = function (x, y) { return x + y }
+var handler = {}
+
+var internal = new Internal(object, handler)
+var proxy = proxyFunction(internal)
+
+proxy(1, 2) // function
+```
+
+&emsp;&emsp;借助内部实例，修改`P`函数。
+
+```javascript
+function P() {
+  return internal[CALL](this, arguments)
+}
+
+proxy(1, 2) // 3
+```
+
+&emsp;&emsp;如何知晓外部是否`new`调用呢？
+
+&emsp;&emsp;判断函数`P`内`this`是否为`P`函数实例即可。
+
+```javascript
+function P() {
+  return this instanceof P
+    ? internal[CONSTRUCT](arguments, P)
+    : internal[CALL](this, arguments)
+}
+```
+
+#### 小结
+
+&emsp;&emsp;以上分析了`es6-proxy-polyfill`核心部分，包括代理对象、数组、函数三种类型，处理方式均大同小异，都是依赖`Object.defineProperty`或者`Object.create`拦截属性的修改和读取，注意`Object.create`第二个参数与`Object.defineProperty`作用类似，关于`Object.create`更多细节参考 [MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create)。
+
+&emsp;&emsp;外部读取属性、修改属性或者执行方法，都是借助内部实例原型上的方法。配置对象在未指定对应`trap`时，默认操作目标对象。若指定了对应`trap`，则正确传递参数由`trap`处理目标对象。
+
+&emsp;&emsp;在代理数组时之所以支持数组方法，例如`proxy.join(',')`。原理是将数组每一级原型的属性取出并合并成一个对象，作为`proxy`原型链的头部，且将头部指向了目标对象。
+
 ## 小结
 
  - 构造函数`Proxy`没有`prototype`原型属性，无法继承
@@ -2284,3 +2844,13 @@ defineProperty: 4.848ms
  - [Proxy 里面为什么要用 Reflect？](https://www.zhihu.com/question/460133198)
  - [Proxy 怎样代理 Map？](https://www.zhihu.com/question/426875859)
  - [关于 Proxy 代理的性能问题？](https://www.zhihu.com/question/460330154)
+
+ ##  🎉 写在最后
+
+🍻伙伴们，如果你已经看到了这里，觉得这篇文章有帮助到你的话不妨点赞👍或 [Star](https://github.com/dongwei1125/blog) ✨支持一下哦！
+
+手动码字，如有错误，欢迎在评论区指正💬~
+
+你的支持就是我更新的最大动力💪~
+
+[GitHub](https://github.com/dongwei1125) / [Gitee](https://gitee.com/dongwei1125)、[GitHub Pages](https://dongwei1125.github.io/)、[掘金](https://juejin.cn/user/2621689331987783)、[CSDN](https://blog.csdn.net/Don_GW) 同步更新，欢迎关注😉~
