@@ -31,6 +31,7 @@
 │   │   ├── index.js
 │   ├── utils
 │   │   ├── dingding.js
+│   │   ├── feishu.js
 │   │   ├── email.js
 │   │   ├── pushMessage.js
 │   │   ├── pushplus.js
@@ -52,6 +53,7 @@
  - `src/juejin/httpInstance.js`：`axios`实例，包括请求头和拦截器等
  - `src/juejin/index.js`：稀土掘金类
  - `src/utils/dingding.js`：钉钉机器人
+ - `src/utils/feishu.js`：飞书机器人
  - `src/utils/email.js`：邮件
  - `src/utils/pushMessage.js`：消息通知函数
  - `src/utils/pushplus.js`：微信公众号`pushplus`推送
@@ -78,7 +80,7 @@
 
 &emsp;&emsp;;`pushMessage.js`中用于接收消息类型和内容，消息类型`type`包括`info`和`error`两类，由于各消息平台的内容格式要求不一致，内容`message`将会被处理为`markdown`或者`HTML`格式。
 
-&emsp;&emsp;;`dingding.js`为钉钉机器人通知，注意生成的钉钉`webhook`地址一定要包含关键字`签到`。
+&emsp;&emsp;;`dingding.js / feishu.js`为机器人通知，注意生成的`webhook`地址一定要包含关键字`签到`。
 
 &emsp;&emsp;;`pushplus`为微信公众号推送函数。
 
@@ -169,10 +171,11 @@ jobs:
       - name: Depend install and serve
         env:
           COOKIE: ${{ secrets.COOKIE }}
-          DINGDING_WEBHOOK: ${{ secrets.DINGDING_WEBHOOK }}
           EMAIL: ${{ secrets.EMAIL }}
           AUTHORIZATION_CODE: ${{ secrets.AUTHORIZATION_CODE }}
           PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+          DINGDING_WEBHOOK: ${{ secrets.DINGDING_WEBHOOK }}
+          FEISHU_WEBHOOK: ${{ secrets.FEISHU_WEBHOOK }}
         run: |
           npm install
           npm run serve
@@ -250,6 +253,18 @@ jobs:
 
 &emsp;&emsp;在`GitHub`中添加环境机密`AUTHORIZATION_CODE`，`Value`值即为授权码。
 
+### pushplus
+
+&emsp;&emsp;;[pushplus](https://www.pushplus.plus/push1.html) 官网点击登录查看`token`。
+
+![](/js/actions/login.png)
+
+&emsp;&emsp;微信扫码关注`pushplus`推送加公众号，关注成功后一键复制`token`。
+
+![](/js/actions/token.png)
+
+&emsp;&emsp;;`GitHub`创建环境机密`PUSHPLUS_TOKEN`，`Value`值即为`token`。
+
 ### 钉钉
 
 &emsp;&emsp;移动端发起群聊，点击面对面建群，输入较复杂的数字进入群聊。
@@ -278,17 +293,37 @@ jobs:
 
 &emsp;&emsp;然后在`GitHub`中添加环境机密名称`DINGDING_WEBHOOK`，`Value`为复制的`Webhook`地址。
 
-### pushplus
+### 飞书
 
-&emsp;&emsp;;[pushplus](https://www.pushplus.plus/push1.html) 官网点击登录查看`token`。
+&emsp;&emsp;;`PC`端点击创建群组。
 
-![](/js/actions/login.png)
+![](/js/actions/createGroup.png)
 
-&emsp;&emsp;微信扫码关注`pushplus`推送加公众号，关注成功后一键复制`token`。
+&emsp;&emsp;输入群名称，点击创建。
 
-![](/js/actions/token.png)
+![](/js/actions/nameCreate.png)
 
-&emsp;&emsp;;`GitHub`创建环境机密`PUSHPLUS_TOKEN`，`Value`值即为`token`。
+&emsp;&emsp;创建成功，选择设置。
+
+![](/js/actions/moreSetting.png)
+
+&emsp;&emsp;点击群机器人。
+
+![](/js/actions/settingRobot.png)
+
+&emsp;&emsp;点击添加机器人按钮，选择自定义机器人。
+
+![](/js/actions/addCustom.png)
+
+&emsp;&emsp;输入机器人名称和描述。
+
+![](/js/actions/nameDesc.png)
+
+&emsp;&emsp;安全设置选择自定义关键词，注意关键词一定要为`签到`，否则将无法收到通知。
+
+![](/js/actions/customKey.png)
+
+&emsp;&emsp;复制`webhook`地址，点击完成。然后在`GitHub`中添加环境机密名称`FEISHU_WEBHOOK`，`Value`为复制的`webhook`地址。
 
 ### 启用
 
@@ -326,13 +361,17 @@ jobs:
 
 ![](/js/actions/email.png)
 
+&emsp;&emsp;微信公众号`pushplus`。
+
+![](/js/actions/pushplus.png)
+
 &emsp;&emsp;钉钉。
 
 ![](/js/actions/dingding.png)
 
-&emsp;&emsp;微信公众号`pushplus`。
+&emsp;&emsp;飞书。
 
-![](/js/actions/pushplus.png)
+![](/js/actions/feishu.png)
 
 ##  🎉 写在最后
 
