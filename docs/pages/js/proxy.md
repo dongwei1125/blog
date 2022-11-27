@@ -2830,6 +2830,101 @@ function P() {
 
 &emsp;&emsp;在代理数组时之所以支持数组方法，例如`proxy.join(',')`。原理是将数组每一级原型的属性取出并合并成一个对象，作为`proxy`原型链的头部，且将头部指向了目标对象。
 
+### Proxy 与类型转换
+
+&emsp;&emsp;简单代理属性的读取操作。
+
+```javascript
+var object = {}
+var handler = {
+  get(target, property, receiver) {
+    var result = Reflect.get(target, property, receiver)
+
+    console.log(property, result)
+
+    return result
+  },
+}
+var proxy = new Proxy(object, handler)
+```
+
+&emsp;&emsp;显式地将`proxy`转换为字符串。
+
+```javascript
+proxy.toString()
+// toString ƒ toString()
+// Symbol(Symbol.toStringTag) undefined
+```
+
+&emsp;&emsp;发现`handler.get`触发了两次，其中第一次是读取`proxy.toString`属性，即`object.toString`属性，沿着原型链查找就是`Object.prototype.toString`。
+
+```javascript
+proxy.toString === Object.prototype.toString
+```
+
+> `proxy.toString()`等价于`Object.prototype.toString.call(proxy)`
+
+&emsp;&emsp;第二次是如何呢？
+
+&emsp;&emsp;我们可以在`ECMA-262`规范中第 [20.1.3.6](https://262.ecma-international.org/13.0/#sec-object.prototype.tostring) 小节寻找答案。
+
+> `20.1.3.6 Object.prototype.toString ( )`</br>
+> `...`</br>
+> `3.Let O be ! ToObject(this value).`</br>
+> `...`</br>
+> `13.Else if O has a [[RegExpMatcher]] internal slot, let builtinTag be "RegExp".`</br>
+> `14.Else, let builtinTag be "Object".`</br>
+> <code>**15.Let tag be ? Get(O, @@toStringTag).**</code></br>
+> `16.If Type(tag) is not String, set tag to builtinTag.`</br>
+> `17.Return the string-concatenation of "[object ", tag, and "]".`
+
+&emsp;&emsp;;`toString`步骤大致为。
+
+ - 把`this`转换为对象`O`，并判断`O`是否有特殊的内部槽，若没有`builtinTag`默认为`Object`
+ - 读取对象`O[Symbol.toStringTag]`属性值为`tag`，若`tag`不是字符串，则`tag`赋为`builtinTag`
+ - 返回由`"[object "`、`tag`和`"]"`拼接而成的字符串
+
+&emsp;&emsp;忽略内部槽判断，手动编写`toString`。
+
+```javascript
+Object.prototype.toString = function () {
+  var O = Object(this)
+  var builtinTag = 'Object'
+  var tag = O[Symbol.toStringTag]
+
+  if (typeof tag !== 'string') {
+    tag = builtinTag
+  }
+
+  return `[object ${tag}]`
+}
+```
+
+> 内部槽是引擎层面的东西，`JavaScript`代码无法实现
+
+&emsp;&emsp;故在`proxy.toString()`运行时，`toString`内部读取了`proxy[Symbol.toStringTag]`属性，代理导致第二次触发`handler.get`方法。
+
+&emsp;&emsp;再来看看`proxy`隐式转换。
+
+```javascript
+proxy + 1
+// Symbol(Symbol.toPrimitive) undefined
+// valueOf ƒ valueOf()
+// toString ƒ toString()
+// Symbol(Symbol.toStringTag) undefined
+```
+
+&emsp;&emsp;为什么触发了四次`handler.get`呢？
+
+&emsp;&emsp;参考 [Symbol.toPrimitive](symbol.md#symbol-toprimitive) 我们知道，形如`x + y`的表达式，将分别对`x`和`y`执行`ToPrimitive(input, preferredType)`抽象运算，转化为原始值。
+
+&emsp;&emsp;;`ToPrimitive(proxy, default)`简略过程为。
+
+ - 判断是否有`proxy[Symbol.toPrimitive]`方法，返回`undefined`表示没有
+ - 执行`proxy.valueOf()`方法，返回`proxy`对象
+ - 执行`proxy.toString()`方法，返回`[object Object]`（原始值）
+ - 拼接两原始值返回`[object Object]1`
+
 ## 小结
 
  - 构造函数`Proxy`没有`prototype`原型属性，无法继承
