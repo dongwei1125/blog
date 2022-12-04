@@ -8,7 +8,7 @@
  - [你不知道的 JSON.stringify 特性](https://dongwei1125.github.io/pages/js/json.html)
  - [JavaScript 严格模式差异性对比](https://dongwei1125.github.io/pages/js/strict.html)
  - [JavaScript 属性描述符](https://dongwei1125.github.io/pages/js/descriptor.html)
- - [JavaScript 中常见的排序类型](https://dongwei1125.github.io/pages/js/sort.md)
+ - [JavaScript 中常见的排序类型](https://dongwei1125.github.io/pages/js/sort.html)
 
 ## ES6
 
@@ -17,10 +17,11 @@
  - [JavaScript 箭头函数](https://dongwei1125.github.io/pages/js/arrow.html)
  - [关于取消 ES6 函数尾递归的相关探究](https://dongwei1125.github.io/pages/js/tco.html)
  - [ES6 copyWithin](https://dongwei1125.github.io/pages/js/copyWithin.html)
- - [ES6 flat 与数组扁平化](https://dongwei1125.github.io/pages/js/flat.md)
- - [ES6 Symbol](https://dongwei1125.github.io/pages/js/symbol.md)
- - [ES6 集合](https://dongwei1125.github.io/pages/js/collection.md)
- - [ES6 Proxy](https://dongwei1125.github.io/pages/js/proxy.md)
+ - [ES6 flat 与数组扁平化](https://dongwei1125.github.io/pages/js/flat.html)
+ - [ES6 Symbol](https://dongwei1125.github.io/pages/js/symbol.html)
+ - [ES6 集合](https://dongwei1125.github.io/pages/js/collection.html)
+ - [ES6 Proxy](https://dongwei1125.github.io/pages/js/proxy.html)
+ - [ES6 Reflect](https://dongwei1125.github.io/pages/js/reflect.html)
 
 ## Vue
 

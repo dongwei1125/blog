@@ -25,6 +25,7 @@ sidebar: false
 - [ES6 Symbol](symbol.md)
 - [ES6 集合](collection.md)
 - [ES6 Proxy](proxy.md)
+- [ES6 Reflect](reflect.md)
 
 ## Vue
 
