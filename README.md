@@ -22,6 +22,7 @@
  - [ES6 集合](https://dongwei1125.github.io/pages/js/collection.html)
  - [ES6 Proxy](https://dongwei1125.github.io/pages/js/proxy.html)
  - [ES6 Reflect](https://dongwei1125.github.io/pages/js/reflect.html)
+ - [参考 Promise/A+ 规范和测试用例手写 Promise](https://dongwei1125.github.io/pages/js/promise-coding.html)
 
 ## Vue
 

@@ -26,6 +26,7 @@ sidebar: false
 - [ES6 集合](collection.md)
 - [ES6 Proxy](proxy.md)
 - [ES6 Reflect](reflect.md)
+- [参考 Promise/A+ 规范和测试用例手写 Promise](promise-coding.md)
 
 ## Vue
 
