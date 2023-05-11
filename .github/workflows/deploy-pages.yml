@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
+  
 
 jobs:
   deploy-github:
@@ -23,32 +25,10 @@ jobs:
       - name: Deploy GitHub pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ secrets.GITEE_PRIVATE_KEY }}
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
           external_repository: dongwei1125/dongwei1125.github.io
           publish_branch: master
           publish_dir: docs/.vuepress/dist
           allow_empty_commit: true
           force_orphan: true
           full_commit_message: 'feat: deploy pages'
-
-  deploy-gitee:
-    needs: deploy-github
-    runs-on: ubuntu-latest
-    steps:
-      - name: Mirror to Gitee repo
-        uses: Yikun/hub-mirror-action@v1.2
-        with:
-          src: github/dongwei1125
-          dst: gitee/dongwei1125
-          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
-          mappings: "dongwei1125.github.io=>dongwei1125"
-          static_list: 'dongwei1125.github.io'
-          force_update: true
-
-      - name: Deploy Gitee pages
-        uses: yanglbme/gitee-pages-action@v1.4.0
-        with:
-          gitee-username: dongwei1125
-          gitee-password: ${{ secrets.GITEE_PASSWORD }}
-          gitee-repo: dongwei1125
-          branch: master
