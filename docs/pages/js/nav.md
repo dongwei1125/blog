@@ -32,6 +32,7 @@ sidebar: false
 
 - [Vuepress 博客搭建与 GitHub 静态页面部署](vuepress-blog.md)
 - [vscode 插件与 npm 包，保存时自动修复代码格式错误](eslint-prettier.md)
+- [Element 组件库也支持暗黑模式啦](dark.md)
 
 ## 功能
 
