@@ -174,19 +174,19 @@ $--color-primary-light-1: mix($--color-white, $--color-primary, 10%) !default; /
 
 &emsp;&emsp;升级所有依赖项，压缩插件`gulp-cssmin`替换为`gulp-clean-css`，`gulp-sass`内部依赖`node-sass`切换为 [dart-sass](https://github.com/sass/dart-sass)，新增了`CSS`命名空间插件 [gulp-css-wrap](https://github.com/atskimura/gulp-css-wrap)。
 
-&emsp;&emsp;以下代码`compile`函数选中了`src`目录下所有`.scss`文件，`gulp-sass`编译构建，然后`gulp-autoprefixer`添加浏览器前缀，`gulp-css-wrap`新增类命名空间，最后`gulp-clean-css`压缩代码，输出至根目录下`lib`文件夹中。
+&emsp;&emsp;以下代码`compileCss`函数选中了`src`目录下所有`.scss`文件，`gulp-sass`编译构建，然后`gulp-autoprefixer`添加浏览器前缀，`gulp-css-wrap`新增类命名空间，最后`gulp-clean-css`压缩代码，输出至根目录下`lib`文件夹中。
 
 ```javascript
 // gulpfile.js
 ...
 
-function compile() {
+function compileCss() {
   return src('./src/*.scss')
     .pipe(sass.sync().on('error', sass.logError))
     .pipe(autoprefixer({ cascade: false }))
     .pipe(cssWrap({ selector: '.dark' }))
     .pipe(cleanCss())
-    .pipe('./lib')
+    .pipe(dest('./lib'))
 }
 ```
 
@@ -255,31 +255,29 @@ import 'element-ui/lib/theme-chalk/index.css';
 import 'element-theme-darkplus/lib/index.color.css';
 ```
 
-&emsp;&emsp;新增插件`extract-color.js`用于抽取暗黑主题中所有的颜色样式代码，核心的样式提取函数`cssExtractor`引用于插件 [webpack-theme-color-replacer](https://github.com/hzsrc/webpack-theme-color-replacer/blob/master/src/CssExtractor.js)，`webpack-theme-color-replacer`可提取出`CSS`中指定关键字的代码。
+&emsp;&emsp;新增插件`extract-color`用于抽取暗黑主题中所有的颜色样式代码，核心的样式提取函数`cssExtractor`引用于插件 [webpack-theme-color-replacer](https://github.com/hzsrc/webpack-theme-color-replacer/blob/master/src/CssExtractor.js)，`webpack-theme-color-replacer`可提取出`CSS`中指定关键字的代码。
 
-&emsp;&emsp;;`gulpfile.js`修改为如下，其中`rename`为 [gulp-rename](https://github.com/hparra/gulp-rename) 插件，用于修改文件名。
+&emsp;&emsp;;`gulpfile.js`新增颜色提取函数`compileColorCss`，其中`rename`为 [gulp-rename](https://github.com/hparra/gulp-rename) 插件，用于修改文件名。
 
 ```javascript
 // gulpfile.js
 ...
 
-function compile() {
+function compileColorCss() {
   return src('./src/*.scss')
     .pipe(sass.sync().on('error', sass.logError))
     .pipe(autoprefixer({ cascade: false }))
     .pipe(cssWrap({ selector: '.dark' }))
-    .pipe(cleanCss())
-    .pipe('./lib')
     .pipe(extractColor({ keywords: ['#', 'rgb', 'transparent'] }))
     .pipe(cleanCss())
-    .pipe(rename(path => (path.basename += '.color')))
+    .pipe(rename({ suffix: '.color' }))
     .pipe(dest('./lib'))
 }
 ```
 
 &emsp;&emsp;以上代码大概率报错，原因是`cssWrap()`运行报错，`css-wrap`不能处理空文件。
 
-&emsp;&emsp;本地新增插件`css-wrap.js`，利用`try...catch`捕获`css-wrap`插件发生的错误。
+&emsp;&emsp;本地新增插件`css-wrap`，空文件跳过`css-wrap`处理。
 
 ```javascript
 // plugins/css-wrap.js
@@ -288,14 +286,12 @@ function compile() {
 function cssWrap(options = {}) {
   return obj((file, _, callback) => {
     ...
+    
+    var contents = file.contents.toString()
 
-    var contents = ''
-
-    try {
-      contents = wrap(file.contents.toString(), options)
-    } catch { }
-
-    file.contents = new Buffer.from(contents)
+    if (contents) {
+      file.contents = new Buffer.from(wrap(contents, options))
+    }
 
     callback(null, file)
   })
@@ -312,13 +308,13 @@ function cssWrap(options = {}) {
 
 ### 小结
 
-&emsp;&emsp;;`element-theme-darkplus`参考了`element-theme`进一步优化了`gulpfile.js`逻辑部分，新增了`extract-color.js`颜色提取插件，可最小化实现主题切换功能。拷贝了`theme-chalk`白垩主题的源文件，修复了问题文件语法错误，自主维护全局变量。
+&emsp;&emsp;;`element-theme-darkplus`参考了`element-theme`进一步优化了`gulpfile.js`逻辑部分，新增了`extract-color`颜色提取插件，可最小化实现主题切换功能。拷贝了`theme-chalk`白垩主题的源文件，修复了问题文件语法错误，自主维护全局变量。
 
 ## 优化
 
 ### 关键字
 
-&emsp;&emsp;虽然`extract-color.js`插件能提取颜色类代码，但有种情况却不能合理提取出来，例如 [menu.scss](https://github.com/ElementUI/theme-chalk/blob/master/src/menu.scss#L53)。
+&emsp;&emsp;虽然`extract-color`插件能提取颜色类代码，但有种情况却不能合理提取出来，例如 [menu.scss](https://github.com/ElementUI/theme-chalk/blob/master/src/menu.scss#L53)。
 
 ```javascript
 // src/menu.scss
@@ -335,7 +331,7 @@ function cssWrap(options = {}) {
 
 &emsp;&emsp;代码`border-right: none`中并没有关键字`#`、`rgb`或者`transparent`，插件提取不出来也很正常，那如何优化呢？
 
-&emsp;&emsp;拟采用关键字注释，但`extract-color.js`插件对注释并不敏感，这里使用`var`来折中处理。
+&emsp;&emsp;拟采用关键字注释，但`extract-color`插件对注释并不敏感，这里使用`var`来折中处理。
 
 ```javascript
 // src/menu.scss
@@ -354,6 +350,16 @@ function cssWrap(options = {}) {
 
 &emsp;&emsp;关键字新增`--ec-ignore`，以上变量和`var`语句均能提取出来。
 
+```javascript
+extractColor({ keywords: ['--ec-ignore', '#', 'rgb', 'transparent'] })
+```
+
+&emsp;&emsp;你可能发现了白垩主题内部并未引入`CSS`变量，出于兼容性考虑，最新版本已弃用。在`cssExtractor`提取函数上我做了部分修改，思路效仿了 [clean-css](https://github.com/clean-css/clean-css?tab=readme-ov-file#how-to-preserve-a-comment-block) 的特殊注释。原理即在匹配到特殊注释`/* extract-color ignore */`时，`CSS`代码段仍然保留而不仅限于颜色值，衍生出了`ignoreSpecialComments`配置项（默认值`false`）。
+
+```javascript
+extractColor({ keywords: ['#', 'rgb', 'transparent'], ignoreSpecialComments: false })
+```
+
 ### 级联选择器
 
 &emsp;&emsp;;`cascader`级联选择器稳定复现图标外现的问题。
@@ -369,23 +375,46 @@ function cssWrap(options = {}) {
 }
 ```
 
-### 下拉菜单
+### 进度条/评分
 
-&emsp;&emsp;;`dropdown`下拉菜单`type=default`或不指定`type`时，由于下拉按钮背景色为`transparent`，将导致左边按钮右边框浮现，分割线呈竖直拉通状态。
+&emsp;&emsp;评分组件 [Rate](https://github.com/ElemeFE/element/blob/master/packages/rate/src/main.vue) 较为特殊，`Element`内部与颜色相关`props`均定义了默认值，且`template`模板中都采用内联样式，导致外部主题样式无法覆盖。
 
-![](/js/dark/dropdown.png)
+| `Props` | `默认值` |
+| --- | -- |
+| `void-color` | `#c6d1de` |
+| `disabled-void-color` | `#eff2f7` |
+| `text-color` | `#1f2d3d` |
 
-&emsp;&emsp;暂未解决。
+&emsp;&emsp;可传空值重置相应`props`值使主题生效。
 
-### 进度条 评分
+```html
+<el-rate :value="3" show-text void-color="" text-color="" />
+```
 
-&emsp;&emsp;进度条和评分组件是一类问题，组件上颜色相关的`prop`均是组件内 [内联控制](https://github.com/ElemeFE/element/blob/dev/packages/rate/src/main.vue#L31)，而根据类名修改将不生效。
+&emsp;&emsp;进度条组件 [Progress](https://github.com/ElemeFE/element/blob/master/packages/progress/src/progress.vue) 类似，仅线形进度条支持，环形和仪表盘形不支持。
 
-&emsp;&emsp;进度条部分使用`!important`避开，但部分颜色无法自定义。
+| `Props` | `默认值` |
+| --- | --- |
+| `define-back-color` | `#ebeef5` |
+| `text-color` | `#606266` |
 
-&emsp;&emsp;评分组件也无法修改，两者问题都较大，暂未解决。
+```html
+<el-progress :percentage="20" define-back-color="" text-color="" />
+```
 
-![](/js/dark/rate.png)
+&emsp;&emsp;虽然两组件可以传空值重置属性以支持暗黑主题，而对于不关心此功能的同学，却不清楚为什么会传入诸如`text-color=""`这样的属性，这无疑在开发层面徒增了心智负担。
+
+&emsp;&emsp;嗯`...`样式么法解决`Rate`和`Progress`根本性问题了。
+
+&emsp;&emsp;重新定义`Rate`和`Progress`组件可以吗？还不能破坏原组件的拓展性和唯一性，则采用继承原始组件并在`javascript`里做了一个中间层，帮助用户初始置空相关颜色`props`。
+
+```javascript
+import ElementUI from 'element-ui'
+import Darken from 'element-theme-darkplus/utils/darken'
+
+Vue.use(ElementUI)
+Vue.use(Darken(ElementUI))
+```
 
 ##  🎉 写在最后
 
