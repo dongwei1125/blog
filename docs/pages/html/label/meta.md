@@ -489,6 +489,14 @@
 <meta name="viewport" content="uc-fitscreen=yes">
 ```
 
+#### wap-font-scale
+
+&emsp;&emsp;网页文字较多时，浏览器将自动放大字体以提升用户浏览体验，`no`表示禁用此优化。
+
+```javascript
+<meta name="wap-font-scale" content="no">
+```
+
 ### IOS
 
 #### apple-mobile-web-app-capable
